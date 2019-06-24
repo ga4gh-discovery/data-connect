@@ -2,7 +2,7 @@
 
 *Search* is a framework for searching genomics and clinical data. 
 
-The Search framework is comprised of a collection of complementary standards that data custodians can implement to make their datasets more discoverable.
+The Search framework is comprised of a collection of complementary standards that data custodians can implement to make their biomedical data more discoverable.
 
 The schemas for most components of the framework are developed by the [Discovery Work Stream](https://github.com/ga4gh-discovery/ga4gh-discovery.github.io) of the [Global Alliance for Genomics & Health](http://ga4gh.org).
 
