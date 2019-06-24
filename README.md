@@ -1,6 +1,6 @@
 # Search
 
-*Search* is a framework for searching genomics and clinical data. 
+`Search` is a framework for searching genomics and clinical data. 
 
 The Search framework is comprised of a collection of complementary standards that data custodians can implement to make their biomedical data more discoverable.
 
@@ -12,11 +12,11 @@ The GA4GH has previously developed two standards for discovery. `Beacon` is a st
 
 Each standard (and corresponding network) has been successful in its own right. It was acknowledged that it would be broadly useful to develop standards that abstracted common utilities for building searchable, federated networks for a variety of applications in genomics and health.
 
-The Discovery Work Stream initiatied the development of Search as a general-purpose framework for building federatable search-based applications.
+The Discovery Work Stream develops `Search` as a general-purpose framework for building federatable search-based applications.
 
 ### Goals
 * `custom schemas` It is possible make arbitrary schemas and properties searchable.
-* `federation` It is possible to federate searches across multiple implementations. Federations of the search framework reference common fields.
+* `federation` It is possible to federate searches across multiple implementations. Federations of the search framework reference common schemas and properties.
 * `backend agnostic` It is possible to implement the framework across a large variety of backend datastores.
 
 ### Anti-Goals
