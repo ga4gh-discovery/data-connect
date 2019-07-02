@@ -19,7 +19,7 @@ The Discovery Work Stream develops `Search` as a general-purpose framework for b
 * `federation` It is possible to federate searches across multiple implementations. Federations of the search framework reference common schemas and properties.
 * `backend agnostic` It is possible to implement the framework across a large variety of backend datastores.
 
-### Anti-Goals
+### Out of scope
 * `developing data models` The Search framework **does not** define data models. It defers that effort to others in the GA4GH or outside implementers.
 * `application development` The Search framework **does not** prescribe a specific application. It is intentionally general-purpose. It defers to other efforts in the Discovery Work Stream, GA4GH, and beyond to build domain-specific applications.
 
