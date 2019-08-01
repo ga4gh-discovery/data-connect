@@ -1,5 +1,4 @@
----
-openapi: "3.0.0"
+openapi: "3.0.2"
 info:
   title: GA4GH Discovery Search API
   description: Definition of GA4GH Discovery Search API
