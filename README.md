@@ -52,6 +52,15 @@ See [USECASES.md](USECASES.md)
 * Find adult males diagnosed with autism having a harmful mutation in SHANK1 (use case of [Autism Sharing Initiative](http://autismsharinginitiative.org))
 * Find dataset from subject on European data center hosted on Amazon (use case of [Cloud Work Stream](https://github.com/ga4gh/wiki/wiki))
 
+### Static implementation
+It is possible to pregenerate all of the JSON documents that will be served in response to 
+this API.  These include:
+- ```datasets```: served in response to ```GET /datasets```
+- ```dataset/{id}```: served in response to ```GET /datasets/{id}```.  e.g. a dataset with id ```mydataset``` should have a corresponding file ```/datasets/mydataset```
+- ```dataset/page{pageNumber}```, which will be linked in the next_page_url  of the first dataset  (e.g. ```mydataset```), or in the next_page_url/prev_page_url of previous or subsequent pages.
+- ```schemas/{schemaFile}```: Though not required, schemas may be linked via [$ref](https://json-schema.org/latest/json-schema-core.html#rfc.section.8.3). Schemas can also be stored as static JSON documents, and be referred to by relative or absolute URLs.
+
+A concrete, example test implementation is [available](https://ga4gh-dataset-sample.storage.googleapis.com/datasets) (list endpoint) with [documentation](https://ga4gh-dataset-sample.storage.googleapis.com/EXAMPLE.md).
 ## Contributing
 
 The GA4GH is an open community that strives for inclusivity. Teleconferences and corresponding [meeting minutes](https://docs.google.com/document/d/1sG--PPVlVWb1-_ZN7cHta79uU9tU2y-17U11PYzvMu8/edit#heading=h.lwhinfkfmlx4) are open to the public. To learn how to contribute to this effort, please email Rishi Nag ([rishi.nag@ga4gh.org](mailto:rishi.nag@ga4gh.org)). 
