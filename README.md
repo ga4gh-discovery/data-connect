@@ -37,11 +37,15 @@ The following standards are complementary but not required by the Search framewo
     To edit this image, load assets/ga4gh-discovery-search.xml into draw.io and regenerate svg
 -->
 
+## Components
+
+Search API consists of [Dataset](DATASET.md) and Query APIs, describing search results and queries, respectively.
+
 ## Use cases
 
 See [USECASES.md](USECASES.md)
 
-Examples:
+### Examples
 
 * Find subjects with HP:0001519 and candidate gene FBN1 (use case of [Matchmaker Exchange](https://www.matchmakerexchange.org/))
 * Find male subjects with HP:0009726 consented for General Research Use (use case of [European Genome-phenome Archive](https://www.ebi.ac.uk/ega/home))
