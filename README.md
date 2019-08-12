@@ -57,10 +57,14 @@ It is possible to pregenerate all of the JSON documents that will be served in r
 this API.  These include:
 - ```datasets```: served in response to ```GET /datasets```
 - ```dataset/{id}```: served in response to ```GET /datasets/{id}```.  e.g. a dataset with id ```mydataset``` should have a corresponding file ```/datasets/mydataset```
-- ```dataset/page{pageNumber}```, which will be linked in the next_page_url  of the first dataset  (e.g. ```mydataset```), or in the next_page_url/prev_page_url of previous or subsequent pages.
-- ```schemas/{schemaFile}```: Though not required, schemas may be linked via [$ref](https://json-schema.org/latest/json-schema-core.html#rfc.section.8.3). Schemas can also be stored as static JSON documents, and be referred to by relative or absolute URLs.
+- ```dataset/{id}_{pageNumber}```, which will be linked in the next_page_url  of the first dataset  (e.g. ```mydataset```), or in the next_page_url/prev_page_url of previous or subsequent pages.
+- ```dataset/schema/{schemaFile}```: Though not required, schemas may be linked via [$ref](https://json-schema.org/latest/json-schema-core.html#rfc.section.8.3). Schemas can also be stored as static JSON documents, and be referred to by relative or absolute URLs.
 
-A concrete, example test implementation is [available](https://ga4gh-dataset-sample.storage.googleapis.com/datasets) (list endpoint) with [documentation](https://ga4gh-dataset-sample.storage.googleapis.com/EXAMPLE.md).
+A concrete, example test implementation is [available](https://storage.googleapis.com/ga4gh-dataset-sample/datasets) (list endpoint) with [documentation](https://storage.googleapis.com/ga4gh-dataset-sample/EXAMPLE.md).
+
+### Google Sheets implementation
+A Google Sheets spreadsheet can also be exposed via the datasets API via the sheets adapter, located [here](https://github.com/DNAstack/ga4gh-search-adapter-google-sheets).
+
 ## Contributing
 
 The GA4GH is an open community that strives for inclusivity. Teleconferences and corresponding [meeting minutes](https://docs.google.com/document/d/1sG--PPVlVWb1-_ZN7cHta79uU9tU2y-17U11PYzvMu8/edit#heading=h.lwhinfkfmlx4) are open to the public. To learn how to contribute to this effort, please email Rishi Nag ([rishi.nag@ga4gh.org](mailto:rishi.nag@ga4gh.org)). 
