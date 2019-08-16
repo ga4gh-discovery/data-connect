@@ -52,9 +52,14 @@ See [USECASES.md](USECASES.md)
 * Find adult males diagnosed with autism having a harmful mutation in SHANK1 (use case of [Autism Sharing Initiative](http://autismsharinginitiative.org))
 * Find dataset from subject on European data center hosted on Amazon (use case of [Cloud Work Stream](https://github.com/ga4gh/wiki/wiki))
 
-### Static implementation
-It is possible to pregenerate all of the JSON documents that will be served in response to 
-this API.  These include:
+## Implementations and tooling
+
+- [Dataset-in-a-bucket (no-code implementation)](#dataset-in-a-bucket-no-code-implementation)
+- [Google Sheets implementation](#google-sheets-implementation)
+
+### Dataset-in-a-bucket (no-code implementation)
+The specification allows for a no-code implementation as a collection of files served statically (e.g. in a cloud bucket, or a Git repository). To do this, you need the following JSON files:
+
 - ```datasets```: served in response to ```GET /datasets```
 - ```dataset/{id}```: served in response to ```GET /datasets/{id}```.  e.g. a dataset with id ```mydataset``` should have a corresponding file ```/datasets/mydataset```
 - ```dataset/{id}_{pageNumber}```, which will be linked in the next_page_url  of the first dataset  (e.g. ```mydataset```), or in the next_page_url/prev_page_url of previous or subsequent pages.
