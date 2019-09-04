@@ -52,6 +52,24 @@ See [USECASES.md](USECASES.md)
 * Find adult males diagnosed with autism having a harmful mutation in SHANK1 (use case of [Autism Sharing Initiative](http://autismsharinginitiative.org))
 * Find dataset from subject on European data center hosted on Amazon (use case of [Cloud Work Stream](https://github.com/ga4gh/wiki/wiki))
 
+## Implementations and tooling
+
+- [Dataset-in-a-bucket (no-code implementation)](#dataset-in-a-bucket-no-code-implementation)
+- [Google Sheets implementation](#google-sheets-implementation)
+
+### Dataset-in-a-bucket (no-code implementation)
+The specification allows for a no-code implementation as a collection of files served statically (e.g. in a cloud bucket, or a Git repository). To do this, you need the following JSON files:
+
+- ```datasets```: served in response to ```GET /datasets```
+- ```dataset/{id}```: served in response to ```GET /datasets/{id}```.  e.g. a dataset with id ```mydataset``` should have a corresponding file ```/datasets/mydataset```
+- ```dataset/{id}_{pageNumber}```, which will be linked in the next_page_url  of the first dataset  (e.g. ```mydataset```), or in the next_page_url/prev_page_url of previous or subsequent pages.
+- ```dataset/schema/{schemaFile}```: Though not required, schemas may be linked via [$ref](https://json-schema.org/latest/json-schema-core.html#rfc.section.8.3). Schemas can also be stored as static JSON documents, and be referred to by relative or absolute URLs.
+
+A concrete, example test implementation is [available](https://storage.googleapis.com/ga4gh-dataset-sample/datasets) (list endpoint) with [documentation](https://storage.googleapis.com/ga4gh-dataset-sample/EXAMPLE.md).
+
+### Google Sheets implementation
+A Google Sheets spreadsheet can also be exposed via the datasets API via the sheets adapter, located [here](https://github.com/DNAstack/ga4gh-search-adapter-google-sheets).
+
 ## Contributing
 
 The GA4GH is an open community that strives for inclusivity. Teleconferences and corresponding [meeting minutes](https://docs.google.com/document/d/1sG--PPVlVWb1-_ZN7cHta79uU9tU2y-17U11PYzvMu8/edit#heading=h.lwhinfkfmlx4) are open to the public. To learn how to contribute to this effort, please email Rishi Nag ([rishi.nag@ga4gh.org](mailto:rishi.nag@ga4gh.org)). 
