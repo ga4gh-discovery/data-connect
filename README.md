@@ -61,7 +61,7 @@ See [USECASES.md](USECASES.md)
 The specification allows for a no-code implementation as a collection of files served statically (e.g. in a cloud bucket, or a Git repository). To do this, you need the following JSON files:
 
 - ```datasets```: served in response to ```GET /datasets```
-- ```dataset/{id}```: served in response to ```GET /datasets/{id}```.  e.g. a dataset with id ```mydataset``` should have a corresponding file ```/datasets/mydataset```
+- ```dataset/{id}```: served in response to ```GET /dataset/{id}```.  e.g. a dataset with id ```mydataset``` should have a corresponding file ```/datasets/mydataset```
 - ```dataset/{id}_{pageNumber}```, which will be linked in the next_page_url  of the first dataset  (e.g. ```mydataset```), or in the next_page_url/prev_page_url of previous or subsequent pages.
 - ```dataset/schema/{schemaFile}```: Though not required, schemas may be linked via [$ref](https://json-schema.org/latest/json-schema-core.html#rfc.section.8.3). Schemas can also be stored as static JSON documents, and be referred to by relative or absolute URLs.
 
