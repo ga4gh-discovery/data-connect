@@ -29,7 +29,7 @@ paths:
   /table/{table_name}/info:
     get:
       summary: Get a Table
-      description: Returns the Table identified by name.
+      description: Returns the information about the Table identified by name.
       operationId: getTable
       parameters:
         - name: table_name
@@ -45,24 +45,42 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Table"
+        '404':
+          description: This server does not implement the data operation
         '500':
           description: An unexpected error occurred
   /table/{table_name}/data:
     get:
       summary: Fetch data from a Table
       description: Optional operation that returns data from a Table
-      operationId: data
+      operationId: getData
       responses:
+        '200':
+          description: Data from the Table
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TableData"
         '404':
           description: This server does not implement the data operation
+        '500':
+          description: An unexpected error occurred
   /search:
     post:
       summary: Perform a search on Tables
-      description: Optional operation that accepts a Query and returns a Table
+      description: Optional operation that accepts a Query and returns a TableData
       operationId: search
       responses:
+        '200':
+          description: Query results returned as TableData
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TableData"
         '404':
           description: This server does not implement the search operation
+        '500':
+          description: An unexpected error occurred
 components:
   schemas:
     ListTablesResponse:
