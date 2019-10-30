@@ -39,7 +39,7 @@ The following standards are complementary but not required by the Search framewo
 
 ## Components
 
-Search API consists of [Dataset](DATASET.md) and Query APIs, describing search results and queries, respectively.
+Search API consists of [Table](TABLE.md) and Query APIs, describing search results and queries, respectively.
 
 ## Use cases
 
