@@ -1,30 +1,41 @@
-# Dataset
+# Table
 
-A `Dataset` is simply an array of objects that have a common set of properties. A Dataset can be thought of as a table where each cell represents the value of a property (column) for a particular object (row).
+A `Table` is a high level object containing metadata which describes the underlying data and data model. The `Table` object does not contain the actual data.
 
-A Dataset is made up of two blocks:
+The `Table` object is comprised of three properties:
 
-1. `schema` describes properties of objects in the Dataset (e.g. "age")
-2. `objects` provide values for properties of objects in the Dataset (e.g. "age" : 30)
+1. `data_model` describes properties of objects in the Table (e.g. "age")
+2. `name` A unique name identifying the Table (e.g. "subjects")
+3. `description` describes the Table in a human readable way (e.g. "Human age data")
 
-### Schema
+# Table Data
 
-The `schema` block follows the [Schema](SCHEMA.md) format.
+The `TableData` is simply an array of objects that have a common set of properties. A `TableData` object can be thought of as a table where each cell represents the value of a property (column) for a particular object (row).
 
-The root objects (items of the `objects` array) must be JSON objects. Their schema must have its `type` property equal to `"object"`, not a primitive value (`string`, `number`, ..) or array.
+The `TableData` object is made up of two blocks:
+
+1. `data_model` describes properties of objects in the TableData (e.g. "age")
+2. `data` provide values for properties of objects in the TableData (e.g. "age" : 30)
+
+### Data Model
+
+The `data_model` block follows the [Data Model](DATA_MODEL.md) format.
+
+The root objects (items of the `data` array) must be JSON objects. Their data_model must have its `type` property equal to `"object"`, not a primitive value (`string`, `number`, ..) or array.
   
-### Objects
+### Data
 
-The content of the Dataset is provided in the `objects` block. Each object is a set of values with keys corresponding to keys in the `schema`.
+The content of the `TableData` is provided in the `data` block. Each object is a set of values with keys corresponding to keys in the `data_model`.
 
 
 ### Examples
 
-This is a Dataset with one schema property and two objects:
+
+This is a `Table` with one data_model property and meta data describing the table:
 
 ```json
 {
-       "schema": {
+       "data_model": {
                "properties": {
                        "age" : {
                                "description": "age of a subject, in days",
@@ -32,7 +43,25 @@ This is a Dataset with one schema property and two objects:
                        }
                }
        },
-       "objects": [
+       "name": "subjects",
+        "description": "Information on all subjects in the study"
+}
+```
+
+
+This is a `TableData` with one data_model property and two objects:
+
+```json
+{
+       "data_model": {
+               "properties": {
+                       "age" : {
+                               "description": "age of a subject, in days",
+                               "type": "number"
+                       }
+               }
+       },
+       "data": [
                { "age": 30 },
                { "age": 40 }
        ]
@@ -40,14 +69,14 @@ This is a Dataset with one schema property and two objects:
 
 ```
 
-This is a Dataset that references an externally defined schema: the [Data Repository Service](https://github.com/ga4gh/data-repository-service-schemas) developed by the GA4GH Cloud Work Stream:
+This is a `TableData` that references an externally defined data_model: the [Data Repository Service](https://github.com/ga4gh/data-repository-service-schemas) developed by the GA4GH Cloud Work Stream:
 
 ```json
 {
-       "schema": {
+       "data_model": {
                "$ref": "http://schema.ga4gh.org/drs/0.1.0#/definitions/Object"
        },
-       "objects": [
+       "data": [
                {
                        "id": "file-001",
                        "name": "file-001.txt",
@@ -78,12 +107,12 @@ This is a Dataset that references an externally defined schema: the [Data Reposi
 }
 ```
 
-This is a Dataset whose [Schema](SCHEMA.md) mixes inline and externally referenced properties:
+This is a `TableData` whose [Data Model](DATA_MODEL.md) mixes inline and externally referenced properties:
 
 
 ```json
 {
-       "schema": {
+       "data_model": {
                "description": "A collection of subjects and their data objects",
                "properties": {
                        "subject": {
@@ -104,7 +133,7 @@ This is a Dataset whose [Schema](SCHEMA.md) mixes inline and externally referenc
                        }
                }
        },
-       "objects": [
+       "data": [
                {
                        "subject": {
                                "id": "ABC100",
