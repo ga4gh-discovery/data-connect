@@ -34,7 +34,7 @@ paths:
       parameters:
         - name: table_name
           in: path
-          description: Unique Table name
+          description: Unique Table name, unique to this implementation
           required: true
           schema:
             type: string
@@ -54,6 +54,13 @@ paths:
       summary: Fetch data from a Table
       description: Optional operation that returns data from a Table
       operationId: getData
+      parameters:
+        - name: table_name
+          in: path
+          description: Unique Table name, unique to this implementation
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: Data from the Table
@@ -92,6 +99,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Table"
+        pagination:
+          $ref: '#/components/schemas/Pagination'
       additionalProperties: false
     Table:
       required:
