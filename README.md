@@ -15,7 +15,6 @@ Each standard (and corresponding network) has been successful in its own right. 
 The Discovery Work Stream develops `Search` as a general-purpose framework for building federatable search-based applications.
 
 ## Goals
-* `custom schemas` It is possible make arbitrary schemas and properties searchable.
 * `federation` It is possible to federate searches across multiple implementations. Federations of the search framework reference common schemas and properties.
 * `backend agnostic` It is possible to implement the framework across a large variety of backend datastores.
 
@@ -39,7 +38,7 @@ The following standards are complementary but not required by the Search framewo
 
 ## Components
 
-Search API consists of [Table](TABLE.md) and Query APIs, describing search results and queries, respectively.
+The search API consists of [Table](TABLE.md) and Query APIs, describing search results and queries, respectively.
 
 ## Use cases
 
@@ -54,21 +53,23 @@ See [USECASES.md](USECASES.md)
 
 ## Implementations and tooling
 
-- [Dataset-in-a-bucket (no-code implementation)](#dataset-in-a-bucket-no-code-implementation)
+- [Tables-in-a-bucket (no-code implementation)](#dataset-in-a-bucket-no-code-implementation)
 - [Google Sheets implementation](#google-sheets-implementation)
 
-### Dataset-in-a-bucket (no-code implementation)
+### Tables-in-a-bucket (no-code implementation)
 The specification allows for a no-code implementation as a collection of files served statically (e.g. in a cloud bucket, or a Git repository). To do this, you need the following JSON files:
 
-- ```datasets```: served in response to ```GET /datasets```
-- ```dataset/{id}```: served in response to ```GET /dataset/{id}```.  e.g. a dataset with id ```mydataset``` should have a corresponding file ```/dataset/mydataset```
-- ```dataset/{id}_{pageNumber}```, which will be linked in the next_page_url  of the first dataset  (e.g. ```mydataset```), or in the next_page_url/prev_page_url of previous or subsequent pages.
-- ```dataset/schema/{schemaFile}```: Though not required, schemas may be linked via [$ref](https://json-schema.org/latest/json-schema-core.html#rfc.section.8.3). Schemas can also be stored as static JSON documents, and be referred to by relative or absolute URLs.
+- ```tables```: served in response to ```GET /tables```
+- ```table/{table_name}/info```: served in response to ```GET /table/{table_name}/info```.  e.g. a table with the name ```mytable``` should have a corresponding file ```table/mytable/info```
+- ```table/{table_name}/data```: served in response to ```GET /table/{table_name}/data```.  e.g. a table with the name ```mytable``` should have a corresponding file ```table/mytable/data```
+- ```table/{table_name}/data```: served in response to ```GET /table/{table_name}/data```.  e.g. a table with the name ```mytable``` should have a corresponding file ```table/mytable/data```
+- ```table/{table_name}/data_{pageNumber}```, which will be linked in the next_page_url  of the first table  (e.g. ```mytable```), or in the next_page_url/prev_page_url of previous or subsequent pages.
+- ```table/{table_name}/data_models/{schemaFile}```: Though not required, data models may be linked via [$ref](https://json-schema.org/latest/json-schema-core.html#rfc.section.8.3). Data models can also be stored as static JSON documents, and be referred to by relative or absolute URLs.
 
-A concrete, example test implementation is [available](https://storage.googleapis.com/ga4gh-dataset-sample/datasets) (list endpoint) with [documentation](https://storage.googleapis.com/ga4gh-dataset-sample/EXAMPLE.md).
+A concrete, example test implementation is [available](https://storage.googleapis.com/ga4gh-tables-example/tables) (list endpoint) with [documentation](https://storage.googleapis.com/ga4gh-tables-example/EXAMPLE.md).
 
 ### Google Sheets implementation
-A Google Sheets spreadsheet can also be exposed via the datasets API via the sheets adapter, located [here](https://github.com/DNAstack/ga4gh-search-adapter-google-sheets).
+A Google Sheets spreadsheet can also be exposed via the tables API via the sheets adapter, located [here](https://github.com/DNAstack/ga4gh-search-adapter-google-sheets).
 
 ## Contributing
 
