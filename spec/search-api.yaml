@@ -12,96 +12,100 @@ info:
 servers: []
 security: []
 paths:
-  /datasets:
+  /tables:
     get:
-      summary: List datasets
-      description: List all datasets exposed by this Search Node.
-      operationId: listDatasets
+      summary: List Tables
+      description: Returns a list of Tables.
+      operationId: listTables
       responses:
         '200':
-          description: The list of available datasets
+          description: A list of Tables
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ListDatasetsResponse"
+                $ref: "#/components/schemas/ListTablesResponse"
         '500':
           description: An unexpected error occurred
-  /dataset/{dataset_id}:
+  /table/{table_name}/info:
     get:
-      summary: Get a dataset
-      description: Returns the first page of the dataset identified by dataset_id.
-      operationId: getDataset
+      summary: Get a Table
+      description: Returns the Table identified by name.
+      operationId: getTable
       parameters:
-        - name: dataset_id
+        - name: table_name
           in: path
-          description: Unique Dataset ID
+          description: Unique Table name
           required: true
           schema:
             type: string
       responses:
         '200':
-          description: The first page of the requested dataset
+          description: A Table
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Dataset"
+                $ref: "#/components/schemas/Table"
         '404':
           description: The requested dataset is not available
         '500':
           description: An unexpected error occurred
+  /table/{table_name}/data:
+    get:
+      summary: Fetch data from a Table
+      description: Optional operation that returns data from a Table
+      operationId: data
+      responses:
+        '404':
+          description: This server does not implement the data operation
   /search:
     post:
-      summary: (Placeholder) Perform a search
-      description: Optional operation that accepts a query and returns a dataset
+      summary: Perform a search on Tables
+      description: Optional operation that accepts a Query and returns a Table
       operationId: search
       responses:
         '404':
           description: This server does not implement the search operation
 components:
   schemas:
-    ListDatasetsResponse:
+    ListTablesResponse:
       required:
-        - datasets
+        - tables
       type: object
       properties:
-        datasets:
+        tables:
           type: array
           items:
-            $ref: "#/components/schemas/DatasetInfo"
+            $ref: "#/components/schemas/Table"
       additionalProperties: false
-    DatasetInfo:
+    Table:
       required:
-        - id
-        - schema
+        - name
+        - data_model
       type: object
       properties:
-        id:
+        name:
           type: string
-          description: Dataset ID
-        location:
-          type: string
-          description: Dataset absolute or relative location
-          format: uri
+          description: Table name
         description:
           type: string
-          description: Optional dataset description
-        schema:
+          description: Optional description of the Table
+        data_model:
           $ref: "http://json-schema.org/draft-07/schema#"
       description: |
-        Describes a dataset hosted by this search node.
-    Dataset:
+        Describes a Table hosted by this search node.
+    TableData:
       required:
-        - objects
-        - schema
+        - data_model 
+        - data
       type: object
       properties:
-        schema:
+        data_model:
           $ref: "http://json-schema.org/draft-07/schema#"
-        objects:
+        data:
           type: array
-          description: Page of JSON values, each adhering to the schema given in the "schema" property
+          description: Page of JSON values, each adhering to the schema given in the "data_model" property
           items:
-            # Each item must conform to the schema provided in the "schema" section of this Dataset.
+            # Each item must conform to the schema provided in the "data_model" section of this Table.
             # Not sure if this constraint can be expressed in OpenAPI 3.0.
             type: object
         pagination:
@@ -112,9 +116,9 @@ components:
       properties:
         next_page_url:
           type: string
-          description: URL pointing to the next page of the same dataset. Null or absent on last page.
+          description: URL pointing to the next page of the same Table. Null or absent on last page.
           format: uri
         previous_page_url:
           type: string
-          description: URL pointing to the previous page of the same dataset. Null or absent on first page.
+          description: URL pointing to the previous page of the same Table. Null or absent on first page.
           format: uri
