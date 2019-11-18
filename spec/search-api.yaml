@@ -45,6 +45,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Table"
+        '404':
+          description: The requested dataset is not available
         '500':
           description: An unexpected error occurred
   /table/{table_name}/data:
