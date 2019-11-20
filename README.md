@@ -62,7 +62,6 @@ The specification allows for a no-code implementation as a collection of files s
 - ```tables```: served in response to ```GET /tables```
 - ```table/{table_name}/info```: served in response to ```GET /table/{table_name}/info```.  e.g. a table with the name ```mytable``` should have a corresponding file ```table/mytable/info```
 - ```table/{table_name}/data```: served in response to ```GET /table/{table_name}/data```.  e.g. a table with the name ```mytable``` should have a corresponding file ```table/mytable/data```
-- ```table/{table_name}/data```: served in response to ```GET /table/{table_name}/data```.  e.g. a table with the name ```mytable``` should have a corresponding file ```table/mytable/data```
 - ```table/{table_name}/data_{pageNumber}```, which will be linked in the next_page_url  of the first table  (e.g. ```mytable```), or in the next_page_url/prev_page_url of previous or subsequent pages.
 - ```table/{table_name}/data_models/{schemaFile}```: Though not required, data models may be linked via [$ref](https://json-schema.org/latest/json-schema-core.html#rfc.section.8.3). Data models can also be stored as static JSON documents, and be referred to by relative or absolute URLs.
 
