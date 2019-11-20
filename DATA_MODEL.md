@@ -21,11 +21,11 @@ Here are sample Data Model definitions. For more information, visit [the JSON-Sc
 
 ##### Inline Properties
 
-This schema has one property, `age`, defined inline:
+This data model has one property, `age`, defined inline:
 
 ```json
 {
-       "schema": {
+       "data_model": {
                "properties": {
                        "age" : {
                                "description": "age of a subject, in whole years",
