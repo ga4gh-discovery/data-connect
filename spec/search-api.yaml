@@ -12,7 +12,7 @@ info:
   contact:
     name: 'GA4GH Discovery Search Team'
     email: 'ga4gh-discovery-search@ga4gh.org'
-security: []
+  - bearerAuth: []
 paths:
   /tables:
     get:
@@ -91,6 +91,11 @@ paths:
         '500':
           description: An unexpected error occurred
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     ListTablesResponse:
       required:
