@@ -1,3 +1,5 @@
+![](https://www.ga4gh.org/wp-content/themes/ga4gh-theme/gfx/GA-logo-horizontal-tag-RGB.svg)
+
 # Search [![](https://travis-ci.org/ga4gh-discovery/ga4gh-discovery-search.svg?branch=develop)](https://travis-ci.org/ga4gh-discovery/ga4gh-discovery-search) [![](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-discovery-search/develop/LICENSE)
 
 `Search` is a framework for searching genomics and clinical data. 
