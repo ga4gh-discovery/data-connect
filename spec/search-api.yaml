@@ -1,15 +1,17 @@
 openapi: "3.0.2"
 info:
   title: GA4GH Discovery Search API
-  description: Definition of GA4GH Discovery Search API
-  termsOfService: https://www.ga4gh.org/
-  contact:
-    email: rishi.nag@ga4gh.org
+  version: 0.1.0
+  description: |
+    Search is a framework for searching biomedical data.
+
+    More information on [GitHub](https://github.com/ga4gh-discovery/ga4gh-discovery-search).
   license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: "0.1.0"
-servers: []
+    name: 'Apache 2.0'
+    url: 'https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-discovery-search/develop/LICENSE'
+  contact:
+    name: 'GA4GH Discovery Search Team'
+    email: 'ga4gh-discovery-search@ga4gh.org'
 security: []
 paths:
   /tables:
