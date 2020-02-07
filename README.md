@@ -28,6 +28,10 @@ The Discovery Work Stream develops `Search` as a general-purpose framework for b
 
 Search API is specified in OpenAPI in [search-api.yaml](./spec/search-api.yaml), which [you can view using Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-discovery-search/develop/spec/search-api.yaml).
 
+## How to test
+
+Use [Swagger Validator Badge](https://github.com/swagger-api/validator-badge) to validate the YAML file, or its [OAS Validator](https://github.com/mcupak/oas-validator) wrapper.
+
 ## Complementary standards
 
 The following standards are complementary but not required by the Search framework:
@@ -76,6 +80,10 @@ A concrete, example test implementation is [available](https://storage.googleapi
 ### Google Sheets implementation
 A Google Sheets spreadsheet can also be exposed via the tables API via the sheets adapter, located [here](https://github.com/DNAstack/ga4gh-search-adapter-google-sheets).
 
-## Contributing
+## How to contribute
 
-The GA4GH is an open community that strives for inclusivity. Teleconferences and corresponding [meeting minutes](https://docs.google.com/document/d/1sG--PPVlVWb1-_ZN7cHta79uU9tU2y-17U11PYzvMu8/edit#heading=h.lwhinfkfmlx4) are open to the public. To learn how to contribute to this effort, please email Rishi Nag ([rishi.nag@ga4gh.org](mailto:rishi.nag@ga4gh.org)). 
+The GA4GH is an open community that strives for inclusivity. Guidelines for contributing to this repository are listed in [CONTRIBUTING.md](CONTRIBUTING.md). Teleconferences and corresponding [meeting minutes](https://docs.google.com/document/d/1sG--PPVlVWb1-_ZN7cHta79uU9tU2y-17U11PYzvMu8/edit#heading=h.lwhinfkfmlx4) are open to the public. To learn how to contribute to this effort, please email Rishi Nag ([rishi.nag@ga4gh.org](mailto:rishi.nag@ga4gh.org)). 
+
+## How to notify GA4GH of potential security flaws
+
+Please send an email to security-notification@ga4gh.org.
