@@ -6,7 +6,6 @@ jdk:
 env:
   - GH_URL=https://raw.githubusercontent.com FILE_TO_VALIDATE=spec/search-api.yaml URL_TO_VALIDATE=$GH_URL/${TRAVIS_PULL_REQUEST_SLUG:-$TRAVIS_REPO_SLUG}/${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}/$FILE_TO_VALIDATE
 before_install:
-  - git clone --branch=v1.0.1 https://github.com/mcupak/oas-validator.git
-  - ./oas-validator/setup-validator.sh
+  - git clone --branch=v1.1.0 https://github.com/mcupak/oas-validator.git
 script:
   - ./oas-validator/validate.sh "$URL_TO_VALIDATE"
