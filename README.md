@@ -24,6 +24,10 @@ The Discovery Work Stream develops `Search` as a general-purpose framework for b
 * `developing data models` The Search framework **does not** define data models. It defers that effort to others in the GA4GH or outside implementers.
 * `application development` The Search framework **does not** prescribe a specific application. It is intentionally general-purpose. It defers to other efforts in the Discovery Work Stream, GA4GH, and beyond to build domain-specific applications.
 
+## How to view
+
+Search API is specified in OpenAPI in [search-api.yaml](./spec/search-api.yaml), which [you can view using Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-discovery-search/develop/spec/search-api.yaml).
+
 ## Complementary standards
 
 The following standards are complementary but not required by the Search framework:
