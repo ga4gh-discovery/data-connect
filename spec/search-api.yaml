@@ -12,6 +12,7 @@ info:
   contact:
     name: 'GA4GH Discovery Search Team'
     email: 'ga4gh-discovery-search@ga4gh.org'
+security:
   - bearerAuth: []
 paths:
   /tables:
@@ -95,7 +96,6 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
-      bearerFormat: JWT
   schemas:
     ListTablesResponse:
       required:
