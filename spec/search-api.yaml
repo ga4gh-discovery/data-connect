@@ -21,7 +21,7 @@ paths:
       description: Returns a list of Tables.
       operationId: listTables
       tags:
-        - Tables API
+        - tables
       responses:
         '200':
           description: A list of Tables
@@ -37,7 +37,7 @@ paths:
       description: Returns the information about the Table identified by name.
       operationId: getTable
       tags:
-        - Tables API
+        - tables
       parameters:
         - name: table_name
           in: path
@@ -62,7 +62,7 @@ paths:
       description: Optional operation that returns data from a Table
       operationId: getData
       tags:
-        - Tables API
+        - tables
       parameters:
         - name: table_name
           in: path
@@ -87,7 +87,7 @@ paths:
       description: Optional operation that accepts a Query and returns a TableData
       operationId: search
       tags:
-        - Query API
+        - search
       responses:
         '200':
           description: Query results returned as TableData
@@ -104,7 +104,7 @@ paths:
       summary: 'Show information about the Search service'
       operationId: getServiceInfo
       tags:
-        - Service Info API
+        - service-info
       responses:
         '200':
           description: |
