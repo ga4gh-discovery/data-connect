@@ -3,7 +3,7 @@ info:
   title: GA4GH Discovery Search API
   version: 0.1.0
   description: |
-    Search is a framework for searching biomedical data.
+    Search is an API for searching biomedical data.
 
     More information on [GitHub](https://github.com/ga4gh-discovery/ga4gh-discovery-search).
   license:
