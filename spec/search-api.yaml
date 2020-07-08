@@ -134,6 +134,12 @@ components:
             $ref: "#/components/schemas/Table"
         pagination:
           $ref: '#/components/schemas/Pagination'
+        errors:
+          type: array
+          description: List of errors encountered
+          items:
+            $ref: "#/components/schemas/Error"
+      additionalProperties: false
     Table:
       required:
         - name
@@ -148,6 +154,11 @@ components:
           description: Optional description of the Table
         data_model:
           $ref: "http://json-schema.org/draft-07/schema#"
+        errors:
+          type: array
+          description: List of errors encountered
+          items:
+            $ref: "#/components/schemas/Error"
       description: |
         Describes a Table hosted by this search node.
     TableData:
@@ -167,7 +178,43 @@ components:
             type: object
         pagination:
           $ref: "#/components/schemas/Pagination"
+        errors:
+          type: array
+          description: List of errors encountered
+          items:
+            $ref: "#/components/schemas/Error"
       description: A paginated collection of tabular data
+    Error:
+      type: object
+      properties:
+        source:
+          type: string
+          description: >
+            Identifies the system or component where the error was originaly encountered. For example, this may be
+            a fully qualified table name if the error occurred while trying to list that table's data. It may
+            also refer to the specific database, or system (if the search api aggregates multiple) that caused the error.
+        message:
+          type: string
+          description: An informative message associated with the error
+        code:
+          $ref: "#/components/schemas/ErrorCode"
+        attributes:
+          type: object
+          description: >
+            Additional attributes which contain KV pairs that help identify, or manage the error. For example, this may help communicate
+            the context in which the error occurred, contain response hearders from the erronous system, or contain attributes
+            needed for authenticating a user.
+          additionalProperties:
+            type: string
+    ErrorCode:
+      type: string
+      enum:
+        # The user requires additional authorization to access the resource
+        - AUTH_CHALLENGE
+        # An unknown error was encountered
+        - ERROR_RESPONSE
+        # There was no response from the backend in an allotted time
+        - NO_RESPONSE
     Pagination:
       type: object
       properties:
