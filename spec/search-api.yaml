@@ -149,7 +149,3 @@ components:
           type: string
           description: URL pointing to the next page of the same Table. Null or absent on last page.
           format: uri
-        previous_page_url:
-          type: string
-          description: URL pointing to the previous page of the same Table. Null or absent on first page.
-          format: uri
