@@ -108,7 +108,6 @@ components:
             $ref: "#/components/schemas/Table"
         pagination:
           $ref: '#/components/schemas/Pagination'
-      additionalProperties: false
     Table:
       required:
         - name
