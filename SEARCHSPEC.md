@@ -1,51 +1,48 @@
 # Discovery Search Specification
 
-- [Discovery Search Specification](#discovery-search-specification)
-  * [Introduction {#introduction}](#introduction---introduction-)
-    + [Intended Audience {#intended-audience}](#intended-audience---intended-audience-)
-    + [Purpose & Motivation {#purpose-&-motivation}](#purpose---motivation---purpose---motivation-)
-    + [Traits {#traits}](#traits---traits-)
-    + [Applications {#applications}](#applications---applications-)
-  * [Specification {#specification}](#specification---specification-)
-    + [Overview {#overview}](#overview---overview-)
-    + [Discovery and Browsing {#discovery-and-browsing}](#discovery-and-browsing---discovery-and-browsing-)
-      - [Discovery and Browsing Examples {#discovery-and-browsing-examples}](#discovery-and-browsing-examples---discovery-and-browsing-examples-)
-    + [Query {#query}](#query---query-)
-      - [Query Example {#query-example}](#query-example---query-example-)
-        * [Query Request {#query-request}](#query-request---query-request-)
-        * [Query Result {#query-result}](#query-result---query-result-)
-      - [Correspondence Between SQL and JSON Data Types {#correspondence-between-sql-and-json-data-types}](#correspondence-between-sql-and-json-data-types---correspondence-between-sql-and-json-data-types-)
-    + [Semantic Data Types {#semantic-data-types}](#semantic-data-types---semantic-data-types-)
-      - [Example: Semantic Data Types on a Table {#example-semantic-data-types-on-a-table}](#example--semantic-data-types-on-a-table---example-semantic-data-types-on-a-table-)
-      - [Attaching Semantic Data Types To Query Results {#attaching-semantic-data-types-to-query-results}](#attaching-semantic-data-types-to-query-results---attaching-semantic-data-types-to-query-results-)
-      - [Example: Semantic Data Types in Query Results {#example-semantic-data-types-in-query-results}](#example--semantic-data-types-in-query-results---example-semantic-data-types-in-query-results-)
-    + [SQL Functions (WIP) {#sql-functions-wip}](#sql-functions--wip----sql-functions-wip-)
-    + [Dealing with Long Running Queries (WIP) {#dealing-with-long-running-queries-wip}](#dealing-with-long-running-queries--wip----dealing-with-long-running-queries-wip-)
-  * [Things to Add to Dataset Spec (they don’t go in this doc) {#things-to-add-to-dataset-spec-they-don’t-go-in-this-doc}](#things-to-add-to-dataset-spec--they-don-t-go-in-this-doc----things-to-add-to-dataset-spec-they-don-t-go-in-this-doc-)
-    + [Authentication Mechanism {#authentication-mechanism}](#authentication-mechanism---authentication-mechanism-)
-  * [Supplementary Information (Non-normative) {#supplementary-information-non-normative}](#supplementary-information--non-normative----supplementary-information-non-normative-)
-    + [Interop with other data storage and transmission standards {#interop-with-other-data-storage-and-transmission-standards}](#interop-with-other-data-storage-and-transmission-standards---interop-with-other-data-storage-and-transmission-standards-)
-      - [Phenopackets {#phenopackets}](#phenopackets---phenopackets-)
-        * [Concrete Example {#concrete-example}](#concrete-example---concrete-example-)
-        * [Organizing Into Tables {#organizing-into-tables}](#organizing-into-tables---organizing-into-tables-)
-      - [Portable Format for Biomedical Data (PFB) {#portable-format-for-biomedical-data-pfb}](#portable-format-for-biomedical-data--pfb----portable-format-for-biomedical-data-pfb-)
-      - [DICOM {#dicom}](#dicom---dicom-)
-      - [HL7/FHIR {#hl7-fhir}](#hl7-fhir---hl7-fhir-)
-    + [How to Secure Implementations Based on Presto Connectors or PostgreSQL Foreign Data Wrappers {#how-to-secure-implementations-based-on-presto-connectors-or-postgresql-foreign-data-wrappers}](#how-to-secure-implementations-based-on-presto-connectors-or-postgresql-foreign-data-wrappers---how-to-secure-implementations-based-on-presto-connectors-or-postgresql-foreign-data-wrappers-)
-    + [Implementing a Federation of SQL Query Nodes {#implementing-a-federation-of-sql-query-nodes}](#implementing-a-federation-of-sql-query-nodes---implementing-a-federation-of-sql-query-nodes-)
-  * [Appendix A: SQL Grammar {#appendix-a-sql-grammar}](#appendix-a--sql-grammar---appendix-a-sql-grammar-)
+- [Introduction](#introduction)
+  * [Intended Audience](#intended-audience)
+  * [Purpose and Motivation](#purpose-and-motivation)
+  * [Traits](#traits)
+  * [Applications](#applications)
+- [Specification](#specification)
+  * [Overview](#overview)
+  * [Discovery and Browsing](#discovery-and-browsing)
+    + [Discovery and Browsing Examples](#discovery-and-browsing-examples)
+  * [Query](#query)
+    + [Query Example](#query-example)
+      - [Query Request](#query-request)
+      - [Query Result](#query-result)
+    + [Correspondence Between SQL and JSON Data Types](#correspondence-between-sql-and-json-data-types)
+  * [Semantic Data Types](#semantic-data-types)
+    + [Example: Semantic Data Types on a Table](#example--semantic-data-types-on-a-table)
+    + [Attaching Semantic Data Types To Query Results](#attaching-semantic-data-types-to-query-results)
+    + [Example: Semantic Data Types in Query Results](#example--semantic-data-types-in-query-results)
+  * [SQL Functions (WIP)](#sql-functions--wip-)
+  * [Dealing with Long Running Queries (WIP)](#dealing-with-long-running-queries--wip-)
+- [Things to Add to Dataset Spec (they don’t go in this doc)](#things-to-add-to-dataset-spec--they-don-t-go-in-this-doc-)
+  * [Authentication Mechanism](#authentication-mechanism)
+- [Supplementary Information (Non-normative)](#supplementary-information--non-normative-)
+  * [Interop with other data storage and transmission standards](#interop-with-other-data-storage-and-transmission-standards)
+    + [Phenopackets](#phenopackets)
+      - [Concrete Example](#concrete-example)
+      - [Organizing Into Tables](#organizing-into-tables)
+    + [Portable Format for Biomedical Data (PFB)](#portable-format-for-biomedical-data--pfb-)
+    + [DICOM](#dicom)
+    + [HL7/FHIR](#hl7-fhir)
+  * [How to Secure Implementations Based on Presto Connectors or PostgreSQL Foreign Data Wrappers](#how-to-secure-implementations-based-on-presto-connectors-or-postgresql-foreign-data-wrappers)
+  * [Implementing a Federation of SQL Query Nodes](#implementing-a-federation-of-sql-query-nodes)
+- [Appendix A: SQL Grammar](#appendix-a--sql-grammar)
+
+## Introduction
 
 
-
-## Introduction {#introduction}
-
-
-### Intended Audience {#intended-audience}
+### Intended Audience
 
 The intended audience of this specification includes both data providers and data consumers who are implementers of the specification. Data custodians can implement to make their biomedical data more discoverable.
 
 
-### Purpose & Motivation 
+### Purpose and Motivation 
 
 The ever growing new biomedical techniques, such as next-generation genome sequencing, imaging, and others are creating vast amounts of data. Everyday researchers and clinicians accumulate and analyze the world's exponentially growing volumes of genomic and clinical data. With this large data comes the challenge for exploring and finding the data, while interpreting various available formats.
 
@@ -54,7 +51,7 @@ In this specification, we offer a simple, uniform mechanism to publish, discover
 Search API enables an ecosystem of compatible tools and components that search genotypic and phenotypic data. This document describes the overall structure of the Search API and specifies how a Search API implementation should parse, execute, and respond to a query expressed in the SQL language. Independently developed implementations that conform to this specification can be used interchangeably by a client, or networked together into a tree-structured federation of search nodes.
 
 
-### Traits {#traits}
+### Traits
 
 The Search API was designed with the following constraints in mind:
 
@@ -64,7 +61,7 @@ The Search API was designed with the following constraints in mind:
 *   Backend Agnostic: This property makes it possible to implement the framework across a large variety of backend datastores.
 
 
-### Applications {#applications}
+### Applications
 
 Various applications can be built on top of Search API implementations such as
 
@@ -78,10 +75,10 @@ Various applications can be built on top of Search API implementations such as
 *   (Most importantly) Things we haven’t yet imagined!
 
 
-## Specification {#specification}
+## Specification
 
 
-### Overview {#overview}
+### Overview
 
 The primary container for data in the Search API is the **Table**. Tables contain rows of data, where each row is a JSON object with key/value pairs. The table describes the structure of its row objects using [JSON Schema](https://json-schema.org/). Row attributes can take on any legal JSON value, eg. numbers, strings, booleans, nulls, arrays, and nested JSON objects.
 
@@ -90,7 +87,7 @@ The API supports browsing and discovery of data models and table metadata, listi
 All discovery, browsing and query operations are specified formally in the [OpenAPI specification](https://github.com/ga4gh-discovery/ga4gh-discovery-search/blob/develop/spec/search-api.yaml) document.
 
 
-### Discovery and Browsing {#discovery-and-browsing}
+### Discovery and Browsing
 
 The Discovery and Browsing part of the Search API consists of the following REST operations:
 
@@ -118,7 +115,7 @@ The Discovery and Browsing part of the Search API consists of the following REST
 
 
 
-#### Discovery and Browsing Examples {#discovery-and-browsing-examples}
+#### Discovery and Browsing Examples
 
 
 ```
@@ -215,7 +212,7 @@ GET /table/`search_postgres_pgpc`.ontology.axiom/data
 }
 ```
 
-### Query {#query}
+### Query
 
 The Query part of the Search API consists of the following REST operation:
 
@@ -231,10 +228,10 @@ The Query part of the Search API consists of the following REST operation:
 ```
 
 
-#### Query Example {#query-example}
+#### Query Example
 
 
-##### Query Request {#query-request}
+##### Query Request
 
 Here is a concrete example of a search query against a search implementation.
 
@@ -249,7 +246,7 @@ Request body:
 { "query": "SELECT * from search_postgres_pgpc.ontology.axiom WHERE to_term='UBERON_0000464'"}
 ```
 
-##### Query Result {#query-result}
+##### Query Result
 
 The result is returned in the same data structure as tables are returned by the discovery and browsing part of the Search API: a **TableData** object.
 
@@ -281,7 +278,7 @@ The result is returned in the same data structure as tables are returned by the 
 }
 
 ```
-#### Correspondence Between SQL and JSON Data Types {#correspondence-between-sql-and-json-data-types}
+#### Correspondence Between SQL and JSON Data Types
 
 Data is manipulated in the query using the following types. Each SQL type is expressed as a physical JSON value in the response table. Semantic types (defined by JSON Schema reference URLs) are covered in the next section.
 
@@ -304,7 +301,7 @@ Data is manipulated in the query using the following types. Each SQL type is exp
 | map                           | object                                                       | { "key": "value” }                                           |
 | row                           | object                                                       | { "colname": "colvalue” }                                    |
 
-### Semantic Data Types {#semantic-data-types}
+### Semantic Data Types
 
 To enable discovery of tables based on the kind of information contained within them, and to enable query tools to offer to filter and join data from different sources in a sensible way, tables need to declare not only the physical type of their rows (eg. how data is represented as JSON) but also the semantic type (what the data means). This means that any datasource which can conform to this requirement, may be exposed as a Table.
 
@@ -319,7 +316,7 @@ Clients can use the attribute meanings to:
 This system of identifying types through reference URLs is amenable to building up cross-references. With a rich set of cross references, a Search API client can help join up data from sources that use different nomenclatures.
 
 
-#### Example: Semantic Data Types on a Table {#example-semantic-data-types-on-a-table}
+#### Example: Semantic Data Types on a Table 
 
 Assume the following JSON Schema is published at https://schemablocks.org/schemas/example/blood-group/v1.0.0/BloodGroup.json:
 
@@ -371,7 +368,7 @@ Then data exposed through the Search API could refer to the concept of “ABO Bl
 SchemaBlocks is the recommended repository for centrally defined types, but any URL that points to a valid JSON Schema definition is acceptable. In many cases, the quickest route to publishing data will be to translate existing data dictionaries into JSON Schema and publish those alongside the dataset. However, the dataset will provide greater utility to its consumers if concepts are mapped to SchemaBlocks definitions where possible.
 
 
-#### Attaching Semantic Data Types To Query Results {#attaching-semantic-data-types-to-query-results}
+#### Attaching Semantic Data Types To Query Results
 
 Since query results are also Tables, there are many scenarios where users would benefit from semantic schema references being embedded in query results as well as static views of tables.
 
@@ -387,7 +384,7 @@ WHERE t.age > 18
 Any selected columns that are not wrapped in the ga4gh_type() function will only have their physical characteristics described in the result table’s schema. This is perfectly acceptable for some client applications, but greatly limits the value of result tables that are archived or forwarded to another tool for further processing.
 
 
-#### Example: Semantic Data Types in Query Results {#example-semantic-data-types-in-query-results}
+#### Example: Semantic Data Types in Query Results
 
 When a user issues the following query to the /search endpoint
 
@@ -444,7 +441,7 @@ Then the Search service would respond with:
 }
 ```
 
-### SQL Functions (WIP) {#sql-functions-wip}
+### SQL Functions (WIP)
 
 The Search API’s SQL dialect has been selected for compatibility with current major open source database platforms including Presto SQL, PostgreSQL, and MySQL, as well as BigQuery. There are occasional name or signature differences, but a Search API implementation atop any of the major database platforms should be able to pass through queries that use the functions listed below with only minor tweaks.
 
@@ -546,7 +543,7 @@ The functions below are a subset of those available in PrestoSQL 341. In a confo
         *   `substring(string, start, length) → varchar`
         *   `trim(string) → varchar`
         *   `upper(string) → varchar`
-*   **Date manipulation \
+*   **Date manipulation 
 **Be aware of different quotation (‘) syntax requirements between MySQL and PostgreSQL. BigQuery does not support the +/- operators for dates. Convenience methods could be replaced with EXTRACT().
     *   **Operators:**
         *   `+, - *`
@@ -627,7 +624,7 @@ Note: Arrays are mostly absent in MySQL
     *   `cardinality(x) → bigint*`
 *   ga4gh_type (described above)
 
-### Dealing with Long Running Queries (WIP) {#dealing-with-long-running-queries-wip}
+### Dealing with Long Running Queries (WIP) 
 
 While some queries can be completed quickly, others will take significant time to complete. A design constraint of this standard is to make the Search API as easy as possible for clients to consume. The simplest solution is the synchronous design: query requests block until data is ready, then return a (possibly paginated) Table response. However, asking clients to block for hours on a single HTTP response is fraught with difficulty: open connections are costly and fragile. Moreover, if an intermediary times out the request, the results will be lost and the client must start over.
 
@@ -651,35 +648,33 @@ Options:
         7. If there is a next_page_url, fetch it, make that response the current page, and start back at step i; otherwise abort
 
 
-## Things to Add to Dataset Spec (they don’t go in this doc) {#things-to-add-to-dataset-spec-they-don’t-go-in-this-doc}
+## Things to Add to Dataset Spec (they don’t go in this doc)
 
 
-### Authentication Mechanism {#authentication-mechanism}
+### Authentication Mechanism
 
 *   OAuth bearer tokens
 *   Recommend JWT with scopes for granularity 
 
 
-## Supplementary Information (Non-normative) {#supplementary-information-non-normative}
+## Supplementary Information (Non-normative) 
 
 This section provides advice to implementers. Nothing in this section is required of a conforming implementation.
 
 
-### Interop with other data storage and transmission standards {#interop-with-other-data-storage-and-transmission-standards}
+### Interop with other data storage and transmission standards 
 
 This section demonstrates how to expose data stored in commonly used formats using Discovery Search Table structures and their embedded JSON schema specifications.
 
 
-#### Phenopackets {#phenopackets}
+#### Phenopackets 
 
 Phenopacket is a GA4GH approved standard file format for sharing phenotypic information. A phenopacket file contains a set of mandatory and optional fields to share information about a patient or participant’s phenotype, such as clinical diagnosis, age of onset, results from lab tests, and disease severity.
 
 
-##### Concrete Example {#concrete-example}
+##### Concrete Example 
 
 Here is a detailed example of a directory full of Phenopacket files exposed as a single table via the GA4GH Search API. Each row corresponds to one Phenopacket. The table has two columns: 
-
-
 
 *   **id**, the ID of that row’s phenopacket
 *   **phenopacket**, the entire contents of the Phenopacket as a JSON object
@@ -770,7 +765,7 @@ Here is a detailed example of a directory full of Phenopacket files exposed as a
 ```
 
 
-##### Organizing Into Tables {#organizing-into-tables}
+##### Organizing Into Tables 
 
 Here we demonstrate two possibilities for organizing a collection of Phenopacket JSON files into tables. Other layouts are also possible.
 
@@ -792,33 +787,29 @@ The difference between the two formats is the way in which the phenopacket json 
 
 ![phenopacket tables in a bucket example](assets/phenopacket-tables-in-a-bucket-example.svg "phenopacket tables in a bucket example")
 
-#### Portable Format for Biomedical Data (PFB) {#portable-format-for-biomedical-data-pfb}
+#### Portable Format for Biomedical Data (PFB) 
 
 TODO
 
 
-#### DICOM {#dicom}
+#### DICOM 
 
 TODO (there is a data model that identifies relevant information, for example the subject ID)
 
 
-#### HL7/FHIR {#hl7-fhir}
+#### HL7/FHIR
 
 TODO
 
 
-### How to Secure Implementations Based on Presto Connectors or PostgreSQL Foreign Data Wrappers {#how-to-secure-implementations-based-on-presto-connectors-or-postgresql-foreign-data-wrappers}
-
-
+### How to Secure Implementations Based on Presto Connectors or PostgreSQL Foreign Data Wrappers
 
 *   Filter data at the connector level
 *   Use simple OAuth scopes to decide what data can be returned
 *   If certain scopes should only see aggregated data (for privacy reasons), use separate aggregated tables (or views). The connector should only pull data from these pre-summarized views.
 
 
-### Implementing a Federation of SQL Query Nodes {#implementing-a-federation-of-sql-query-nodes}
-
-
+### Implementing a Federation of SQL Query Nodes 
 
 *   Two approaches: “foreign data wrappers” and “fan-out/hub-and-spoke”
 *   Foreign data wrappers:
@@ -828,7 +819,7 @@ TODO
         *   Apache Hive: Deserializers (SerDe without a serialization support)
 
 
-## Appendix A: SQL Grammar {#appendix-a-sql-grammar}
+## Appendix A: SQL Grammar
 
 This is the ANTLR grammar from Presto SQL version 323 (ASL 2.0 license), with the DML and DDL parts removed.
 
