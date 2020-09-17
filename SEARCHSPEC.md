@@ -1,7 +1,39 @@
 # Discovery Search Specification
 
-
-[TOC]
+- [Discovery Search Specification](#discovery-search-specification)
+  * [Introduction {#introduction}](#introduction---introduction-)
+    + [Intended Audience {#intended-audience}](#intended-audience---intended-audience-)
+    + [Purpose & Motivation {#purpose-&-motivation}](#purpose---motivation---purpose---motivation-)
+    + [Traits {#traits}](#traits---traits-)
+    + [Applications {#applications}](#applications---applications-)
+  * [Specification {#specification}](#specification---specification-)
+    + [Overview {#overview}](#overview---overview-)
+    + [Discovery and Browsing {#discovery-and-browsing}](#discovery-and-browsing---discovery-and-browsing-)
+      - [Discovery and Browsing Examples {#discovery-and-browsing-examples}](#discovery-and-browsing-examples---discovery-and-browsing-examples-)
+    + [Query {#query}](#query---query-)
+      - [Query Example {#query-example}](#query-example---query-example-)
+        * [Query Request {#query-request}](#query-request---query-request-)
+        * [Query Result {#query-result}](#query-result---query-result-)
+      - [Correspondence Between SQL and JSON Data Types {#correspondence-between-sql-and-json-data-types}](#correspondence-between-sql-and-json-data-types---correspondence-between-sql-and-json-data-types-)
+    + [Semantic Data Types {#semantic-data-types}](#semantic-data-types---semantic-data-types-)
+      - [Example: Semantic Data Types on a Table {#example-semantic-data-types-on-a-table}](#example--semantic-data-types-on-a-table---example-semantic-data-types-on-a-table-)
+      - [Attaching Semantic Data Types To Query Results {#attaching-semantic-data-types-to-query-results}](#attaching-semantic-data-types-to-query-results---attaching-semantic-data-types-to-query-results-)
+      - [Example: Semantic Data Types in Query Results {#example-semantic-data-types-in-query-results}](#example--semantic-data-types-in-query-results---example-semantic-data-types-in-query-results-)
+    + [SQL Functions (WIP) {#sql-functions-wip}](#sql-functions--wip----sql-functions-wip-)
+    + [Dealing with Long Running Queries (WIP) {#dealing-with-long-running-queries-wip}](#dealing-with-long-running-queries--wip----dealing-with-long-running-queries-wip-)
+  * [Things to Add to Dataset Spec (they don’t go in this doc) {#things-to-add-to-dataset-spec-they-don’t-go-in-this-doc}](#things-to-add-to-dataset-spec--they-don-t-go-in-this-doc----things-to-add-to-dataset-spec-they-don-t-go-in-this-doc-)
+    + [Authentication Mechanism {#authentication-mechanism}](#authentication-mechanism---authentication-mechanism-)
+  * [Supplementary Information (Non-normative) {#supplementary-information-non-normative}](#supplementary-information--non-normative----supplementary-information-non-normative-)
+    + [Interop with other data storage and transmission standards {#interop-with-other-data-storage-and-transmission-standards}](#interop-with-other-data-storage-and-transmission-standards---interop-with-other-data-storage-and-transmission-standards-)
+      - [Phenopackets {#phenopackets}](#phenopackets---phenopackets-)
+        * [Concrete Example {#concrete-example}](#concrete-example---concrete-example-)
+        * [Organizing Into Tables {#organizing-into-tables}](#organizing-into-tables---organizing-into-tables-)
+      - [Portable Format for Biomedical Data (PFB) {#portable-format-for-biomedical-data-pfb}](#portable-format-for-biomedical-data--pfb----portable-format-for-biomedical-data-pfb-)
+      - [DICOM {#dicom}](#dicom---dicom-)
+      - [HL7/FHIR {#hl7-fhir}](#hl7-fhir---hl7-fhir-)
+    + [How to Secure Implementations Based on Presto Connectors or PostgreSQL Foreign Data Wrappers {#how-to-secure-implementations-based-on-presto-connectors-or-postgresql-foreign-data-wrappers}](#how-to-secure-implementations-based-on-presto-connectors-or-postgresql-foreign-data-wrappers---how-to-secure-implementations-based-on-presto-connectors-or-postgresql-foreign-data-wrappers-)
+    + [Implementing a Federation of SQL Query Nodes {#implementing-a-federation-of-sql-query-nodes}](#implementing-a-federation-of-sql-query-nodes---implementing-a-federation-of-sql-query-nodes-)
+  * [Appendix A: SQL Grammar {#appendix-a-sql-grammar}](#appendix-a--sql-grammar---appendix-a-sql-grammar-)
 
 
 
@@ -13,7 +45,7 @@
 The intended audience of this specification includes both data providers and data consumers who are implementers of the specification. Data custodians can implement to make their biomedical data more discoverable.
 
 
-### Purpose & Motivation {#purpose-&-motivation}
+### Purpose & Motivation 
 
 The ever growing new biomedical techniques, such as next-generation genome sequencing, imaging, and others are creating vast amounts of data. Everyday researchers and clinicians accumulate and analyze the world's exponentially growing volumes of genomic and clinical data. With this large data comes the challenge for exploring and finding the data, while interpreting various available formats.
 
