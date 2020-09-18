@@ -212,7 +212,7 @@ components:
           description: >
             Additional attributes which contain KV pairs that help identify or manage the error. For example, this may help communicate
             the context in which the error occurred, contain response headers from the originating system, or contain additional
-            attibutes needed to inform the client of the error.
+            attributes needed to inform the client of the error.
           additionalProperties:
             type: string
     ErrorCode:
