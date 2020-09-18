@@ -202,15 +202,13 @@ components:
           type: object
           description: >
             Additional attributes which contain KV pairs that help identify or manage the error. For example, this may help communicate
-            the context in which the error occurred, contain response headers from the originating system, or contain attributes
-            needed for authenticating a user.
+            the context in which the error occurred, contain response headers from the originating system, or contain additional
+            attibutes needed to inform the client of the error.
           additionalProperties:
             type: string
     ErrorCode:
       type: string
       enum:
-        # The user requires additional authorization to access the resource
-        - AUTH_CHALLENGE
         # An unknown error was encountered
         - ERROR_RESPONSE
         # There was no response from the backend in an allotted time
