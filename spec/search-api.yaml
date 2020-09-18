@@ -190,9 +190,18 @@ components:
         source:
           type: string
           description: >
-            Identifies the system or component where the error was originally encountered. For example, this may be
-            a fully qualified table name if the error occurred while trying to list that table's data. It may
-            also refer to the specific database or system (if the search API aggregates multiple) that caused the error.
+            The "source" field should only be present when the error originated in an attached data source backing the Search
+            API. The value of source can be any of the following:
+
+            1. A fully qualified table `name`
+            2. Any prefix of a table `name` that ends before a `.` character in the name. For example
+            if there is a table called `foo.bar.baz`, valid prefixes would be `foo` and `foo.bar`. Partial prefixes
+            which do not end just before a `.`, are not valid. For example: `foo.b` and `fo` are not allowed.
+
+            If the error originated inside the Search API implementation and is not associated with any particular table
+            or group of tables, then the source must be absent. An example of this would be an error occurring from a bug
+            in the implementation. Additionally, if the error is due to a bad request from the client, the source must
+            also be absent.
         message:
           type: string
           description: An informative message associated with the error
@@ -208,14 +217,26 @@ components:
             type: string
     ErrorCode:
       type: string
+      description: >
+        Error codes are strings which the Search API can use to communicate the "Type" of error which a request has
+        encountered. There are two error codes with all search API's and clients are required to understand
+
+        1. `ERROR_RESPONSE`: This is a general error code, indicating that some error has occurred while attempting to fulfill
+        the clients request. If it is unclear which type of error code a server should return, it may use `ERROR_RESPONSE` as a "catch-all"
+
+        2. `NO_RESPONSE`: Search servers should respond with this error code if they fail to receive a response from their configured
+        data source within a set timeout period.
+
+        Search API servers may extend the list of error codes, allowing them to define codes which match the particular error
+        cases which they may encounter. Search API servers should ideally provide documentation describing the list of all error codes
+        it will return and when they will be returned. If a client encounters a custom error code it does not understand,
+        it must handle it as an `ERROR_RESPONSE` code.
       enum:
-        # An unknown error was encountered
         - ERROR_RESPONSE
-        # There was no response from the backend in an allotted time
         - NO_RESPONSE
     Pagination:
       type: object
-      properties:
+      properties  :
         next_page_url:
           type: string
           description: URL pointing to the next page of the same Table. Null or absent on last page.
