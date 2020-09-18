@@ -20,9 +20,7 @@
     + [Example: Semantic Data Types in Query Results](#example--semantic-data-types-in-query-results)
   * [SQL Functions (WIP)](#sql-functions--wip-)
   * [Dealing with Long Running Queries (WIP)](#dealing-with-long-running-queries--wip-)
-- [Things to Add to Dataset Spec (they don’t go in this doc)](#things-to-add-to-dataset-spec--they-don-t-go-in-this-doc-)
-  * [Authentication Mechanism](#authentication-mechanism)
-- [Supplementary Information (Non-normative)](#supplementary-information--non-normative-)
+- [Supplementary Information](#supplementary-information)
   * [Interop with other data storage and transmission standards](#interop-with-other-data-storage-and-transmission-standards)
     + [Phenopackets](#phenopackets)
       - [Concrete Example](#concrete-example)
@@ -648,16 +646,7 @@ Options:
         7. If there is a next_page_url, fetch it, make that response the current page, and start back at step i; otherwise abort
 
 
-## Things to Add to Dataset Spec (they don’t go in this doc)
-
-
-### Authentication Mechanism
-
-*   OAuth bearer tokens
-*   Recommend JWT with scopes for granularity 
-
-
-## Supplementary Information (Non-normative) 
+## Supplementary Information 
 
 This section provides advice to implementers. Nothing in this section is required of a conforming implementation.
 
