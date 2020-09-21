@@ -5,9 +5,9 @@ info:
   description: >
     Search is an API for searching biomedical data.
 
-
     More information on
     [GitHub](https://github.com/ga4gh-discovery/ga4gh-discovery-search).
+    [Full Discovery Search Specification](../SEARCHSPEC.md)
   license:
     name: Apache 2.0
     url: >-

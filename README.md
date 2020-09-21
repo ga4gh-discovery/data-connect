@@ -8,8 +8,10 @@ The Search framework is comprised of a collection of complementary standards tha
 
 The schemas for most components of the framework are developed by the [Discovery Work Stream](https://github.com/ga4gh-discovery/ga4gh-discovery.github.io) of the [Global Alliance for Genomics & Health](http://ga4gh.org).
 
-## Background
+## API Reference
+You can view our [Full Discovery Search Specification](./SEARCHSPEC.md) and our [API Specification](https://gewenyu99.github.io/ga4gh-discovery-search/docs/).
 
+## Background
 The GA4GH has previously developed two standards for discovery. `Beacon` is a standard for  discovery of genomic variants, while `Matchmaker` is a standard for discovery of subjects with certain genomic and phenotypic features. Implementations of these standards have been linked into federated networks ([Beacon Network](http//beacon-network.org) and [Matchmaker Exchange](http://matchmakerexchange.org), respectively). 
 
 Each standard (and corresponding network) has been successful in its own right. It was acknowledged that it would be broadly useful to develop standards that abstracted common utilities for building searchable, federated networks for a variety of applications in genomics and health.
@@ -23,10 +25,6 @@ The Discovery Work Stream develops `Search` as a general-purpose framework for b
 ## Out of scope
 * `developing data models` The Search framework **does not** define data models. It defers that effort to others in the GA4GH or outside implementers.
 * `application development` The Search framework **does not** prescribe a specific application. It is intentionally general-purpose. It defers to other efforts in the Discovery Work Stream, GA4GH, and beyond to build domain-specific applications.
-
-## How to view
-
-Search API is specified in OpenAPI in [search-api.yaml](./spec/search-api.yaml), which [you can view using Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-discovery-search/develop/spec/search-api.yaml).
 
 ## How to test
 
