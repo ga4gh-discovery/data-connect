@@ -1,0 +1,5 @@
+{
+    "apiSpecPath": "dist/dist.yaml",
+    "redocTheme": "ga4gh",
+    "defaultBranch": "redoc-test"
+}

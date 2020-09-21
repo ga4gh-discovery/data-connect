@@ -15,6 +15,8 @@ info:
   contact:
     name: GA4GH Discovery Search Team
     email: ga4gh-discovery-search@ga4gh.org
+  x-logo:
+    url: 'https://www.ga4gh.org/wp-content/themes/ga4gh-theme/gfx/GA-logo-horizontal-tag-RGB.svg'
 security:
   - bearerAuth: []
 paths:

@@ -1,0 +1,8 @@
+# This file instructs Redocly's linter to ignore the rules contained for specific parts of your API.
+# See https://redoc.ly/docs/cli/ for more information.
+openapi/openapi.yaml:
+  no-empty-servers:
+    - '#/'
+'http:/json-schema.org/draft-07/schema#':
+  spec:
+    - '#/'
