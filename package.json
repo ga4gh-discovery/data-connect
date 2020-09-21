@@ -1,0 +1,13 @@
+{
+  "name": "ga4gh-discovery-search-api",
+  "version": "1.0.0",
+  "dependencies": {
+    "@redocly/openapi-cli": "^1.0.0-beta.14"
+  },
+  "private": true,
+  "scripts": {
+    "start": "openapi preview-docs",
+    "build": "openapi bundle -o dist",
+    "test": "openapi lint"
+  }
+}

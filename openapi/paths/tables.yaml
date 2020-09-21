@@ -1,0 +1,13 @@
+get:
+  summary: List Tables
+  description: Returns a list of Tables.
+  operationId: listTables
+  responses:
+    '200':
+      description: A list of Tables
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListTablesResponse.yaml
+    '500':
+      description: An unexpected error occurred

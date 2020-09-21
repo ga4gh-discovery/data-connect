@@ -1,106 +1,250 @@
-![](https://www.ga4gh.org/wp-content/themes/ga4gh-theme/gfx/GA-logo-horizontal-tag-RGB.svg)
+# GA4GH Discovery Search API OpenAPI Definition
 
-# Search <a href="https://github.com/ga4gh-discovery/ga4gh-discovery-search/blob/develop/spec/search-api.yaml"><img src="http://validator.swagger.io/validator?url=https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-discovery-search/develop/spec/search-api.yaml" alt="Swagger Validator" height="20em" width="72em"></a> [![](https://travis-ci.org/ga4gh-discovery/ga4gh-discovery-search.svg?branch=develop)](https://travis-ci.org/ga4gh-discovery/ga4gh-discovery-search) [![](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-discovery-search/develop/LICENSE)
+## Working on your OpenAPI Definition
 
-`Search` is a framework for searching genomics and clinical data. 
+### Install
 
-The Search framework is comprised of a collection of complementary standards that data custodians can implement to make their biomedical data more discoverable.
+1. Install [Node JS](https://nodejs.org/).
+2. Clone this repo and run `npm install` in the repo root.
 
-The schemas for most components of the framework are developed by the [Discovery Work Stream](https://github.com/ga4gh-discovery/ga4gh-discovery.github.io) of the [Global Alliance for Genomics & Health](http://ga4gh.org).
+### Usage
 
-## Background
+#### `npm start`
+Starts the reference docs preview server.
 
-The GA4GH has previously developed two standards for discovery. `Beacon` is a standard for  discovery of genomic variants, while `Matchmaker` is a standard for discovery of subjects with certain genomic and phenotypic features. Implementations of these standards have been linked into federated networks ([Beacon Network](http//beacon-network.org) and [Matchmaker Exchange](http://matchmakerexchange.org), respectively). 
+#### `npm run build`
+Bundles the definition to the dist folder.
 
-Each standard (and corresponding network) has been successful in its own right. It was acknowledged that it would be broadly useful to develop standards that abstracted common utilities for building searchable, federated networks for a variety of applications in genomics and health.
+#### `npm test`
+Validates the definition.
 
-The Discovery Work Stream develops `Search` as a general-purpose framework for building federatable search-based applications.
+## Contribution Guide
 
-## Goals
-* `federation` It is possible to federate searches across multiple implementations. Federations of the search framework reference common schemas and properties.
-* `backend agnostic` It is possible to implement the framework across a large variety of backend datastores.
+Below is a sample contribution guide. The tools
+in the repository don't restrict you to any
+specific structure. Adjust the contribution guide
+to match your own structure. However, if you
+don't have a structure in mind, this is a
+good place to start.
 
-## Out of scope
-* `developing data models` The Search framework **does not** define data models. It defers that effort to others in the GA4GH or outside implementers.
-* `application development` The Search framework **does not** prescribe a specific application. It is intentionally general-purpose. It defers to other efforts in the Discovery Work Stream, GA4GH, and beyond to build domain-specific applications.
+Update this contribution guide if you
+adjust the file/folder organization.
 
-## How to view
+The `.redocly.yaml` controls settings for various
+tools including the lint tool and the reference
+docs engine.  Open it to find examples and
+[read the docs](https://redoc.ly/docs/cli/configuration/)
+for more information.
 
-Search API is specified in OpenAPI in [search-api.yaml](./spec/search-api.yaml), which [you can view using Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-discovery-search/develop/spec/search-api.yaml).
 
-## How to test
+### Schemas
 
-Use [Swagger Validator Badge](https://github.com/swagger-api/validator-badge) to validate the YAML file, or its [OAS Validator](https://github.com/mcupak/oas-validator) wrapper.
+#### Adding Schemas
 
-## Complementary standards
+1. Navigate to the `openapi/components/schemas` folder.
+2. Add a file named as you wish to name the schema.
+3. Define the schema.
+4. Refer to the schema using the `$ref` (see example below).
 
-The following standards are complementary but not required by the Search framework:
+##### Example Schema
+This is a very simple schema example:
+```yaml
+type: string
+description: The resource ID. Defaults to UUID v4
+maxLength: 50
+example: 4f6cf35x-2c4y-483z-a0a9-158621f77a21
+```
+This is a more complex schema example:
+```yaml
+type: object
+properties:
+  id:
+    description: The customer identifier string
+    readOnly: true
+    allOf:
+      - $ref: ./ResourceId.yaml
+  websiteId:
+    description: The website's ID
+    allOf:
+      - $ref: ./ResourceId.yaml
+  paymentToken:
+    type: string
+    writeOnly: true
+    description: |
+      A write-only payment token; if supplied, it will be converted into a
+      payment instrument and be set as the `defaultPaymentInstrument`. The
+      value of this property will override the `defaultPaymentInstrument`
+      in the case that both are supplied. The token may only be used once
+      before it is expired.
+  defaultPaymentInstrument:
+    $ref: ./PaymentInstrument.yaml
+  createdTime:
+    description: The customer created time
+    allOf:
+      - $ref: ./ServerTimestamp.yaml
+  updatedTime:
+    description: The customer updated time
+    allOf:
+      - $ref: ./ServerTimestamp.yaml
+  tags:
+    description: A list of customer's tags
+    readOnly: true
+    type: array
+    items:
+      $ref: ./Tags/Tag.yaml
+  revision:
+    description: >
+      The number of times the customer data has been modified.
 
-* The [Service Info](https://github.com/ga4gh-discovery/service-info) standard can be used to describe the service
-* The [Service Registry](https://github.com/ga4gh-discovery/service-registry) standard can be used to create networks of search services
-
-## Architecture
-
-<img src="assets/ga4gh-discovery-search.svg">
-<!--
-    To edit this image, load assets/ga4gh-discovery-search.xml into draw.io and regenerate svg
--->
-
-## Components
-
-The search API consists of [Table](TABLE.md) and Query APIs, describing search results and queries, respectively.
-
-## Use cases
-
-See [USECASES.md](USECASES.md)
-
-### Examples
-
-* Find subjects with HP:0001519 and candidate gene FBN1 (use case of [Matchmaker Exchange](https://www.matchmakerexchange.org/))
-* Find male subjects with HP:0009726 consented for General Research Use (use case of [European Genome-phenome Archive](https://www.ebi.ac.uk/ega/home))
-* Find adult males diagnosed with autism having a harmful mutation in SHANK1 (use case of [Autism Sharing Initiative](http://autismsharinginitiative.org))
-* Find dataset from subject on European data center hosted on Amazon (use case of [Cloud Work Stream](https://github.com/ga4gh/wiki/wiki))
-
-## Implementations and tooling
-
-- [Tables-in-a-bucket (no-code implementation)](#dataset-in-a-bucket-no-code-implementation)
-- [Google Sheets implementation](#google-sheets-implementation)
-
-### Tables-in-a-bucket (no-code implementation)
-The specification allows for a no-code implementation as a collection of files served statically (e.g. in a cloud bucket, or a Git repository). To do this, you need the following JSON files:
-
-- ```tables```: served in response to ```GET /tables```
-- ```table/{table_name}/info```: served in response to ```GET /table/{table_name}/info```.  e.g. a table with the name ```mytable``` should have a corresponding file ```table/mytable/info```
-- ```table/{table_name}/data```: served in response to ```GET /table/{table_name}/data```.  e.g. a table with the name ```mytable``` should have a corresponding file ```table/mytable/data```
-- ```table/{table_name}/data_{pageNumber}```, which will be linked in the next_page_url of the first table  (e.g. ```mytable```).
-- ```table/{table_name}/data_models/{schemaFile}```: Though not required, data models may be linked via [$ref](https://json-schema.org/latest/json-schema-core.html#rfc.section.8.3). Data models can also be stored as static JSON documents, and be referred to by relative or absolute URLs.
-
-A concrete, example test implementation is [available](https://storage.googleapis.com/ga4gh-tables-example/tables) (list endpoint) with [documentation](https://storage.googleapis.com/ga4gh-tables-example/EXAMPLE.md).
-
-### Google Sheets implementation
-A Google Sheets spreadsheet can also be exposed via the tables API via the sheets adapter, located [here](https://github.com/DNAstack/ga4gh-search-adapter-google-sheets).
-
-## Security
-
-Sensitive information transmitted over public networks, such as access tokens and human genomic data, MUST be protected using Transport Level Security (TLS) version 1.2 or later, as specified in [RFC 5246](https://tools.ietf.org/html/rfc5246).
-
-If the data holder requires client authentication and/or authorization, then the client’s HTTPS API request MUST present an OAuth 2.0 bearer access token as specified in [RFC 6750](https://tools.ietf.org/html/rfc6750), in the `Authorization` request header field with the Bearer authentication scheme:
+      The revision is useful when analyzing webhook data to determine if the
+      change takes precedence over the current representation.
+    type: integer
+    readOnly: true
+  _links:
+    type: array
+    description: The links related to resource
+    readOnly: true
+    minItems: 3
+    items:
+      anyOf:
+        - $ref: ./Links/SelfLink.yaml
+        - $ref: ./Links/NotesLink.yaml
+        - $ref: ./Links/DefaultPaymentInstrumentLink.yaml
+        - $ref: ./Links/LeadSourceLink.yaml
+        - $ref: ./Links/WebsiteLink.yaml
+  _embedded:
+    type: array
+    description: >-
+      Any embedded objects available that are requested by the `expand`
+      querystring parameter.
+    readOnly: true
+    minItems: 1
+    items:
+      anyOf:
+        - $ref: ./Embeds/LeadSourceEmbed.yaml
 
 ```
-Authorization: Bearer [access_token]
+
+##### Using the `$ref`
+
+Notice in the complex example above the schema definition itself has `$ref` links to other schemas defined.
+
+Here is a small excerpt with an example:
+
+```yaml
+defaultPaymentInstrument:
+  $ref: ./PaymentInstrument.yaml
 ```
 
-The policies and processes used to perform user authentication and authorization, and the means through which access tokens are issued, are beyond the scope of this API specification. GA4GH recommends the use of the [OpenID Connect](https://openid.net/connect/) and [OAuth 2.0 framework (RFC 6749)](https://tools.ietf.org/html/rfc6749) for authentication and authorization.
+The value of the `$ref` is the path to the other schema definition.
 
-## CORS
-Cross-origin resource sharing (CORS) is an essential technique used to overcome the same origin content policy seen in browsers. This policy restricts a webpage from making a request to another website and leaking potentially sensitive information. However the same origin policy is a barrier to using open APIs. GA4GH open API implementers should enable CORS to an acceptable level as defined by their internal policy. For any public API implementations should allow requests from any server.
+You may use `$ref`s to compose schema from other existing schema to avoid duplication.
 
-GA4GH published a [CORS best practices document](https://docs.google.com/document/d/1Ifiik9afTO-CEpWGKEZ5TlixQ6tiKcvug4XLd9GNcqo/edit?usp=sharing), which implementers should refer to for guidance when enabling CORS on public API instances.
+You will use `$ref`s to reference schema from your path definitions.
 
-## How to contribute
+#### Editing Schemas
 
-The GA4GH is an open community that strives for inclusivity. Guidelines for contributing to this repository are listed in [CONTRIBUTING.md](CONTRIBUTING.md). Teleconferences and corresponding [meeting minutes](https://docs.google.com/document/d/1sG--PPVlVWb1-_ZN7cHta79uU9tU2y-17U11PYzvMu8/edit#heading=h.lwhinfkfmlx4) are open to the public. To learn how to contribute to this effort, please email Rishi Nag ([rishi.nag@ga4gh.org](mailto:rishi.nag@ga4gh.org)). 
+1. Navigate to the `openapi/components/schemas` folder.
+2. Open the file you wish to edit.
+3. Edit.
 
-## How to notify GA4GH of potential security flaws
+### Paths
 
-Please send an email to security-notification@ga4gh.org.
+#### Adding a Path
+
+1. Navigate to the `openapi/paths` folder.
+2. Add a new YAML file named like your URL endpoint except replacing `/` with `@` and putting path parameters into curly braces like `{example}`.
+3. Add the path and a ref to it inside of your `openapi.yaml` file inside of the `openapi` folder.
+
+Example addition to the `openapi.yaml` file:
+```yaml
+'/customers/{id}':
+  $ref: './paths/customers@{id}.yaml'
+```
+
+Here is an example of a YAML file named `customers@{id}.yaml` in the `paths` folder:
+
+```yaml
+get:
+  tags:
+    - Customers
+  summary: Retrieve a list of customers
+  operationId: GetCustomerCollection
+  description: |
+    You can have a markdown description here.
+  parameters:
+    - $ref: ../components/parameters/collectionLimit.yaml
+    - $ref: ../components/parameters/collectionOffset.yaml
+    - $ref: ../components/parameters/collectionFilter.yaml
+    - $ref: ../components/parameters/collectionQuery.yaml
+    - $ref: ../components/parameters/collectionExpand.yaml
+    - $ref: ../components/parameters/collectionFields.yaml
+  responses:
+    '200':
+      description: A list of Customers was retrieved successfully
+      headers:
+        Rate-Limit-Limit:
+          $ref: ../components/headers/Rate-Limit-Limit.yaml
+        Rate-Limit-Remaining:
+          $ref: ../components/headers/Rate-Limit-Remaining.yaml
+        Rate-Limit-Reset:
+          $ref: ../components/headers/Rate-Limit-Reset.yaml
+        Pagination-Total:
+          $ref: ../components/headers/Pagination-Total.yaml
+        Pagination-Limit:
+          $ref: ../components/headers/Pagination-Limit.yaml
+        Pagination-Offset:
+          $ref: ../components/headers/Pagination-Offset.yaml
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../components/schemas/Customer.yaml
+        text/csv:
+          schema:
+            type: array
+            items:
+              $ref: ../components/schemas/Customer.yaml
+    '401':
+      $ref: ../components/responses/AccessForbidden.yaml
+  x-code-samples:
+    - lang: PHP
+      source:
+        $ref: ../code_samples/PHP/customers/get.php
+post:
+  tags:
+    - Customers
+  summary: Create a customer (without an ID)
+  operationId: PostCustomer
+  description: Another markdown description here.
+  requestBody:
+    $ref: ../components/requestBodies/Customer.yaml
+  responses:
+    '201':
+      $ref: ../components/responses/Customer.yaml
+    '401':
+      $ref: ../components/responses/AccessForbidden.yaml
+    '409':
+      $ref: ../components/responses/Conflict.yaml
+    '422':
+      $ref: ../components/responses/InvalidDataError.yaml
+  x-code-samples:
+    - lang: PHP
+      source:
+        $ref: ../code_samples/PHP/customers/post.php
+```
+
+You'll see extensive usage of `$ref`s in this example to different types of components including schemas.
+
+You'll also notice `$ref`s to code samples.
+
+### Code samples
+
+1. Navigate to the `openapi/code_samples` folder.
+2. Navigate to the `<language>` (e.g. PHP) sub-folder.
+3. Navigate to the `path` folder, and add ref to the code sample.
+
+You can add languages by adding new folders at the appropriate path level.
+
+More details inside the `code_samples` folder README.

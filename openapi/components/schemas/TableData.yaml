@@ -1,0 +1,17 @@
+required:
+  - data_model
+  - data
+type: object
+properties:
+  data_model:
+    $ref: 'http://json-schema.org/draft-07/schema#'
+  data:
+    type: array
+    description: >-
+      Page of JSON values, each adhering to the schema given in the "data_model"
+      property
+    items:
+      type: object
+  pagination:
+    $ref: ./Pagination.yaml
+description: A paginated collection of tabular data
