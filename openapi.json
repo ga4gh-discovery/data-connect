@@ -3,7 +3,7 @@
   "info": {
     "title": "GA4GH Discovery Search API",
     "version": "0.1.0",
-    "description": "Search is an API for searching biomedical data.\nMore information on [GitHub](https://github.com/ga4gh-discovery/ga4gh-discovery-search). [Full Discovery Search Specification](../SEARCHSPEC.md)\n",
+    "description": "Search is an API for searching biomedical data.\nMore information on:\n- [GitHub Pages](../) - [Full Discovery Search Specification](../SEARCHSPEC.html)\n",
     "license": {
       "name": "Apache 2.0",
       "url": "https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-discovery-search/develop/LICENSE"
