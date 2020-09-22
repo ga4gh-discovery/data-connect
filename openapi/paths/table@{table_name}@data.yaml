@@ -5,7 +5,7 @@ get:
   parameters:
     - name: table_name
       in: path
-      description: 'Unique Table name, unique to this implementation'
+      description: 'Retrieve the data model and data rows (paginated) from the given table'
       required: true
       schema:
         type: string
@@ -20,3 +20,5 @@ get:
       description: This server does not implement the data operation
     '500':
       description: An unexpected error occurred
+  tags:
+    - Discovery and Browsing

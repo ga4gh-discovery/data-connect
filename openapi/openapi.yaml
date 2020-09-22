@@ -8,7 +8,15 @@ info:
     More information on:
 
     - [GitHub Pages](../)
+
     - [Full Discovery Search Specification](../SEARCHSPEC.html)
+
+    ### Overview
+
+    The primary container for data in the Search API is the **Table**. Tables contain rows of data, where each row is a JSON object with key/value pairs. The table describes the structure of its row objects using [JSON Schema](https://json-schema.org/). Row attributes can take on any legal JSON value, eg. numbers, strings, booleans, nulls, arrays, and nested JSON objects.
+
+    The API supports browsing and discovery of data models and table metadata, listing table data, and optionally querying table data using arbitrarily complex expressions including joins and aggregations. The query language is SQL with domain specific functions to facilitate informative typing of the result fields. 
+
   license:
     name: Apache 2.0
     url: >-
@@ -20,6 +28,21 @@ info:
     url: 'https://www.ga4gh.org/wp-content/themes/ga4gh-theme/gfx/GA-logo-horizontal-tag-RGB.svg'
 security:
   - bearerAuth: []
+
+tags:
+  - description: The Discovery and Browsing part of the Search API consists of the following REST operations
+    name: Discovery and Browsing
+  - description: >
+      The Query part of the Search API consists of the following REST operation:
+      <table>
+        <tr>
+        <td>POST /search
+        </td>
+        <td>Executes the given SQL query and returns the results as a Table
+        </td>
+        </tr>
+      </table>
+    name: Query
 paths:
   /tables:
     $ref: paths/tables.yaml

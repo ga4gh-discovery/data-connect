@@ -215,7 +215,6 @@ GET /table/`search_postgres_pgpc`.ontology.axiom/data
 
 The Query part of the Search API consists of the following REST operation:
 
-```
 <table>
   <tr>
    <td>POST /search
@@ -224,7 +223,6 @@ The Query part of the Search API consists of the following REST operation:
    </td>
   </tr>
 </table>
-```
 
 
 #### Query Example
