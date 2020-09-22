@@ -3,19 +3,21 @@ info:
   title: GA4GH Discovery Search API
   version: 0.1.0
   description: >
-  Search is an API for searching biomedical data.
+    Search is an API for searching biomedical data.
 
-  More information on:
+    More information on:
 
-  - [GitHub Pages](../)
+    - [GitHub Pages](../)
 
-  - [Full Discovery Search Specification](../SEARCHSPEC.html)
+    - [Full Discovery Search Specification](../SEARCHSPEC.html)
 
-  ### Overview
+    ---
 
-  The primary container for data in the Search API is the **Table**. Tables contain rows of data, where each row is a JSON object with key/value pairs. The table describes the structure of its row objects using [JSON Schema](https://json-schema.org/). Row attributes can take on any legal JSON value, eg. numbers, strings, booleans, nulls, arrays, and nested JSON objects.
+    # Overview
 
-  The API supports browsing and discovery of data models and table metadata, listing table data, and optionally querying table data using arbitrarily complex expressions including joins and aggregations. The query language is SQL with domain specific functions to facilitate informative typing of the result fields. 
+    The primary container for data in the Search API is the **Table**. Tables contain rows of data, where each row is a JSON object with key/value pairs. The table describes the structure of its row objects using [JSON Schema](https://json-schema.org/). Row attributes can take on any legal JSON value, eg. numbers, strings, booleans, nulls, arrays, and nested JSON objects.
+
+    The API supports browsing and discovery of data models and table metadata, listing table data, and optionally querying table data using arbitrarily complex expressions including joins and aggregations. The query language is SQL with domain specific functions to facilitate informative typing of the result fields. 
 
   license:
     name: Apache 2.0
