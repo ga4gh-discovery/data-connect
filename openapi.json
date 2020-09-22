@@ -3,7 +3,7 @@
   "info": {
     "title": "GA4GH Discovery Search API",
     "version": "0.1.0",
-    "description": "Search is an API for searching biomedical data.\nMore information on:\n- [GitHub Pages](../) - [Full Discovery Search Specification](../SEARCHSPEC.html)\n",
+    "description": "Search is an API for searching biomedical data.\nMore information on:\n- [GitHub Pages](../)\n- [Full Discovery Search Specification](../SEARCHSPEC.html)\n### Overview\nThe primary container for data in the Search API is the **Table**. Tables contain rows of data, where each row is a JSON object with key/value pairs. The table describes the structure of its row objects using [JSON Schema](https://json-schema.org/). Row attributes can take on any legal JSON value, eg. numbers, strings, booleans, nulls, arrays, and nested JSON objects.\nThe API supports browsing and discovery of data models and table metadata, listing table data, and optionally querying table data using arbitrarily complex expressions including joins and aggregations. The query language is SQL with domain specific functions to facilitate informative typing of the result fields. \n",
     "license": {
       "name": "Apache 2.0",
       "url": "https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-discovery-search/develop/LICENSE"
@@ -21,11 +21,21 @@
       "bearerAuth": []
     }
   ],
+  "tags": [
+    {
+      "description": "The Discovery and Browsing part of the Search API consists of the following REST operations",
+      "name": "Discovery and Browsing"
+    },
+    {
+      "description": "The Query part of the Search API consists of the following REST operation: <table>\n  <tr>\n  <td>POST /search\n  </td>\n  <td>Executes the given SQL query and returns the results as a Table\n  </td>\n  </tr>\n</table>\n",
+      "name": "Query"
+    }
+  ],
   "paths": {
     "/tables": {
       "get": {
         "summary": "List Tables",
-        "description": "Returns a list of Tables.",
+        "description": "Retrieve a paginated list of tables available from this Search API instance.",
         "operationId": "listTables",
         "responses": {
           "200": {
@@ -41,7 +51,10 @@
           "500": {
             "description": "An unexpected error occurred"
           }
-        }
+        },
+        "tags": [
+          "Discovery and Browsing"
+        ]
       }
     },
     "/table/{table_name}/info": {
@@ -53,7 +66,7 @@
           {
             "name": "table_name",
             "in": "path",
-            "description": "Unique Table name, unique to this implementation",
+            "description": "Retrieve the data model associated with the given table",
             "required": true,
             "schema": {
               "type": "string"
@@ -77,7 +90,10 @@
           "500": {
             "description": "An unexpected error occurred"
           }
-        }
+        },
+        "tags": [
+          "Discovery and Browsing"
+        ]
       }
     },
     "/table/{table_name}/data": {
@@ -89,7 +105,7 @@
           {
             "name": "table_name",
             "in": "path",
-            "description": "Unique Table name, unique to this implementation",
+            "description": "Retrieve the data model and data rows (paginated) from the given table",
             "required": true,
             "schema": {
               "type": "string"
@@ -113,13 +129,16 @@
           "500": {
             "description": "An unexpected error occurred"
           }
-        }
+        },
+        "tags": [
+          "Discovery and Browsing"
+        ]
       }
     },
     "/search": {
       "post": {
         "summary": "Perform a search on Tables",
-        "description": "Optional operation that accepts a Query and returns a TableData",
+        "description": "Optional operation that accepts a Query and returns a TableData. The result is returned in the same data structure as tables are returned by the discovery and browsing part of the Search API: a TableData object.\n#### Query Example\n##### Query Result\nThe result is returned in the same data structure as tables are returned by the discovery and browsing part of the Search API: a **TableData** object.\nHere is an example of a request/response:  ``` POST Request: /search\nHeader: content-type: application/json\nRequest body: { \"query\": \"SELECT * from search_postgres_pgpc.ontology.axiom WHERE to_term='UBERON_0000464'\"} ``` ```\n{\n  \"data_model\": { <described in the /info example above> },\n  \"data\": [\n    {\n      \"ontology\": \"http://purl.obolibrary.org/obo/hp.owl\",\n      \"ontology_version\": \"http://purl.obolibrary.org/obo/hp/releases/2019-04-15\",\n      \"from_term\": \"UBERON_0009572\",\n      \"relation\": \"SubClassOf\",\n      \"to_term\": \"UBERON_0000464\"\n    },\n    {\n      \"ontology\": \"http://purl.obolibrary.org/obo/hp.owl\",\n      \"ontology_version\": \"http://purl.obolibrary.org/obo/hp/releases/2019-04-15\",\n      \"from_term\": \"UBERON_0009670\",\n      \"relation\": \"SubClassOf\",\n      \"to_term\": \"UBERON_0000464\"\n    },\n    ...\n    ...\n  ],\n  \"pagination\": {\n    \"next_page_url\": \"https://ga4gh-search-adapter-presto-public.staging.dnastack.com/search/v1/statement/executing/20200831_235126_36756_szpff/yf9a38c74873e654f04309fe956cb40c8fb2d022f/1\"\n  }\n}\n```\n",
         "operationId": "search",
         "responses": {
           "200": {
@@ -138,7 +157,10 @@
           "500": {
             "description": "An unexpected error occurred"
           }
-        }
+        },
+        "tags": [
+          "Query"
+        ]
       }
     }
   },
