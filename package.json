@@ -6,7 +6,6 @@
   },
   "private": true,
   "scripts": {
-    "start": "openapi preview-docs",
     "build": "openapi bundle -o dist/dist.yaml && gh-openapi-docs",
     "test": "openapi lint"
   }

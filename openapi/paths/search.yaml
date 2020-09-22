@@ -9,7 +9,8 @@ post:
 
     The result is returned in the same data structure as tables are returned by the discovery and browsing part of the Search API: a **TableData** object.
 
-    Here is an example of a request/response: 
+    Here is an example of a request/response:
+
     ```
     POST Request:
     /search
@@ -20,8 +21,8 @@ post:
     Request body:
     { "query": "SELECT * from search_postgres_pgpc.ontology.axiom WHERE to_term='UBERON_0000464'"}
     ```
-    ```
 
+    ```
     {
       "data_model": { <described in the /info example above> },
       "data": [
@@ -46,8 +47,8 @@ post:
         "next_page_url": "https://ga4gh-search-adapter-presto-public.staging.dnastack.com/search/v1/statement/executing/20200831_235126_36756_szpff/yf9a38c74873e654f04309fe956cb40c8fb2d022f/1"
       }
     }
-
     ```
+
   operationId: search
   responses:
     '200':
