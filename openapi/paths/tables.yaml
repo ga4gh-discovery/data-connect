@@ -1,0 +1,15 @@
+get:
+  summary: List Tables
+  description: Retrieve a paginated list of tables available from this Search API instance.
+  operationId: listTables
+  responses:
+    '200':
+      description: A list of Tables
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListTablesResponse.yaml
+    '500':
+      description: An unexpected error occurred
+  tags:
+    - Discovery and Browsing

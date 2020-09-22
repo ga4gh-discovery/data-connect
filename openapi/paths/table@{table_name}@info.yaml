@@ -1,0 +1,24 @@
+get:
+  summary: Get a Table
+  description: Returns the information about the Table identified by name.
+  operationId: getTable
+  parameters:
+    - name: table_name
+      in: path
+      description: 'Retrieve the data model associated with the given table'
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: A Table
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Table.yaml
+    '404':
+      description: This server does not implement the data operation
+    '500':
+      description: An unexpected error occurred
+  tags:
+    - Discovery and Browsing

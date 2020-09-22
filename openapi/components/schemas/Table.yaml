@@ -1,0 +1,15 @@
+required:
+  - name
+  - data_model
+type: object
+properties:
+  name:
+    type: string
+    description: Table name
+  description:
+    type: string
+    description: Optional description of the Table
+  data_model:
+    $ref: 'http://json-schema.org/draft-07/schema#'
+description: |
+  Describes a Table hosted by this search node.

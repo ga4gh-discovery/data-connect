@@ -1,0 +1,8 @@
+type: object
+properties:
+  next_page_url:
+    type: string
+    description: >-
+      URL pointing to the next page of the same Table. Null or absent on last
+      page.
+    format: uri

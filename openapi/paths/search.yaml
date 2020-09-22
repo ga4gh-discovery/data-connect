@@ -1,0 +1,19 @@
+post:
+  summary: Perform a search on Tables
+  description: >
+    Optional operation that accepts a Query and returns a TableData. The result is returned in the same data structure as tables are returned by the discovery and browsing part of the Search API: a TableData object.
+
+  operationId: search
+  responses:
+    '200':
+      description: Query results returned as TableData
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/TableData.yaml
+    '404':
+      description: This server does not implement the search operation
+    '500':
+      description: An unexpected error occurred
+  tags:
+    - Query

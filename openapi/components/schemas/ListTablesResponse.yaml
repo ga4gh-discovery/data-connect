@@ -1,0 +1,10 @@
+required:
+  - tables
+type: object
+properties:
+  tables:
+    type: array
+    items:
+      $ref: ./Table.yaml
+  pagination:
+    $ref: ./Pagination.yaml

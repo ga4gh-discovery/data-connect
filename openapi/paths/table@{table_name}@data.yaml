@@ -1,0 +1,24 @@
+get:
+  summary: Fetch data from a Table
+  description: Optional operation that returns data from a Table
+  operationId: getData
+  parameters:
+    - name: table_name
+      in: path
+      description: 'Retrieve the data model and data rows (paginated) from the given table'
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Data from the Table
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/TableData.yaml
+    '404':
+      description: This server does not implement the data operation
+    '500':
+      description: An unexpected error occurred
+  tags:
+    - Discovery and Browsing
