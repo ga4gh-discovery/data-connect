@@ -32,10 +32,12 @@ security:
   - bearerAuth: []
 
 tags:
-  - description: The Discovery and Browsing part of the Search API consists of the following REST operations
+  - description: The Discovery and Browsing part of the Search API consists of the following REST operations. Concrete examples can be found [here](../SEARCHSPEC#discovery-and-browsing-examples).
     name: Discovery and Browsing
   - description: >
-      The Query part of the Search API consists of the following REST operation:
+      The Query API allows SQL execution through a REST API.
+
+      You can find some examples requests [here](../SEARCHSPEC#query-example)
     name: Query
 paths:
   /tables:
