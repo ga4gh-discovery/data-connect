@@ -1,36 +1,37 @@
 # Discovery Search Specification
 
-- [Introduction](#introduction)
-  * [Intended Audience](#intended-audience)
-  * [Purpose and Motivation](#purpose-and-motivation)
-  * [Traits](#traits)
-  * [Applications](#applications)
-- [Specification](#specification)
-  * [Overview](#overview)
-  * [Discovery and Browsing](#discovery-and-browsing)
-    + [Discovery and Browsing Examples](#discovery-and-browsing-examples)
-  * [Query](#query)
-    + [Query Example](#query-example)
-      - [Query Request](#query-request)
-      - [Query Result](#query-result)
-    + [Correspondence Between SQL and JSON Data Types](#correspondence-between-sql-and-json-data-types)
-  * [Semantic Data Types](#semantic-data-types)
-    + [Example: Semantic Data Types on a Table](#example--semantic-data-types-on-a-table)
-    + [Attaching Semantic Data Types To Query Results](#attaching-semantic-data-types-to-query-results)
-    + [Example: Semantic Data Types in Query Results](#example--semantic-data-types-in-query-results)
-  * [SQL Functions (WIP)](#sql-functions--wip-)
-  * [Dealing with Long Running Queries (WIP)](#dealing-with-long-running-queries--wip-)
-- [Supplementary Information](#supplementary-information)
-  * [Interop with other data storage and transmission standards](#interop-with-other-data-storage-and-transmission-standards)
-    + [Phenopackets](#phenopackets)
-      - [Concrete Example](#concrete-example)
-      - [Organizing Into Tables](#organizing-into-tables)
-    + [Portable Format for Biomedical Data (PFB)](#portable-format-for-biomedical-data--pfb-)
-    + [DICOM](#dicom)
-    + [HL7/FHIR](#hl7-fhir)
-  * [How to Secure Implementations Based on Presto Connectors or PostgreSQL Foreign Data Wrappers](#how-to-secure-implementations-based-on-presto-connectors-or-postgresql-foreign-data-wrappers)
-  * [Implementing a Federation of SQL Query Nodes](#implementing-a-federation-of-sql-query-nodes)
-- [Appendix A: SQL Grammar](#appendix-a--sql-grammar)
+- [Discovery Search Specification](#discovery-search-specification)
+  - [Introduction](#introduction)
+    - [Intended Audience](#intended-audience)
+    - [Purpose and Motivation](#purpose-and-motivation)
+    - [Traits](#traits)
+    - [Applications](#applications)
+  - [Specification](#specification)
+    - [Overview](#overview)
+    - [Discovery and Browsing](#discovery-and-browsing)
+      - [Discovery and Browsing Examples](#discovery-and-browsing-examples)
+    - [Query](#query)
+      - [Query Example](#query-example)
+        - [Query Request](#query-request)
+        - [Query Result](#query-result)
+      - [Correspondence Between SQL and JSON Data Types](#correspondence-between-sql-and-json-data-types)
+    - [Semantic Data Types](#semantic-data-types)
+      - [Example: Semantic Data Types on a Table](#example-semantic-data-types-on-a-table)
+      - [Attaching Semantic Data Types To Query Results](#attaching-semantic-data-types-to-query-results)
+      - [Example: Semantic Data Types in Query Results](#example-semantic-data-types-in-query-results)
+    - [SQL Functions (WIP)](#sql-functions-wip)
+    - [Dealing with Long Running Queries (WIP)](#dealing-with-long-running-queries-wip)
+  - [Supplementary Information](#supplementary-information)
+    - [Interop with other data storage and transmission standards](#interop-with-other-data-storage-and-transmission-standards)
+      - [Phenopackets](#phenopackets)
+        - [Concrete Example](#concrete-example)
+        - [Organizing Into Tables](#organizing-into-tables)
+      - [Portable Format for Biomedical Data (PFB)](#portable-format-for-biomedical-data-pfb)
+      - [DICOM](#dicom)
+      - [HL7/FHIR](#hl7fhir)
+    - [How to Secure Implementations Based on Presto Connectors or PostgreSQL Foreign Data Wrappers](#how-to-secure-implementations-based-on-presto-connectors-or-postgresql-foreign-data-wrappers)
+    - [Implementing a Federation of SQL Query Nodes](#implementing-a-federation-of-sql-query-nodes)
+  - [Appendix A: SQL Grammar](#appendix-a-sql-grammar)
 
 ## Introduction
 
@@ -614,10 +615,11 @@ The functions below are a subset of those available in PrestoSQL 341. In a confo
     *   `json_format(json) → varchar*`
     *   `json_size(json, json_path) → bigint*`
 *   Functions for working with nested and repeated data (ROW and ARRAY) \
-See also UNNEST, which is part of the SQL grammar and allows working with nested arrays as if they were rows in a joined table. \
+See also UNNEST, which is part of the SQL grammar and allows working with nested arrays as if they were rows in a joined table.
+
 Note: Arrays are mostly absent in MySQL
-    *   Array subscript Operator: []
-    *   Array concatenation Operator: ||
+    *   Array Subscript Operator: []
+    *   Array Concatenation Operator: ||
     *   `concat(array1, array2, ..., arrayN) → array`
     *   `cardinality(x) → bigint*`
 *   ga4gh_type (described above)
@@ -676,25 +678,32 @@ Here is a detailed example of a directory full of Phenopacket files exposed as a
 ```
 {
   "tables": [
-    {
-      "name": "phenopacket_table",
-      "description": "Table / directory containing Phenopacket JSON files",
-      "data_model": {
-        "$ref": "table/phenopacket_table/info"
-      }
+  {
+    "name": "gecco_phenopackets",
+    "description": "Table / directory containing Phenopacket JSON files",
+    "data_model": {
+      "$ref": "table/gecco_phenopackets/info"
     }
-  ]
+  },
+  {
+    "name": "hpo_phenopackets",
+    "description": "Table / directory containing Phenopacket JSON files",
+    "data_model": {
+      "$ref": "table/hpo_phenopackets/info"
+    }
+  }
+ ]
 }
 ```
 
 
 
 ```
-/table/phenopacket_table/info
+/table/hpo_phenopackets/info
 ```
 ```
 {
-  "name": "phenopacket_table",
+  "name": "hpo_phenopackets",
   "description": "Table / directory containing Phenopacket JSON files",
   "data_model": {
     "$id": "https://storage.googleapis.com/ga4gh-phenopackets-example/phenopacket-with-id",
@@ -753,6 +762,34 @@ Here is a detailed example of a directory full of Phenopacket files exposed as a
 }
 ```
 
+```
+/table/phenopacket_table/search
+```
+
+```
+
+REQUEST:
+---------------------------------------------------------------------------------------
+WITH pp_genes AS (
+  SELECT
+    pp.id AS packet_id, 
+    json_extract_scalar(g.gene, '$.id') AS gene_id,
+    json_extract_scalar(g.gene, '$.symbol') AS gene_symbol
+  FROM
+    sample_phenopackets.ga4gh_tables.hpo_phenopackets pp,
+    UNNEST(CAST(json_extract(pp.phenopacket, '$.genes') as ARRAY(json))) 
+      as g (gene)
+)
+SELECT pp_genes.*
+FROM pp_genes 
+WHERE gene_symbol LIKE 'ANTXR%'
+LIMIT 100;
+RESPONSE:
+------------------------------------------------------------+-----------------+--------
+ PMID:30050362-Schussler-2018-ANTXR2-II-3_                  | NCBIGene:118429 | ANTXR2      
+ PMID:27587992-Salas-Alanís-2016-ANTXR1-14_year_old_brother | NCBIGene:84168  | ANTXR1
+
+```
 
 ##### Organizing Into Tables 
 
