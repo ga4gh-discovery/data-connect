@@ -722,7 +722,7 @@ Here is a detailed example of a directory full of Phenopacket files exposed as a
 }
 ```
 ```
-/table/phenopacket_table/data
+/table/hpo_phenopackets/data
 ```
 
 
@@ -763,7 +763,7 @@ Here is a detailed example of a directory full of Phenopacket files exposed as a
 ```
 
 ```
-/table/phenopacket_table/search
+/table/hpo_phenopackets/search
 ```
 
 ```
