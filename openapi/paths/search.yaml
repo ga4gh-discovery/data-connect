@@ -4,7 +4,7 @@ post:
     Optional operation that accepts a Query and returns a TableData. The result is returned in the same data structure as tables are returned by the discovery and browsing part of the Search API: a TableData object.
 
 
-    You can find examples [here](../SEARCHSPEC.md#query-example).
+    You can find examples [here](../SEARCHSPEC.md#query-example.
 
 
   operationId: search
