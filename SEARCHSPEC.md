@@ -215,6 +215,7 @@ GET /table/`search_postgres_pgpc`.ontology.axiom/data
 
 The Query part of the Search API consists of the following REST operation:
 
+```
 <table>
   <tr>
    <td>POST /search
@@ -223,6 +224,7 @@ The Query part of the Search API consists of the following REST operation:
    </td>
   </tr>
 </table>
+```
 
 
 #### Query Example
@@ -613,10 +615,11 @@ The functions below are a subset of those available in PrestoSQL 341. In a confo
     *   `json_format(json) → varchar*`
     *   `json_size(json, json_path) → bigint*`
 *   Functions for working with nested and repeated data (ROW and ARRAY) \
-See also UNNEST, which is part of the SQL grammar and allows working with nested arrays as if they were rows in a joined table. \
+See also UNNEST, which is part of the SQL grammar and allows working with nested arrays as if they were rows in a joined table.
+
 Note: Arrays are mostly absent in MySQL
-    *   Array subscript Operator: []
-    *   Array concatenation Operator: ||
+    *   Array Subscript Operator: []
+    *   Array Concatenation Operator: ||
     *   `concat(array1, array2, ..., arrayN) → array`
     *   `cardinality(x) → bigint*`
 *   ga4gh_type (described above)
@@ -675,25 +678,32 @@ Here is a detailed example of a directory full of Phenopacket files exposed as a
 ```
 {
   "tables": [
-    {
-      "name": "phenopacket_table",
-      "description": "Table / directory containing Phenopacket JSON files",
-      "data_model": {
-        "$ref": "table/phenopacket_table/info"
-      }
+  {
+    "name": "gecco_phenopackets",
+    "description": "Table / directory containing Phenopacket JSON files",
+    "data_model": {
+      "$ref": "table/gecco_phenopackets/info"
     }
-  ]
+  },
+  {
+    "name": "hpo_phenopackets",
+    "description": "Table / directory containing Phenopacket JSON files",
+    "data_model": {
+      "$ref": "table/hpo_phenopackets/info"
+    }
+  }
+ ]
 }
 ```
 
 
 
 ```
-/table/phenopacket_table/info
+/table/hpo_phenopackets/info
 ```
 ```
 {
-  "name": "phenopacket_table",
+  "name": "hpo_phenopackets",
   "description": "Table / directory containing Phenopacket JSON files",
   "data_model": {
     "$id": "https://storage.googleapis.com/ga4gh-phenopackets-example/phenopacket-with-id",
@@ -712,7 +722,7 @@ Here is a detailed example of a directory full of Phenopacket files exposed as a
 }
 ```
 ```
-/table/phenopacket_table/data
+/table/hpo_phenopackets/data
 ```
 
 
@@ -752,6 +762,34 @@ Here is a detailed example of a directory full of Phenopacket files exposed as a
 }
 ```
 
+```
+/table/hpo_phenopackets/search
+```
+
+```
+
+REQUEST:
+---------------------------------------------------------------------------------------
+WITH pp_genes AS (
+  SELECT
+    pp.id AS packet_id, 
+    json_extract_scalar(g.gene, '$.id') AS gene_id,
+    json_extract_scalar(g.gene, '$.symbol') AS gene_symbol
+  FROM
+    sample_phenopackets.ga4gh_tables.hpo_phenopackets pp,
+    UNNEST(CAST(json_extract(pp.phenopacket, '$.genes') as ARRAY(json))) 
+      as g (gene)
+)
+SELECT pp_genes.*
+FROM pp_genes 
+WHERE gene_symbol LIKE 'ANTXR%'
+LIMIT 100;
+RESPONSE:
+------------------------------------------------------------+-----------------+--------
+ PMID:30050362-Schussler-2018-ANTXR2-II-3_                  | NCBIGene:118429 | ANTXR2      
+ PMID:27587992-Salas-Alanís-2016-ANTXR1-14_year_old_brother | NCBIGene:84168  | ANTXR1
+
+```
 
 ##### Organizing Into Tables 
 
