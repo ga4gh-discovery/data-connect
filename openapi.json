@@ -23,11 +23,11 @@
   ],
   "tags": [
     {
-      "description": "The Discovery and Browsing part of the Search API consists of the following REST operations",
+      "description": "The Discovery and Browsing part of the Search API consists of the following REST operations. Concrete examples can be found [here](../SEARCHSPEC#discovery-and-browsing-examples).",
       "name": "Discovery and Browsing"
     },
     {
-      "description": "The Query part of the Search API consists of the following REST operation:\n",
+      "description": "The Query API allows SQL execution through a REST API.\nYou can find some examples requests [here](../SEARCHSPEC#query-example)\n",
       "name": "Query"
     }
   ],
@@ -138,7 +138,7 @@
     "/search": {
       "post": {
         "summary": "Perform a search on Tables",
-        "description": "Optional operation that accepts a Query and returns a TableData. The result is returned in the same data structure as tables are returned by the discovery and browsing part of the Search API: a TableData object.\n\nYou can find examples [here](../SEARCHSPEC.md#query-example).\n",
+        "description": "Optional operation that accepts a Query and returns a TableData. The result is returned in the same data structure as tables are returned by the discovery and browsing part of the Search API: a TableData object.\n",
         "operationId": "search",
         "responses": {
           "200": {

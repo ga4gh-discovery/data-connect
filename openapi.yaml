@@ -42,10 +42,12 @@ security:
 tags:
   - description: >-
       The Discovery and Browsing part of the Search API consists of the
-      following REST operations
+      following REST operations. Concrete examples can be found
+      [here](../SEARCHSPEC#discovery-and-browsing-examples).
     name: Discovery and Browsing
   - description: |
-      The Query part of the Search API consists of the following REST operation:
+      The Query API allows SQL execution through a REST API.
+      You can find some examples requests [here](../SEARCHSPEC#query-example)
     name: Query
 paths:
   /tables:
@@ -125,9 +127,6 @@ paths:
         Optional operation that accepts a Query and returns a TableData. The
         result is returned in the same data structure as tables are returned by
         the discovery and browsing part of the Search API: a TableData object.
-
-
-        You can find examples [here](../SEARCHSPEC.md#query-example).
       operationId: search
       responses:
         '200':
