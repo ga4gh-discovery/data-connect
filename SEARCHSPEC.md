@@ -1,5 +1,5 @@
 # Discovery Search Specification
-
+![](https://www.ga4gh.org/wp-content/themes/ga4gh-theme/gfx/GA-logo-horizontal-tag-RGB.svg)
 - [Discovery Search Specification](#discovery-search-specification)
   - [Introduction](#introduction)
     - [Intended Audience](#intended-audience)
