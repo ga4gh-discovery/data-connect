@@ -11,6 +11,8 @@ The schemas for most components of the framework are developed by the [Discovery
 ## API Reference
 You can view our [Full Discovery Search Specification](./SEARCHSPEC.md) and our [API Specification](https://gewenyu99.github.io/ga4gh-discovery-search/docs/).
 
+To see example request/reponse pairs using this API specification, [click here](./SEARCHSPEC.md#discovery-and-browsing) 
+
 ## Background
 The GA4GH has previously developed two standards for discovery. `Beacon` is a standard for  discovery of genomic variants, while `Matchmaker` is a standard for discovery of subjects with certain genomic and phenotypic features. Implementations of these standards have been linked into federated networks ([Beacon Network](http//beacon-network.org) and [Matchmaker Exchange](http://matchmakerexchange.org), respectively). 
 
