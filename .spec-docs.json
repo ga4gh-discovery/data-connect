@@ -1,5 +1,6 @@
 {
     "apiSpecPath": "dist/dist.yaml",
     "redocTheme": "ga4gh",
-    "defaultBranch": "develop"
+    "defaultBranch": "develop",
+    "branchPathBase": "version"
 }
