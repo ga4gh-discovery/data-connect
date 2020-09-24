@@ -5,28 +5,9 @@ info:
   description: >
     Search is an API for searching biomedical data.
 
-    More information on:
 
-    - [GitHub Pages](../)
-
-    - [Full Discovery Search Specification](../SEARCHSPEC.html)
-
-    ---
-
-    # Overview
-
-    The primary container for data in the Search API is the **Table**. Tables
-    contain rows of data, where each row is a JSON object with key/value pairs.
-    The table describes the structure of its row objects using [JSON
-    Schema](https://json-schema.org/). Row attributes can take on any legal JSON
-    value, eg. numbers, strings, booleans, nulls, arrays, and nested JSON
-    objects.
-
-    The API supports browsing and discovery of data models and table metadata,
-    listing table data, and optionally querying table data using arbitrarily
-    complex expressions including joins and aggregations. The query language is
-    SQL with domain specific functions to facilitate informative typing of the
-    result fields. 
+    More information on
+    [GitHub](https://github.com/ga4gh-discovery/ga4gh-discovery-search).
   license:
     name: Apache 2.0
     url: >-
@@ -39,23 +20,11 @@ info:
       https://www.ga4gh.org/wp-content/themes/ga4gh-theme/gfx/GA-logo-horizontal-tag-RGB.svg
 security:
   - bearerAuth: []
-tags:
-  - description: >-
-      The Discovery and Browsing part of the Search API consists of the
-      following REST operations. Concrete examples can be found
-      [here](../SEARCHSPEC#discovery-and-browsing-examples).
-    name: Discovery and Browsing
-  - description: |
-      The Query API allows SQL execution through a REST API.
-      You can find some examples requests [here](../SEARCHSPEC#query-example).
-    name: Query
 paths:
   /tables:
     get:
       summary: List Tables
-      description: >-
-        Retrieve a paginated list of tables available from this Search API
-        instance.
+      description: Returns a list of Tables.
       operationId: listTables
       responses:
         '200':
@@ -66,8 +35,6 @@ paths:
                 $ref: '#/components/schemas/ListTablesResponse'
         '500':
           description: An unexpected error occurred
-      tags:
-        - Discovery and Browsing
   '/table/{table_name}/info':
     get:
       summary: Get a Table
@@ -76,7 +43,7 @@ paths:
       parameters:
         - name: table_name
           in: path
-          description: Retrieve the data model associated with the given table
+          description: 'Unique Table name, unique to this implementation'
           required: true
           schema:
             type: string
@@ -91,19 +58,15 @@ paths:
           description: This server does not implement the data operation
         '500':
           description: An unexpected error occurred
-      tags:
-        - Discovery and Browsing
   '/table/{table_name}/data':
     get:
       summary: Fetch data from a Table
-      description: Optional operation that returns data from a Table.
+      description: Optional operation that returns data from a Table
       operationId: getData
       parameters:
         - name: table_name
           in: path
-          description: >-
-            Retrieve the data model and data rows (paginated) from the given
-            table
+          description: 'Unique Table name, unique to this implementation'
           required: true
           schema:
             type: string
@@ -118,15 +81,10 @@ paths:
           description: This server does not implement the data operation
         '500':
           description: An unexpected error occurred
-      tags:
-        - Discovery and Browsing
   /search:
     post:
       summary: Perform a search on Tables
-      description: >
-        Optional operation that accepts a Query and returns a TableData. The
-        result is returned in the same data structure as tables are returned by
-        the discovery and browsing part of the Search API: a TableData object.
+      description: Optional operation that accepts a Query and returns a TableData
       operationId: search
       responses:
         '200':
@@ -139,8 +97,6 @@ paths:
           description: This server does not implement the search operation
         '500':
           description: An unexpected error occurred
-      tags:
-        - Query
 components:
   securitySchemes:
     bearerAuth:
