@@ -1,6 +1,6 @@
 get:
   summary: Fetch data from a Table
-  description: Optional operation that returns data from a Table
+  description: Optional operation that returns data from a Table.
   operationId: getData
   parameters:
     - name: table_name

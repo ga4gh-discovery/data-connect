@@ -90,28 +90,11 @@ All discovery, browsing and query operations are specified formally in the [Open
 ### Discovery and Browsing
 
 The Discovery and Browsing part of the Search API consists of the following REST operations:
-
-
-<table>
-  <tr>
-   <td>GET /tables
-   </td>
-   <td>Retrieve a paginated list of tables available from this Search API instance
-   </td>
-  </tr>
-  <tr>
-   <td>GET /table/{id}/info[^1]
-   </td>
-   <td>Retrieve the data model associated with the given table
-   </td>
-  </tr>
-  <tr>
-   <td>GET /table/{id}/data
-   </td>
-   <td>Retrieve the data model and data rows (paginated) from the given table
-   </td>
-  </tr>
-</table>
+| Request                    | Description                                                                 |
+| -------------------------- | --------------------------------------------------------------------------- |
+| GET /tables                | Retrieve a paginated list of tables available from this Search API instance |
+| GET /table/{id}/info\[^1\] | Retrieve the data model associated with the given table                     |
+| GET /table/{id}/data       | Retrieve the data model and data rows (paginated) from the given table      |
 
 
 
@@ -216,16 +199,9 @@ GET /table/`search_postgres_pgpc`.ontology.axiom/data
 
 The Query part of the Search API consists of the following REST operation:
 
-```
-<table>
-  <tr>
-   <td>POST /search
-   </td>
-   <td>Executes the given SQL query and returns the results as a Table
-   </td>
-  </tr>
-</table>
-```
+| Request                    | Description                                                                 |
+| -------------------------- | --------------------------------------------------------------------------- |
+| POST /search               | Executes the given SQL query and returns the results as a Table             |
 
 
 #### Query Example

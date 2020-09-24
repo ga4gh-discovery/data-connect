@@ -37,7 +37,7 @@ tags:
   - description: >
       The Query API allows SQL execution through a REST API.
 
-      You can find some examples requests [here](../SEARCHSPEC#query-example)
+      You can find some examples requests [here](../SEARCHSPEC#query-example).
     name: Query
 paths:
   /tables:
