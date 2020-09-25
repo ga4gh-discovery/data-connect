@@ -20,16 +20,13 @@
       - [Example: Semantic Data Types on a Table](#example-semantic-data-types-on-a-table)
       - [Attaching Semantic Data Types To Query Results](#attaching-semantic-data-types-to-query-results)
       - [Example: Semantic Data Types in Query Results](#example-semantic-data-types-in-query-results)
-    - [SQL Functions (WIP)](#sql-functions-wip)
+    - [SQL Functions](#sql-functions)
     - [Pagination and Long Running Queries](#pagination-and-long-running-queries)
   - [Supplementary Information](#supplementary-information)
     - [Interop with other data storage and transmission standards](#interop-with-other-data-storage-and-transmission-standards)
       - [Phenopackets](#phenopackets)
         - [Concrete Example](#concrete-example)
         - [Organizing Into Tables](#organizing-into-tables)
-      - [Portable Format for Biomedical Data (PFB)](#portable-format-for-biomedical-data-pfb)
-      - [DICOM](#dicom)
-      - [HL7/FHIR](#hl7fhir)
     - [How to Secure Implementations Based on Presto Connectors or PostgreSQL Foreign Data Wrappers](#how-to-secure-implementations-based-on-presto-connectors-or-postgresql-foreign-data-wrappers)
     - [Implementing a Federation of SQL Query Nodes](#implementing-a-federation-of-sql-query-nodes)
   - [Appendix A: SQL Grammar](#appendix-a-sql-grammar)
@@ -90,31 +87,15 @@ All discovery, browsing and query operations are specified formally in the [Open
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://tools.ietf.org/html/rfc2119).
 
+
 ### Discovery and Browsing
 
 The Discovery and Browsing part of the Search API consists of the following REST operations:
-
-
-<table>
-  <tr>
-   <td>GET /tables
-   </td>
-   <td>Retrieve a paginated list of tables available from this Search API instance
-   </td>
-  </tr>
-  <tr>
-   <td>GET /table/{id}/info[^1]
-   </td>
-   <td>Retrieve the data model associated with the given table
-   </td>
-  </tr>
-  <tr>
-   <td>GET /table/{id}/data
-   </td>
-   <td>Retrieve the data model and data rows (paginated) from the given table
-   </td>
-  </tr>
-</table>
+| Request                    | Description                                                                 |
+| -------------------------- | --------------------------------------------------------------------------- |
+| GET /tables                | Retrieve a paginated list of tables available from this Search API instance |
+| GET /table/{id}/info\[^1\] | Retrieve the data model associated with the given table                     |
+| GET /table/{id}/data       | Retrieve the data model and data rows (paginated) from the given table      |
 
 
 
@@ -219,16 +200,9 @@ GET /table/`search_postgres_pgpc`.ontology.axiom/data
 
 The Query part of the Search API consists of the following REST operation:
 
-```
-<table>
-  <tr>
-   <td>POST /search
-   </td>
-   <td>Executes the given SQL query and returns the results as a Table
-   </td>
-  </tr>
-</table>
-```
+| Request                    | Description                                                                 |
+| -------------------------- | --------------------------------------------------------------------------- |
+| POST /search               | Executes the given SQL query and returns the results as a Table             |
 
 
 #### Query Example
@@ -366,7 +340,7 @@ Assume the following JSON Schema is published at https://schemablocks.org/schema
 
 Then data exposed through the Search API could refer to the concept of “ABO Blood Group” as: 
 
-`"$ref": "[https://schemablocks.org/schemas/example/blood-group/v1.0.0/BloodGroup.json](https://schemablocks.org/schemas/example/blood-group/v1.0.0/BloodGroup.json)"`.
+"$ref": "[https://schemablocks.org/schemas/example/blood-group/v1.0.0/BloodGroup.json](https://schemablocks.org/schemas/example/blood-group/v1.0.0/BloodGroup.json)".
 
 SchemaBlocks is the recommended repository for centrally defined types, but any URL that points to a valid JSON Schema definition is acceptable. In many cases, the quickest route to publishing data will be to translate existing data dictionaries into JSON Schema and publish those alongside the dataset. However, the dataset will provide greater utility to its consumers if concepts are mapped to SchemaBlocks definitions where possible.
 
@@ -444,188 +418,188 @@ Then the Search service would respond with:
 }
 ```
 
-### SQL Functions (WIP)
+### SQL Functions
 
 The Search API’s SQL dialect has been selected for compatibility with current major open source database platforms including Presto SQL, PostgreSQL, and MySQL, as well as BigQuery. There are occasional name or signature differences, but a Search API implementation atop any of the major database platforms should be able to pass through queries that use the functions listed below with only minor tweaks.
 
 The functions below are a subset of those available in PrestoSQL 341. In a conformant Search API implementation, these functions must behave according to the Presto documentation. To assist with implementations directly on other database platforms, the [PrestoSQL Functions Support Matrix](https://docs.google.com/document/d/1y51qNuoe2ELX9kCOyQbFB4jihiKt2N8Qcd6-zzadIvk) captures the differences between platforms in granular detail. 
 
 *   **Logical Operators**
-    *   `AND, OR, NOT`
+    *   `AND`, `OR`, `NOT`
 *   **Comparison Operators**
-    *   `&lt;, >, &lt;=, >=, =, &lt;>, !=`
+    *   `&lt;`, `>`, `&lt;=`, `>=`, `=`, `&lt;>`, `!=`
     *   `BETWEEN, IS NULL, IS NOT NULL`
-    *   `IS DISTINCT FROM*`
-    *   `IS NOT DISTINCT FROM*`
-    *   `GREATEST, LEAST`
-    *   Quantified Comparison Predicates:` ALL, ANY and SOME*`
-    *   Pattern Comparison:` LIKE`
+    *   `IS DISTINCT FROM`*
+    *   `IS NOT DISTINCT FROM`*
+    *   `GREATEST`, `LEAST`
+    *   Quantified Comparison Predicates: `ALL`, `ANY` and `SOME`*
+    *   Pattern Comparison: `LIKE`
 *   **Conditional Expressions**
-    *   `CASE, IF, COALESCE, NULLIF`
+    *   `CASE`, `IF`, `COALESCE`, `NULLIF`
 *   **Conversion Functions**
-    *   `cast(value AS type) → type`
-    *   `format(format, args...) → varchar`
+    *   `cast(value AS type)` → `type`
+    *   `format(format, args...)` → `varchar`
 *   **Mathematical Functions**
     *   Most basic functions are supported across implementations. Notably missing are hyperbolic trig functions, infinity, floating point, and statistical/CDF functions.
-    *   `abs(x) → [same as input]`
-    *   `ceil(x) → [same as input]`
-    *   `ceiling(x) → [same as input]`
-    *   `degrees(x) → double*`
-    *   `exp(x) → double`
-    *   `floor(x) → [same as input]`
-    *   `ln(x) → double`
-    *   `log(b, x) → double`
-    *   `log10(x) → double`
-    *   `mod(n, m) → [same as input]`
-    *   `pi() → double`
-    *   `pow(x, p) → double*`
-    *   `power(x, p) → double`
-    *   `radians(x) → double*`
-    *   `round(x) → [same as input]`
-    *   `round(x, d) → [same as input]`
-    *   `sign(x) → [same as input]`
-    *   `sqrt(x) → double`
-    *   `truncate(x) → double*`
+    *   `abs(x)` → [same as input]
+    *   `ceil(x)` → [same as input]
+    *   `ceiling(x)` → [same as input]
+    *   `degrees(x)` → `double`*
+    *   `exp(x)` → `double`
+    *   `floor(x)` → [same as input]
+    *   `ln(x)` → `double`
+    *   `log(b, x)` → `double`
+    *   `log10(x)` → `double`
+    *   `mod(n, m)` → [same as input]
+    *   `pi()` → `double`
+    *   `pow(x, p)` → `double`*
+    *   `power(x, p)` → `double`
+    *   `radians(x)` → `double`*
+    *   `round(x)` → [same as input]
+    *   `round(x, d)` → [same as input]
+    *   `sign(x)` → [same as input]
+    *   `sqrt(x)` → `double`
+    *   `truncate(x)` → `double`*
     *   Random Functions:
-        *   `rand() → double*`
-        *   `random() → double*`
-        *   `random(n) → [same as input]*`
-        *   `random(m, n) → [same as input]*`
+        *   `rand()` → `double`*
+        *   `random()` → `double`*
+        *   `random(n)` → [same as input]*
+        *   `random(m, n)` → [same as input]*
     *   Trigonometric Functions:
-        *   `acos(x) → double`
-        *   `asin(x) → double`
-        *   `atan(x) → double`
-        *   `atan2(y, x) → double`
-        *   `cos(x) → double`
-        *   `sin(x) → double`
-        *   `tan(x) → double`
+        *   `acos(x)` → `double`
+        *   `asin(x)` → `double`
+        *   `atan(x)` → `double`
+        *   `atan2(y, x)` → `double`
+        *   `cos(x)` → `double`
+        *   `sin(x)` → `double`
+        *   `tan(x)` → `double`
 *   **Bitwise Functions**
-    *   `bitwise_and(x, y) → bigint`
-    *   `bitwise_or(x, y) → bigint`
-    *   `bitwise_xor(x, y) → bigint`
-    *   `bitwise_not(x) → bigint`
-    *   `bitwise_left_shift(value, shift) → [same as value]`
-    *   `bitwise_right_shift(value, shift, digits) → [same as value]`
-    *   `bit_count(x, bits) → bigint*`
+    *   `bitwise_and(x, y)` → `bigint`
+    *   `bitwise_or(x, y)` → `bigint`
+    *   `bitwise_xor(x, y)` → `bigint`
+    *   `bitwise_not(x)` → `bigint`
+    *   `bitwise_left_shift(value, shift)` → [same as value]
+    *   `bitwise_right_shift(value, shift, digits)` → [same as value]
+    *   `bit_count(x, bits)` → `bigint`*
 *   **Regular Expression Functions**
-    *   `regexp_extract_all(string, pattern) -> array(varchar)*`
-    *   `regexp_extract_all(string, pattern, group) -> array(varchar)*`
-    *   `regexp_extract(string, pattern) → varchar*`
-    *   `regexp_extract(string, pattern, group) → varchar*`
-    *   `regexp_like(string, pattern) → boolean*`
-    *   `regexp_replace(string, pattern) → varchar*`
-    *   `regexp_replace(string, pattern, replacement) → varchar*`
-    *   `regexp_replace(string, pattern, function) → varchar*`
+    *   `regexp_extract_all(string, pattern)` -> `array(varchar)`*
+    *   `regexp_extract_all(string, pattern, group)` -> `array(varchar)`*
+    *   `regexp_extract(string, pattern)` → `varchar`*
+    *   `regexp_extract(string, pattern, group)` → `varchar`*
+    *   `regexp_like(string, pattern)` → `boolean`*
+    *   `regexp_replace(string, pattern)` → `varchar`*
+    *   `regexp_replace(string, pattern, replacement)` → `varchar`*
+    *   `regexp_replace(string, pattern, function)` → `varchar`*
 *   **UUID Functions**
     *   `uuid()*`
 *   **Session Information Functions**
-    *   `current_user*`
+    *   `current_user`*
 *   **String manipulation**
     *   **Operators:**
-        *   `Concatenation (||)*`
+        *   `Concatenation (||)`*
         *   `LIKE`
     *   **Functions:**
-        *   `chr(n) → varchar*`
-        *   `codepoint(string) → integer*`
-        *   `format(format, args...) → varchar`
-        *   `length(string) → bigint`
-        *   `lower(string) → varchar`
-        *   `lpad(string, size, padstring) → varchar`
-        *   `ltrim(string) → varchar`
-        *   `position(substring IN string) → bigint*`
-        *   `replace(string, search, replace) → varchar`
-        *   `reverse(string) → varchar`
-        *   `rpad(string, size, padstring) → varchar`
-        *   `rtrim(string) → varchar`
-        *   `split(string, delimiter, limit) -> array(varchar)*`
-        *   `starts_with(string, substring) → boolean*`
-        *   `strpos(string, substring) → bigint*`
-        *   `substr(string, start) → varchar*`
-        *   `substring(string, start) → varchar`
-        *   `substr(string, start, length) → varchar*`
-        *   `substring(string, start, length) → varchar`
-        *   `trim(string) → varchar`
-        *   `upper(string) → varchar`
-*   **Date manipulation 
-**Be aware of different quotation (‘) syntax requirements between MySQL and PostgreSQL. BigQuery does not support the +/- operators for dates. Convenience methods could be replaced with EXTRACT().
+        *   `chr(n)` → `varchar`*
+        *   `codepoint(string)` → `i`nteger`*
+        *   `format(format, args...)` → `varchar`
+        *   `length(string)` → `bigint`
+        *   `lower(string)` → `varchar`
+        *   `lpad(string, size, padstring)` → `varchar`
+        *   `ltrim(string)` → `varchar`
+        *   `position(substring IN string)` → `bigint`*
+        *   `replace(string, search, replace)` → `varchar`
+        *   `reverse(string)` → `varchar`
+        *   `rpad(string, size, padstring)` → `varchar`
+        *   `rtrim(string)` → `varchar`
+        *   `split(string, delimiter, limit)` -> `array(varchar)`*
+        *   `starts_with(string, substring)` → `boolean`*
+        *   `strpos(string, substring)` → `bigint`*
+        *   `substr(string, start)` → `varchar`*
+        *   `substring(string, start)` → `varchar`
+        *   `substr(string, start, length)` → `varchar`*
+        *   `substring(string, start, length)` → `varchar`
+        *   `trim(string)` → `varchar`
+        *   `upper(string)` → `varchar`
+*   **Date manipulation** 
+**Be aware of different quotation (‘) syntax requirements between MySQL and PostgreSQL. BigQuery does not support the +/- operators for dates. Convenience methods could be replaced with EXTRACT().**
     *   **Operators:**
-        *   `+, - *`
-        *   `AT TIME ZONE*`
+        *   `+`, `- *`
+        *   `AT TIME ZONE`*
     *   **Functions:**
         *   `current_date`
         *   `current_time`
         *   `current_timestamp`
-        *   `current_timestamp(p)*`
-        *   `date(x) → date*`
-        *   `date_trunc(unit, x) → [same as input]*`
-        *   `date_add(unit, value, timestamp) → [same as input]*`
-        *   `date_diff(unit, timestamp1, timestamp2) → bigint*`
-        *   `extract(field FROM x) → bigint*`
-        *   `from_unixtime(unixtime) -> timestamp(3)*`
-        *   `from_unixtime(unixtime, zone) → timestamp(3) with time zone*`
-        *   `from_unixtime(unixtime, hours, minutes) → timestamp(3) with time zone*`
-        *   `Localtime*`
-        *   `localtimestamp*`
-        *   `localtimestamp(p)*`
-        *   `now() → timestamp(3) with time zone*`
-        *   `to_unixtime(timestamp) → double*`
+        *   `current_timestamp(p)`*
+        *   `date(x)` → `date`*
+        *   `date_trunc(unit, x)` → [same as input]*
+        *   `date_add(unit, value, timestamp)` → [same as input]*
+        *   `date_diff(unit, timestamp1, timestamp2)` → `bigint`*
+        *   `extract(field FROM x)` → `bigint`*
+        *   `from_unixtime(unixtime)` -> `timestamp(3)`*
+        *   `from_unixtime(unixtime, zone)` → `timestamp(3) with time zone`*
+        *   `from_unixtime(unixtime, hours, minutes)` → `timestamp(3) with time zone`*
+        *   `Localtime`*
+        *   `localtimestamp`*
+        *   `localtimestamp(p)`*
+        *   `now()` → `timestamp(3)` with time zone*
+        *   `to_unixtime(timestamp)` → `double`*
     *   **MySQL-like date functions:**
-        *   `date_format(timestamp, format) → varchar*`
-        *   `date_parse(string, format) -> timestamp(3)*`
-*   **Aggregate functions \
+        *   `date_format(timestamp, format)` → `varchar`*
+        *   `date_parse(string, format)` → `timestamp(3)`*
+*   **Aggregate functions** 
 **Note that Presto provides a much larger superset of functions. Bitwise, map, and approximate aggregations are mostly absent. Only BigQuery has a few native approximate aggregation functions.
-    *   `array_agg(x) → array&lt;[same as input]>*`
-    *   `avg(x) → double`
-    *   `bool_and(boolean) → boolean*`
-    *   `bool_or(boolean) → boolean*`
-    *   `count(*) → bigint*`
-    *   `count(x) → bigint`
-    *   `count_if(x) → bigint*`
-    *   `every(boolean) → boolean*`
-    *   `max(x) → [same as input]`
-    *   `max(x, n) → array&lt;[same as x]>*`
-    *   `min(x) → [same as input]`
-    *   `min(x, n) → array&lt;[same as x]>*`
-    *   `sum(x) → [same as input]`
+    *   `array_agg(x)` → `array&lt;`[same as input]>*
+    *   `avg(x)` → `double`
+    *   `bool_and(boolean)` → `boolean`*
+    *   `bool_or(boolean)` → `boolean`*
+    *   `count(*)` → `bigint`*
+    *   `count(x)` → `bigint`
+    *   `count_if(x)` → `bigint`*
+    *   `every(boolean)` → `boolean`*
+    *   `max(x)` → [same as input]
+    *   `max(x, n)` → `array&lt;`[same as x]>*
+    *   `min(x)` → [same as input]
+    *   `min(x, n)` → `array&lt;`[same as x]>*
+    *   `sum(x)` → [same as input]
     *   **Statistical Aggregate Functions:**
-        *   `corr(y, x) → double*`
-        *   `covar_pop(y, x) → double*`
-        *   `covar_samp(y, x) → double*`
-        *   `stddev(x) → double`
-        *   `stddev_pop(x) → double`
-        *   `stddev_samp(x) → double`
-        *   `variance(x) → double`
-        *   `var_pop(x) → double`
-        *   `var_samp(x) → double`
+        *   `corr(y, x)` → `double`*
+        *   `covar_pop(y, x)`→ `double`*
+        *   `covar_samp(y, x)` → `double`*
+        *   `stddev(x)` → `double`
+        *   `stddev_pop(x)` → `double`
+        *   `stddev_samp(x)` → `double`
+        *   `variance(x)` → `double`
+        *   `var_pop(x)` → `double`
+        *   `var_samp(x)` → `double`
 *   **Window functions**
     *   **Ranking Functions:**
-        *   `cume_dist() → bigint`
-        *   `dense_rank() → bigint`
-        *   `ntile(n) → bigint`
-        *   `percent_rank() → double`
-        *   `rank() → bigint`
-        *   `row_number() → bigint`
+        *   `cume_dist()` → `bigint`
+        *   `dense_rank()` → `bigint`
+        *   `ntile(n)` → `bigint`
+        *   `percent_rank()` → `double`
+        *   `rank()` → `bigint`
+        *   `row_number()` → `bigint`
     *   **Value Functions:**
-        *   `first_value(x) → [same as input]`
-        *   `last_value(x) → [same as input]`
-        *   `nth_value(x, offset) → [same as input]`
-        *   `lead(x[, offset[, default_value]]) → [same as input]`
-        *   `lag(x[, offset[, default_value]]) → [same as input]`
+        *   `first_value(x)` → [same as input]
+        *   `last_value(x)` → [same as input]
+        *   `nth_value(x, offset)` → [same as input]
+        *   `lead(x[, offset[, default_value]])` → [same as input]
+        *   `lag(x[, offset[, default_value]])` → [same as input]
 *   **JSON functions 
 **In general, function signatures and behaviour differs across implementations for many JSON related functions.
-    *   `json_array_length(json) → bigint*`
-    *   `json_extract(json, json_path) → json*`
-    *   `json_extract_scalar(json, json_path) → varchar*`
-    *   `json_format(json) → varchar*`
-    *   `json_size(json, json_path) → bigint*`
-*   Functions for working with nested and repeated data (ROW and ARRAY) \
+    *   `json_array_length(json)` → bigint*
+    *   `json_extract(json, json_path)` → json*
+    *   `json_extract_scalar(json, json_path)` → varchar*
+    *   `json_format(json)` → `varchar`*
+    *   `json_size(json, json_path)` → `bigint`*
+*   Functions for working with nested and repeated data (ROW and ARRAY) 
 See also UNNEST, which is part of the SQL grammar and allows working with nested arrays as if they were rows in a joined table.
 
 Note: Arrays are mostly absent in MySQL
     *   Array Subscript Operator: []
     *   Array Concatenation Operator: ||
-    *   `concat(array1, array2, ..., arrayN) → array`
-    *   `cardinality(x) → bigint*`
+    *   `concat(array1, array2, ..., arrayN)` → `array`
+    *   `cardinality(x)` → `bigint`*
 *   ga4gh_type (described above)
 
 ### Pagination and Long Running Queries
@@ -916,21 +890,6 @@ The difference between the two formats is the way in which the phenopacket json 
 
 
 ![phenopacket tables in a bucket example](assets/phenopacket-tables-in-a-bucket-example.svg "phenopacket tables in a bucket example")
-
-#### Portable Format for Biomedical Data (PFB) 
-
-TODO
-
-
-#### DICOM 
-
-TODO (there is a data model that identifies relevant information, for example the subject ID)
-
-
-#### HL7/FHIR
-
-TODO
-
 
 ### How to Secure Implementations Based on Presto Connectors or PostgreSQL Foreign Data Wrappers
 
