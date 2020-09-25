@@ -8,6 +8,7 @@
     - [Applications](#applications)
   - [Specification](#specification)
     - [Overview](#overview)
+    - [Conventions](#conventions)
     - [Discovery and Browsing](#discovery-and-browsing)
       - [Discovery and Browsing Examples](#discovery-and-browsing-examples)
     - [Query](#query)
@@ -20,7 +21,7 @@
       - [Attaching Semantic Data Types To Query Results](#attaching-semantic-data-types-to-query-results)
       - [Example: Semantic Data Types in Query Results](#example-semantic-data-types-in-query-results)
     - [SQL Functions (WIP)](#sql-functions-wip)
-    - [Dealing with Long Running Queries (WIP)](#dealing-with-long-running-queries-wip)
+    - [Pagination and Long Running Queries](#pagination-and-long-running-queries)
   - [Supplementary Information](#supplementary-information)
     - [Interop with other data storage and transmission standards](#interop-with-other-data-storage-and-transmission-standards)
       - [Phenopackets](#phenopackets)
@@ -85,6 +86,9 @@ The API supports browsing and discovery of data models and table metadata, listi
 
 All discovery, browsing and query operations are specified formally in the [OpenAPI specification](https://github.com/ga4gh-discovery/ga4gh-discovery-search/blob/develop/spec/search-api.yaml) document.
 
+### Conventions
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://tools.ietf.org/html/rfc2119).
 
 ### Discovery and Browsing
 
@@ -624,28 +628,128 @@ Note: Arrays are mostly absent in MySQL
     *   `cardinality(x) → bigint*`
 *   ga4gh_type (described above)
 
-### Dealing with Long Running Queries (WIP) 
+### Pagination and Long Running Queries
 
-While some queries can be completed quickly, others will take significant time to complete. A design constraint of this standard is to make the Search API as easy as possible for clients to consume. The simplest solution is the synchronous design: query requests block until data is ready, then return a (possibly paginated) Table response. However, asking clients to block for hours on a single HTTP response is fraught with difficulty: open connections are costly and fragile. Moreover, if an intermediary times out the request, the results will be lost and the client must start over.
+**Pagination sequence**
 
-Options:
+A pagination sequence is the singly-linked list of URLs formed by following the next_page_url property of the pagination section of an initial TableData or ListTablesResponse. A pagination sequence begins at the first response returned from any request that yields a TableData or ListTablesResponse, and ends at the page in the sequence whose pagination property is omitted, whose pagination.next_page_url is omitted, or whose pagination.next_page_url is null.
+
+Servers MAY return a unique pagination sequence in response to successive requests for the same query, table data listing, or table listing.
+
+Except for the last page, pagination.next_page_url property MUST be either an absolute URL or a relative reference as defined by [RFC 3986 section 4.2](https://tools.ietf.org/html/rfc3986#section-4.2) whose base URL is the URL that the page containing the reference was fetched from.
+
+Every non-empty TableData page in a pagination sequence MUST include a data_model property. If present, the data_model property MUST be a valid JSON Schema.
+
+Across all TableData pages in the pagination sequence that have a data_model value, the data_models MUST be identical. Some TableData pages may lack a data_model. See the empty page rules below.
+
+Servers MAY respond with an HTTP 4xx error code if the same page is requested more than once.
+
+Due to both rules above, clients MUST NOT rely on the ability to re-fetch previously encountered pages.
+
+Servers MAY include a Retry-After HTTP header in each response that is part of a pagination sequence, and clients MUST respect the delay specified by such header before attempting to fetch the next page.
+
+**Empty TableData pages**
+
+While many types of queries will be completed quickly, others will take minutes or even hours to yield a result. The simplest solution would be a synchronous design: query requests block until data is ready, then return a TableData response with the initial rows of the result set. However, asking clients to block for hours on a single HTTP response is fraught with difficulty: open connections are costly and fragile. If an intermediary times out the request, the results will be lost and the client must start over.
+
+To allow servers to direct clients to poll for results rather than hold open HTTP connections for long-running queries, the following special pagination rules apply to empty pages.
+
+An empty page is defined as a TableData object whose data property is a zero element array.
+
+A pagination sequence MAY include any number of empty pages anywhere in the sequence.
+
+An empty TableData page MAY omit its data_model property entirely. This allows servers to direct clients to poll for results before the result schema has been determined.
+
+A server that returns an empty page SHOULD include a Retry-after header in the HTTP response. If a client encounters an empty page with no Retry-after header, the client SHOULD delay at least 1 second before requesting the next page.
+
+**Example: Server returning empty pages to make client poll**
+
+This example illustrates a server returning a series of empty pages to a client while it is preparing the result set. The client polls for results by following next_page_url at the rate specified by the server. The form of the pagination URLs are only an example of one possible scheme. Servers are free to employ any pagination URL scheme.
+
+**Initial Request**
+
+
+```
+POST /search
+content-type: application/json
+
+{"query":"select distinct gene_symbol from search_cloud.brca_exchange.v32"}
+
+HTTP/1.1 200 OK
+content-type: application/json
+retry-after: 1000
+
+{"data":[],"pagination":{"next_page_url":"/search/v1/statement/abc123/queued/1"}}
+```
+
+
+**2nd request (Polling after sleeping for 1000ms)**
+
+
+```
+GET /search/v1/statement/abc123/queued/1
+
+HTTP/1.1 200 OK
+content-type: application/json
+retry-after: 1000
+
+{"data":[],"pagination":{"next_page_url":"/search/v1/statement/abc123/queued/2"}}
+```
+
+
+**3rd request (Polling again after sleeping for 1000ms)**
+
+
+```
+GET /search/v1/statement/abc123/queued/2
+
+HTTP/1.1 200 OK
+content-type: application/json
+retry-after: 1000
+
+{"data":[],"pagination":{"next_page_url":"/search/v1/statement/abc123/executing/1"}}
+```
+
+
+**4th request (Polling again after sleeping for 1000ms)**
+
+
+```
+GET /search/v1/statement/abc123/executing/1
+
+HTTP/1.1 200 OK
+content-type: application/json
+
+{"data_model":{"description":"Automatically generated schema","$schema":"http://json-schema.org/draft-07/schema#","properties":{"gene_symbol":{"format":"varchar","type":"string"}}},"data":[{"gene_symbol":"BRCA2"},{"gene_symbol":"BRCA1"}],"pagination":{"next_page_url":"/search/v1/statement/abc123/executing/2"}}
+```
+
+
+**Final request (no delay because page was nonempty and no retry-after header was present on the response)**
+
+
+```
+GET /search/v1/statement/abc123/executing/2
+
+HTTP/1.1 200 OK
+content-type: application/json
+
+{"data_model":{"description":"Automatically generated schema","$schema":"http://json-schema.org/draft-07/schema#","properties":{"gene_symbol":{"format":"varchar","type":"string"}}},"data":[],"pagination":{}}
+```
+
+
+**Example: Client algorithm for consuming TableData pages**
+
+The algorithm provided here simply illustrates one way to comply with the rules above. Any algorithm that satisfies all rules acceptable.
 
 
 
-1. Long-running query resource.
-    1. The POST /search request responds immediately with a link to a “running query” resource that it has created
-    2. The client polls this object until results are available, or alternatively, the client provides a callback URL that will be notified when results are ready
-        1. The result could be a table, in which case the client follows the link to the result table and consumes it like any other table
-        2. The result could be an error, in which case the client collects the error information from the “running query” object
-    3. The “running query” object expires eventually
-2. Use pagination and server-directed delay between pages.
-    4. The POST /search request responds immediately with either an error, a regular Table object populated with table_info and nonempty data, or a Table object that contains no data_model, an empty data array, and a pagination object with a nonnull next_page_url
-    5. The client consumes the pages in a loop:
-        3. If the response is an error, report the error and abort
-        4. If no data_model has been seen so far, check if the response contains a data_model and store it
-        5. Append the row data from the current page to the buffer (there may be 0 rows on any given page)
-        6. Delay for the time specified in the “Retry-After” HTTP response header for the current page (default is no delay)
-        7. If there is a next_page_url, fetch it, make that response the current page, and start back at step i; otherwise abort
+1. Start with an empty data buffer and undefined data model.
+2. Loop:
+    1. If the response is an error, report the error and abort
+    2. If no data_model has been seen so far, check if this page contains a data_model. If so, define the data model for the whole pagination sequence as this page’s data_model.
+    3. Append the row data from the current page to the data buffer (there may be 0 rows on any given page)
+    4. Delay for the time specified in the “Retry-After” HTTP response header for the current page (default is no delay)
+    5. If there is a pagination object and it has a non-null next_page_url, fetch that URL, make that response the current page, and start back at step 2a; otherwise end.
 
 
 ## Supplementary Information 
