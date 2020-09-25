@@ -13,7 +13,7 @@ info:
     name: 'GA4GH Discovery Search Team'
     email: 'ga4gh-discovery-search@ga4gh.org'
 security:
-  - bearerAuth: []
+  - bearerAuth: [ ]
 paths:
   /tables:
     get:
@@ -139,7 +139,6 @@ components:
           description: List of errors encountered
           items:
             $ref: "#/components/schemas/Error"
-      additionalProperties: false
     Table:
       required:
         - name
@@ -236,7 +235,7 @@ components:
         - NO_RESPONSE
     Pagination:
       type: object
-      properties  :
+      properties:
         next_page_url:
           type: string
           description: URL pointing to the next page of the same Table. Null or absent on last page.
