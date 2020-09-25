@@ -50,6 +50,10 @@ The following standards are complementary but not required by the Search framewo
 
 The search API consists of [Table](TABLE.md) and Query APIs, describing search results and queries, respectively.
 
+## Discovery Search API Specification
+
+See [SEARCHSPEC.md](SEARCHSPEC.md)
+
 ## Use cases
 
 See [USECASES.md](USECASES.md)
