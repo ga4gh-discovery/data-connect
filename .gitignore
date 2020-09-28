@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-# Dir for bundles
-dist
+# npm
 node_modules
-.DS_Store
-*.lock
 package-lock.json
-=======
 #********** windows template**********
 
 # Windows image file caches
@@ -68,4 +63,3 @@ Session.vim
 
 #********** IntelliJ files ******
 *.iml
->>>>>>> 86f46deb5ec32fab79c89ee05c21dad29d38263f
