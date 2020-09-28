@@ -1,6 +1,71 @@
+<<<<<<< HEAD
 # Dir for bundles
 dist
 node_modules
 .DS_Store
 *.lock
 package-lock.json
+=======
+#********** windows template**********
+
+# Windows image file caches
+Thumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+
+#********** osx template**********
+
+.DS_Store
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+
+#********** linux template**********
+
+.*
+!.gitignore
+*~
+
+# KDE
+.directory
+
+
+#********** emacs template**********
+
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+.elc
+auto-save-list
+tramp
+.\#*
+
+# Org-mode
+.org-id-locations
+*_archive
+
+
+#********** vim template**********
+
+.*.sw[a-z]
+*.un~
+Session.vim
+
+
+#********** Travis CI **********
+
+!.travis.yml
+
+#********** IntelliJ files ******
+*.iml
+>>>>>>> 86f46deb5ec32fab79c89ee05c21dad29d38263f
