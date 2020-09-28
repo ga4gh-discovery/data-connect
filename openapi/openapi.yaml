@@ -1,0 +1,376 @@
+openapi: 3.0.2
+info:
+  title: GA4GH Discovery Search API
+  version: 0.1.0
+  description: >
+    Search is an API for searching biomedical data.
+
+    More information on:
+
+    - [GitHub Pages](../)
+
+    - [Full Discovery Search Specification](../SEARCHSPEC.html)
+
+    ---
+
+    # Overview
+
+    The primary container for data in the Search API is the **Table**. Tables
+    contain rows of data, where each row is a JSON object with key/value pairs.
+    The table describes the structure of its row objects using [JSON
+    Schema](https://json-schema.org/). Row attributes can take on any legal JSON
+    value, eg. numbers, strings, booleans, nulls, arrays, and nested JSON
+    objects.
+
+    The API supports browsing and discovery of data models and table metadata,
+    listing table data, and optionally querying table data using arbitrarily
+    complex expressions including joins and aggregations. The query language is
+    SQL with domain specific functions to facilitate informative typing of the
+    result fields. 
+  license:
+    name: Apache 2.0
+    url: >-
+      https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-discovery-search/develop/LICENSE
+  contact:
+    name: GA4GH Discovery Search Team
+    email: ga4gh-discovery-search@ga4gh.org
+  x-logo:
+    url: >-
+      https://www.ga4gh.org/wp-content/themes/ga4gh-theme/gfx/GA-logo-horizontal-tag-RGB.svg
+security:
+  - bearerAuth: []
+tags:
+  - description: >-
+      The Discovery and Browsing part of the Search API consists of the
+      following REST operations. Concrete examples can be found
+      [here](../SEARCHSPEC#discovery-and-browsing-examples).
+    name: Discovery and Browsing
+  - description: |
+      The Query API allows SQL execution through a REST API.
+      You can find some examples requests [here](../SEARCHSPEC#query-example).
+    name: Query
+paths:
+  /tables:
+    get:
+      summary: List Tables
+      description: >-
+        Retrieve a paginated list of tables available from this Search API
+        instance.
+      operationId: listTables
+      responses:
+        '200':
+          description: A list of Tables
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListTablesResponse'
+        '500':
+          description: An unexpected error occurred
+      tags:
+        - Discovery and Browsing
+  '/table/{table_name}/info':
+    get:
+      summary: Get a Table
+      description: Returns the information about the Table identified by name.
+      operationId: getTable
+      parameters:
+        - name: table_name
+          in: path
+          description: Retrieve the data model associated with the given table
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A Table
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Table'
+        '404':
+          description: This server does not implement the data operation
+        '500':
+          description: An unexpected error occurred
+      tags:
+        - Discovery and Browsing
+  '/table/{table_name}/data':
+    get:
+      summary: Fetch data from a Table
+      description: Optional operation that returns data from a Table.
+      operationId: getData
+      parameters:
+        - name: table_name
+          in: path
+          description: >-
+            Retrieve the data model and data rows (paginated) from the given
+            table
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Data from the Table
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TableData'
+        '404':
+          description: This server does not implement the data operation
+        '500':
+          description: An unexpected error occurred
+      tags:
+        - Discovery and Browsing
+  /search:
+    post:
+      summary: Perform a search on Tables
+      description: >
+        Optional operation that accepts a Query and returns a TableData. The
+        result is returned in the same data structure as tables are returned by
+        the discovery and browsing part of the Search API: a TableData object.
+      operationId: search
+      responses:
+        '200':
+          description: Query results returned as TableData
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TableData'
+        '404':
+          description: This server does not implement the search operation
+        '500':
+          description: An unexpected error occurred
+      tags:
+        - Query
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    schema#: |
+      {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "$id": "http://json-schema.org/draft-07/schema#",
+          "title": "Core schema meta-schema",
+          "definitions": {
+              "schemaArray": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": { "$ref": "#" }
+              },
+              "nonNegativeInteger": {
+                  "type": "integer",
+                  "minimum": 0
+              },
+              "nonNegativeIntegerDefault0": {
+                  "allOf": [
+                      { "$ref": "#/definitions/nonNegativeInteger" },
+                      { "default": 0 }
+                  ]
+              },
+              "simpleTypes": {
+                  "enum": [
+                      "array",
+                      "boolean",
+                      "integer",
+                      "null",
+                      "number",
+                      "object",
+                      "string"
+                  ]
+              },
+              "stringArray": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "uniqueItems": true,
+                  "default": []
+              }
+          },
+          "type": ["object", "boolean"],
+          "properties": {
+              "$id": {
+                  "type": "string",
+                  "format": "uri-reference"
+              },
+              "$schema": {
+                  "type": "string",
+                  "format": "uri"
+              },
+              "$ref": {
+                  "type": "string",
+                  "format": "uri-reference"
+              },
+              "$comment": {
+                  "type": "string"
+              },
+              "title": {
+                  "type": "string"
+              },
+              "description": {
+                  "type": "string"
+              },
+              "default": true,
+              "readOnly": {
+                  "type": "boolean",
+                  "default": false
+              },
+              "writeOnly": {
+                  "type": "boolean",
+                  "default": false
+              },
+              "examples": {
+                  "type": "array",
+                  "items": true
+              },
+              "multipleOf": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+              },
+              "maximum": {
+                  "type": "number"
+              },
+              "exclusiveMaximum": {
+                  "type": "number"
+              },
+              "minimum": {
+                  "type": "number"
+              },
+              "exclusiveMinimum": {
+                  "type": "number"
+              },
+              "maxLength": { "$ref": "#/definitions/nonNegativeInteger" },
+              "minLength": { "$ref": "#/definitions/nonNegativeIntegerDefault0" },
+              "pattern": {
+                  "type": "string",
+                  "format": "regex"
+              },
+              "additionalItems": { "$ref": "#" },
+              "items": {
+                  "anyOf": [
+                      { "$ref": "#" },
+                      { "$ref": "#/definitions/schemaArray" }
+                  ],
+                  "default": true
+              },
+              "maxItems": { "$ref": "#/definitions/nonNegativeInteger" },
+              "minItems": { "$ref": "#/definitions/nonNegativeIntegerDefault0" },
+              "uniqueItems": {
+                  "type": "boolean",
+                  "default": false
+              },
+              "contains": { "$ref": "#" },
+              "maxProperties": { "$ref": "#/definitions/nonNegativeInteger" },
+              "minProperties": { "$ref": "#/definitions/nonNegativeIntegerDefault0" },
+              "required": { "$ref": "#/definitions/stringArray" },
+              "additionalProperties": { "$ref": "#" },
+              "definitions": {
+                  "type": "object",
+                  "additionalProperties": { "$ref": "#" },
+                  "default": {}
+              },
+              "properties": {
+                  "type": "object",
+                  "additionalProperties": { "$ref": "#" },
+                  "default": {}
+              },
+              "patternProperties": {
+                  "type": "object",
+                  "additionalProperties": { "$ref": "#" },
+                  "propertyNames": { "format": "regex" },
+                  "default": {}
+              },
+              "dependencies": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "anyOf": [
+                          { "$ref": "#" },
+                          { "$ref": "#/definitions/stringArray" }
+                      ]
+                  }
+              },
+              "propertyNames": { "$ref": "#" },
+              "const": true,
+              "enum": {
+                  "type": "array",
+                  "items": true,
+                  "minItems": 1,
+                  "uniqueItems": true
+              },
+              "type": {
+                  "anyOf": [
+                      { "$ref": "#/definitions/simpleTypes" },
+                      {
+                          "type": "array",
+                          "items": { "$ref": "#/definitions/simpleTypes" },
+                          "minItems": 1,
+                          "uniqueItems": true
+                      }
+                  ]
+              },
+              "format": { "type": "string" },
+              "contentMediaType": { "type": "string" },
+              "contentEncoding": { "type": "string" },
+              "if": { "$ref": "#" },
+              "then": { "$ref": "#" },
+              "else": { "$ref": "#" },
+              "allOf": { "$ref": "#/definitions/schemaArray" },
+              "anyOf": { "$ref": "#/definitions/schemaArray" },
+              "oneOf": { "$ref": "#/definitions/schemaArray" },
+              "not": { "$ref": "#" }
+          },
+          "default": true
+      }
+    Table:
+      required:
+        - name
+        - data_model
+      type: object
+      properties:
+        name:
+          type: string
+          description: Table name
+        description:
+          type: string
+          description: Optional description of the Table
+        data_model:
+          $ref: '#/components/schemas/schema#'
+      description: |
+        Describes a Table hosted by this search node.
+    Pagination:
+      type: object
+      properties:
+        next_page_url:
+          type: string
+          description: >-
+            URL pointing to the next page of the same Table. Null or absent on
+            last page.
+          format: uri
+    ListTablesResponse:
+      required:
+        - tables
+      type: object
+      properties:
+        tables:
+          type: array
+          items:
+            $ref: '#/components/schemas/Table'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    TableData:
+      required:
+        - data_model
+        - data
+      type: object
+      properties:
+        data_model:
+          $ref: '#/components/schemas/schema#'
+        data:
+          type: array
+          description: >-
+            Page of JSON values, each adhering to the schema given in the
+            "data_model" property
+          items:
+            type: object
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      description: A paginated collection of tabular data

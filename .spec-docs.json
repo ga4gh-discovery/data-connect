@@ -1,0 +1,6 @@
+{
+    "apiSpecPath": "openapi/openapi.yaml",
+    "redocTheme": "ga4gh",
+    "defaultBranch": "develop",
+    "branchPathBase": "base"
+}

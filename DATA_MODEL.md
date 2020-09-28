@@ -1,14 +1,14 @@
-# Schema
+# Data Model
 
-A `Schema` describes [properties](#properties) of a [Dataset](DATASET.md).
+A `Data Model` describes [properties](#properties) of a [Table](TABLE.md).
 
-### Schema Format
+### Data Model Format
 
-The Schema format follows [JSON-Schema](https://json-schema.org/) Draft 7.
+The Data Model format follows [JSON-Schema](https://json-schema.org/) Draft 7.
 
 ### Properties
 
-Schema `properties` describe attributes of [Datasets](DATASET.md) (e.g. a "subject" dataset may have an "age" property).
+Data Model `properties` describe attributes of [Tables](TABLE.md) (e.g. a "subject" table may have an "age" property).
 
 Properties can be defined:
 
@@ -17,15 +17,15 @@ Properties can be defined:
 
 #### Examples
 
-Here are sample Schema definitions. For more information, visit [the JSON-Schema website](https://json-schema.org/).
+Here are sample Data Model definitions. For more information, visit [the JSON-Schema website](https://json-schema.org/).
 
 ##### Inline Properties
 
-This schema has one property, `age`, defined inline:
+This data model has one property, `age`, defined inline:
 
 ```json
 {
-       "schema": {
+       "data_model": {
                "properties": {
                        "age" : {
                                "description": "age of a subject, in whole years",
@@ -38,11 +38,11 @@ This schema has one property, `age`, defined inline:
 
 ##### Externally Defined Properties
 
-This schema defines its sole property, `drs`, by referring to an external data model: the [Data Repository Service](https://github.com/ga4gh/data-repository-service-schemas) developed by the GA4GH Cloud Work Stream:
+This data model defines its sole property, `drs`, by referring to an external data model: the [Data Repository Service](https://github.com/ga4gh/data-repository-service-schemas) developed by the GA4GH Cloud Work Stream:
 
 ```json
 {
-       "schema": {
+       "data_model": {
                "properties": {
                        "drs": {
                                "$ref": "http://schema.ga4gh.org/drs/0.1.0#/definitions/Object"
@@ -54,12 +54,12 @@ This schema defines its sole property, `drs`, by referring to an external data m
 
 ##### Mixing Both
 
-This Schema that contains both inline and externally referenced properties:
+This data model that contains both inline and externally referenced properties:
 
 
 ```json
 {
-       "schema": {
+       "data_model": {
                "description": "A collection of subjects and their data objects",
                "properties": {
                        "subject": {
