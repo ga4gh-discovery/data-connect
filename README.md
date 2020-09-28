@@ -24,6 +24,17 @@ The Discovery Work Stream develops `Search` as a general-purpose framework for b
 * `federation` It is possible to federate searches across multiple implementations. Federations of the search framework reference common schemas and properties.
 * `backend agnostic` It is possible to implement the framework across a large variety of backend datastores.
 
+## Use cases
+
+See [USECASES.md](USECASES.md)
+
+### Examples
+
+* Find subjects with HP:0001519 and candidate gene FBN1 (use case of [Matchmaker Exchange](https://www.matchmakerexchange.org/))
+* Find male subjects with HP:0009726 consented for General Research Use (use case of [European Genome-phenome Archive](https://www.ebi.ac.uk/ega/home))
+* Find adult males diagnosed with autism having a harmful mutation in SHANK1 (use case of [Autism Sharing Initiative](http://autismsharinginitiative.org))
+* Find dataset from subject on European data center hosted on Amazon (use case of [Cloud Work Stream](https://github.com/ga4gh/wiki/wiki))
+
 ## Out of scope
 * `developing data models` The Search framework **does not** define data models. It defers that effort to others in the GA4GH or outside implementers.
 * `application development` The Search framework **does not** prescribe a specific application. It is intentionally general-purpose. It defers to other efforts in the Discovery Work Stream, GA4GH, and beyond to build domain-specific applications.
@@ -53,17 +64,6 @@ The search API consists of [Table](TABLE.md) and Query APIs, describing search r
 ## Discovery Search API Specification
 
 See [SEARCHSPEC.md](SEARCHSPEC.md)
-
-## Use cases
-
-See [USECASES.md](USECASES.md)
-
-### Examples
-
-* Find subjects with HP:0001519 and candidate gene FBN1 (use case of [Matchmaker Exchange](https://www.matchmakerexchange.org/))
-* Find male subjects with HP:0009726 consented for General Research Use (use case of [European Genome-phenome Archive](https://www.ebi.ac.uk/ega/home))
-* Find adult males diagnosed with autism having a harmful mutation in SHANK1 (use case of [Autism Sharing Initiative](http://autismsharinginitiative.org))
-* Find dataset from subject on European data center hosted on Amazon (use case of [Cloud Work Stream](https://github.com/ga4gh/wiki/wiki))
 
 ## Implementations and tooling
 
