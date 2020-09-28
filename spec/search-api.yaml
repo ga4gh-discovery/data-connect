@@ -1,7 +1,7 @@
 openapi: "3.0.2"
 info:
   title: GA4GH Discovery Search API
-  version: 0.1.0
+  version: 0.2.0
   description: |
     Search is an API for searching biomedical data.
 
@@ -20,6 +20,8 @@ paths:
       summary: List Tables
       description: Returns a list of Tables.
       operationId: listTables
+      tags:
+        - tables
       responses:
         '200':
           description: A list of Tables
@@ -34,6 +36,8 @@ paths:
       summary: Get a Table
       description: Returns the information about the Table identified by name.
       operationId: getTable
+      tags:
+        - tables
       parameters:
         - name: table_name
           in: path
@@ -57,6 +61,8 @@ paths:
       summary: Fetch data from a Table
       description: Optional operation that returns data from a Table
       operationId: getData
+      tags:
+        - tables
       parameters:
         - name: table_name
           in: path
@@ -80,6 +86,8 @@ paths:
       summary: Perform a search on Tables
       description: Optional operation that accepts a Query and returns a TableData
       operationId: search
+      tags:
+        - search
       responses:
         '200':
           description: Query results returned as TableData
@@ -89,6 +97,24 @@ paths:
                 $ref: "#/components/schemas/TableData"
         '404':
           description: This server does not implement the search operation
+        '500':
+          description: An unexpected error occurred
+  /service-info:
+    get:
+      summary: 'Show information about the Search service'
+      operationId: getServiceInfo
+      tags:
+        - service-info
+      responses:
+        '200':
+          description: |
+            Show information about this Search service.
+
+            Use `"type": {"group": "org.ga4gh", "artifact": "search", "version": "0.1.0"}` when implementing this specification directly.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
         '500':
           description: An unexpected error occurred
 components:
@@ -126,7 +152,7 @@ components:
         Describes a Table hosted by this search node.
     TableData:
       required:
-        - data_model 
+        - data_model
         - data
       type: object
       properties:
@@ -149,3 +175,5 @@ components:
           type: string
           description: URL pointing to the next page of the same Table. Null or absent on last page.
           format: uri
+    Service:
+      $ref: 'https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-service-info/v1.0.0/service-info.yaml#/components/schemas/Service'
