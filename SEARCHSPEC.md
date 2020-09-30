@@ -106,38 +106,39 @@ The Discovery and Browsing part of the Search API consists of the following REST
 ```
 GET /tables
 ```
+
 ```
 {
   "tables": [
     {
-      "name": "search_cloud.brca_exchange.v32",
+      "name": "example_project.brca_exchange.v32",
       "data_model": {
-        "$ref": "https://ga4gh-search-adapter-presto-public.staging.dnastack.com/table/search_cloud.brca_exchange.v32/info"
+        "$ref": "https://api.example.com/table/example_project.brca_exchange.v32/info"
       }
     },
     {
-      "name": "search_postgres_pgpc.ontology.axiom",
+      "name": "example_project.ontology.axiom",
       "data_model": {
-        "$ref":     "https://ga4gh-search-adapter-presto-public.staging.dnastack.com/table/search_postgres_pgpc.ontology.axiom/info"
+        "$ref":     "https://api.example.com/table/example_project.ontology.axiom/info"
         }
     },
     ...
     ...
   ],
   "pagination": {
-    "next_page_url": "https://ga4gh-search-adapter-presto-public.staging.dnastack.com/tables/catalog/search_drs"
+    "next_page_url": "https://api.example.com/tables/catalog/search_drs"
   }
 }
 ```
 
 ```
-GET `/table/search_postgres_pgpc.ontology.axiom/info`
+GET `/table/example_project.ontology.axiom/info`
 ```
 ```
 {
-  "name": "search_postgres_pgpc.ontology.axiom",
+  "name": "example_project.ontology.axiom",
   "data_model": {
-    "$id": "https://ga4gh-search-adapter-presto-public.staging.dnastack.com/table/search_postgres_pgpc.ontology.axiom/info",
+    "$id": "https://api.example.com/table/example_project.ontology.axiom/info",
     "description": "Automatically generated schema",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "properties": {
@@ -169,7 +170,7 @@ GET `/table/search_postgres_pgpc.ontology.axiom/info`
 
 
 ```
-GET /table/`search_postgres_pgpc`.ontology.axiom/data
+GET /table/example_project.ontology.axiom/data
 ```
 ```
 {
@@ -193,7 +194,7 @@ GET /table/`search_postgres_pgpc`.ontology.axiom/data
     ...
   ],
   "pagination": {
-    "next_page_url": "https://ga4gh-search-adapter-presto-public.staging.dnastack.com/search/v1/statement/executing/20200901_013328_00039_szpff/y4134d1e51a8262d0f8fed899b2eed9fd02e200e9/1"
+    "next_page_url": "https://api.example.com/search/v1/statement/executing/abc/xyz/1"
 }
 ```
 
@@ -221,7 +222,7 @@ Header:
 content-type: application/json
 
 Request body:
-{ "query": "SELECT * from search_postgres_pgpc.ontology.axiom WHERE to_term='UBERON_0000464'"}
+{ "query": "SELECT * from example_project.ontology.axiom WHERE to_term='UBERON_0000464'"}
 ```
 
 ##### Query Result
@@ -251,7 +252,7 @@ The result is returned in the same data structure as tables are returned by the 
     ...
   ],
   "pagination": {
-    "next_page_url": "https://ga4gh-search-adapter-presto-public.staging.dnastack.com/search/v1/statement/executing/20200831_235126_36756_szpff/yf9a38c74873e654f04309fe956cb40c8fb2d022f/1"
+    "next_page_url": "https://api.example.com/search/v1/statement/executing/abc/xyz/1"
   }
 }
 
@@ -387,7 +388,7 @@ select
         as row(id varchar, label varchar))
     end, 
 '$ref:https://schemablocks.org/schemas/example/blood-group/v1.0.0/BloodGroup.json') as blood_group
-`from search_postgres_pgpc.public.participant
+`from example_project.public.participant
 ```
 Then the Search service would respond with:
 
@@ -414,7 +415,7 @@ Then the Search service would respond with:
     }
   ],
   "pagination": {
-    "next_page_url": "http://search-api.example.com/search/v1/statement/executing/20200630_221357_00006_4ufsz/ya41766923be262f6ddd468d212c0a1fc9f4797b2/1"
+    "next_page_url": "http://search-api.example.com/search/v1/statement/abc/xyz/executing/1"
   }
 }
 ```
@@ -648,7 +649,7 @@ This example illustrates a server returning a series of empty pages to a client 
 POST /search
 content-type: application/json
 
-{"query":"select distinct gene_symbol from search_cloud.brca_exchange.v32"}
+{"query":"select distinct gene_symbol from example_project.brca_exchange.v32"}
 
 HTTP/1.1 200 OK
 content-type: application/json
@@ -758,17 +759,17 @@ Here is a detailed example of a directory full of Phenopacket files exposed as a
 {
   "tables": [
   {
-    "name": "gecco_phenopackets",
+    "name": "sample_phenopackets_A",
     "description": "Table / directory containing Phenopacket JSON files",
     "data_model": {
-      "$ref": "table/gecco_phenopackets/info"
+      "$ref": "table/sample_phenopackets_A/info"
     }
   },
   {
-    "name": "hpo_phenopackets",
+    "name": "sample_phenopackets_B",
     "description": "Table / directory containing Phenopacket JSON files",
     "data_model": {
-      "$ref": "table/hpo_phenopackets/info"
+      "$ref": "table/sample_phenopackets_B/info"
     }
   }
  ]
@@ -778,11 +779,11 @@ Here is a detailed example of a directory full of Phenopacket files exposed as a
 
 
 ```
-/table/hpo_phenopackets/info
+/table/sample_phenopackets_B/info
 ```
 ```
 {
-  "name": "hpo_phenopackets",
+  "name": "sample_phenopackets_B",
   "description": "Table / directory containing Phenopacket JSON files",
   "data_model": {
     "$id": "https://storage.googleapis.com/ga4gh-phenopackets-example/phenopacket-with-id",
@@ -801,7 +802,7 @@ Here is a detailed example of a directory full of Phenopacket files exposed as a
 }
 ```
 ```
-/table/hpo_phenopackets/data
+/table/sample_phenopackets_B/data
 ```
 
 
@@ -842,7 +843,7 @@ Here is a detailed example of a directory full of Phenopacket files exposed as a
 ```
 
 ```
-/table/hpo_phenopackets/search
+/table/sample_phenopackets_B/search
 ```
 
 ```
@@ -855,7 +856,7 @@ WITH pp_genes AS (
     json_extract_scalar(g.gene, '$.id') AS gene_id,
     json_extract_scalar(g.gene, '$.symbol') AS gene_symbol
   FROM
-    sample_phenopackets.ga4gh_tables.hpo_phenopackets pp,
+    sample_phenopackets.ga4gh_tables.sample_phenopackets_B pp,
     UNNEST(CAST(json_extract(pp.phenopacket, '$.genes') as ARRAY(json))) 
       as g (gene)
 )
