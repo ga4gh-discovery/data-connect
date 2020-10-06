@@ -11,6 +11,7 @@
     - [Overview](#overview)
     - [Conventions](#conventions)
     - [Discovery and Browsing](#discovery-and-browsing)
+      - [Route Naming](#route-naming)
       - [Discovery and Browsing Examples](#discovery-and-browsing-examples)
     - [Query](#query)
       - [Query Example](#query-example)
@@ -99,6 +100,19 @@ The Discovery and Browsing part of the Search API consists of the following REST
 | GET /table/{id}/data       | Retrieve the data model and data rows (paginated) from the given table      |
 
 
+#### Route Naming
+
+The choice of `/table/{id}` over the more common `/tables/{id}` is deliberate. A Search API design constraint is to admit as many simple implementation paths as possible. For example, consider that the following directory tree could implement Search API using just static files on a web server or cloud bucket (the "tables-in-a-bucket" implementation):
+
+| Name          	| Description 	|
+|--------------------	|-------------------------------------------	|
+| `tables`           	| json file containing a `ListTablesResponse` 	|
+| `table/`             	| directory                                 	|
+| `table/table1/`     	| directory                                 	|
+| `table/table1/info`  	| json file containing a `Table`              	|
+| `table/table1/data`  	| json file containing a `TableData`          	|
+
+If we had used `/tables` and `/tables/{id}/data` then the “tables in a bucket” implementation would not have been possible. The first two entries above would need the same filename, but one is a file and the other is a directory, which is a conflict. Naming a directory and file with the same name isn’t possible in most filesystems.
 
 #### Discovery and Browsing Examples
 
