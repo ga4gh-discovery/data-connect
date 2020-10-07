@@ -155,10 +155,7 @@ components:
         pagination:
           $ref: '#/components/schemas/Pagination'
         errors:
-          type: array
-          description: List of errors encountered
-          items:
-            $ref: "#/components/schemas/Error"
+          $ref: "#/components/schemas/ErrorList"
     Table:
       required:
         - name
@@ -174,10 +171,7 @@ components:
         data_model:
           $ref: "http://json-schema.org/draft-07/schema#"
         errors:
-          type: array
-          description: List of errors encountered
-          items:
-            $ref: "#/components/schemas/Error"
+          $ref: "#/components/schemas/ErrorList"
       description: |
         Describes a Table hosted by this search node.
     TableData:
@@ -198,20 +192,19 @@ components:
         pagination:
           $ref: "#/components/schemas/Pagination"
         errors:
-          type: array
-          description: List of errors encountered
-          items:
-            $ref: "#/components/schemas/Error"
+          $ref: "#/components/schemas/ErrorList"
       description: A paginated collection of tabular data
     ErrorResponse:
       type: object
       properties:
         errors:
-          type: array
-          description: List of errors encountered
-          items:
-            $ref: "#/components/schemas/Error"
+          $ref: "#/components/schemas/ErrorList"
       description: The response body when no part of the request can be fulfilled
+    ErrorList:
+      type: array
+      description: List of errors encountered
+      items:
+        $ref: "#/components/schemas/Error"
     Error:
       type: object
       properties:
