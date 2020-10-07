@@ -29,7 +29,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ListTablesResponse"
-        default:
+        '500':
           description: An unexpected error occurred
           content:
             application/json:
@@ -51,14 +51,14 @@ paths:
             type: string
       responses:
         '200':
-          description: A Table
+          description: A Table data model
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Table"
         '404':
           description: The table doesn't exist
-        default:
+        '500':
           description: An unexpected error occurred
           content:
             application/json:
@@ -87,7 +87,7 @@ paths:
                 $ref: "#/components/schemas/TableData"
         '404':
           description: The table doesn't exist
-        default:
+        '500':
           description: An unexpected error occurred
           content:
             application/json:
@@ -115,7 +115,7 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
         '404':
           description: This server does not implement the search operation
-        default:
+        '500':
           description: An unexpected error occurred
 <<<<<<< HEAD
   /service-info:
