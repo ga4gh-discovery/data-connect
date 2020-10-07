@@ -51,7 +51,7 @@ paths:
             type: string
       responses:
         '200':
-          description: A Table data model
+          description: A Table
           content:
             application/json:
               schema:
@@ -117,7 +117,10 @@ paths:
           description: This server does not implement the search operation
         '500':
           description: An unexpected error occurred
-<<<<<<< HEAD
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /service-info:
     get:
       summary: 'Show information about the Search service'
@@ -136,12 +139,6 @@ paths:
                 $ref: '#/components/schemas/Service'
         '500':
           description: An unexpected error occurred
-=======
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
->>>>>>> Updated the spec based on the feedback with Miro and Jonathan[#175022439]
 components:
   securitySchemes:
     bearerAuth:
