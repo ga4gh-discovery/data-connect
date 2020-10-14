@@ -84,8 +84,15 @@ paths:
   /search:
     post:
       summary: Perform a search on Tables
-      description: Optional operation that accepts a Query and returns a TableData
+      description: Optional operation that accepts a SearchRequest and returns a TableData
       operationId: search
+      requestBody:
+        description: The query to execute
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchRequest"
       tags:
         - search
       responses:
@@ -175,5 +182,23 @@ components:
           type: string
           description: URL pointing to the next page of the same Table. Null or absent on last page.
           format: uri
+    SearchRequest:
+      description:
+        A SQL query with zero or more positional parameters. Supported SQL grammar, data types, and functions are
+        described in [the specification](https://github.com/ga4gh-discovery/ga4gh-discovery-search/blob/develop/SEARCHSPEC.md#query).
+      example:
+        query: SELECT some_string, some_num FROM a_table WHERE some_string=? AND some_num=?
+        parameters:
+          - hello
+          - 42
+      required:
+        - query
+      type: object
+      properties:
+        query:
+          type: string
+        parameters:
+          type: array
+          items: {}
     Service:
       $ref: 'https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-service-info/v1.0.0/service-info.yaml#/components/schemas/Service'
