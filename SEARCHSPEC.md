@@ -14,6 +14,8 @@
     - [Query](#query)
       - [Query Example](#query-example)
         - [Query Request](#query-request)
+          - [Positional Query Parameters](#positional-query-parameters)
+          - [Correspondence Between SQL and JSON Data Types in Search Request](#correspondence-between-sql-and-json-data-types-in-search-request)
         - [Query Result](#query-result)
       - [Correspondence Between SQL and JSON Data Types in the Query Result](#correspondence-between-sql-and-json-data-types-in-the-query-result)
     - [Semantic Data Types](#semantic-data-types)
@@ -243,17 +245,21 @@ Request body:
 
 A positional parameter is marked by a `?` anywhere a literal value of any type could appear in the query.
 
+If a query has no positional parameters, the client MAY omit the `parameters` property from the request.
+If the client supplies `parameters` in a query with no positional parameters, its value MUST be an empty
+array.
+
 If a query has one or more positional parameters, the request body MUST include a `parameters` property,
-which is a JSON array with exactly the number of entries matching the number of `?` placeholders in the
-query. Values will be substituted from the array into the query on the server side in the order the `?`
-placeholders are encountered in the text of the SQL query.
+which is a JSON array whose element count matches the number of `?` placeholders in the query. Values
+will be substituted from the array into the query on the server side in the order the `?` placeholders
+appear in the text of the SQL query.
 
-###### Correspondence Between SQL and JSON Data Types in 
+###### Correspondence Between SQL and JSON Data Types in Search Request
 
-The types in the `parameters` array must be compatible with the expected SQL types in the query according
-to the following table.
+The SQL type of a `?` placeholder in the query is determined by its corresponding entry in the
+`parameters` array, according to the following table.
 
-| JSON Type                                      | SQL Type  | Example Values                                |
+| JSON Parameter Type                            | SQL Type  | Example Values                                |
 | ---------------------------------------------- | --------- | --------------------------------------------- |
 | boolean                                        | boolean   | `true`, `false`                               |
 | number                                         | double    | `123`, `-7000`, `123.456`, `7.445e-17`        |
@@ -261,6 +267,8 @@ to the following table.
 | array (note all elements must have same type)  | array     | `[ 1, 3, 5 ]`, `[ "one", "three", "five" ]`   |
 | object                                         | row       | `{ "colname1": "colvalue1", "colname2": 42 }` |
 
+Queries that require parameters with SQL types not covered above should use the SQL CAST operation. For
+example, `CAST(? AS DATE)`.
 
 ##### Query Result
 
