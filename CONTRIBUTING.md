@@ -33,6 +33,9 @@ Once a pull request or issue have been submitted, maintainers can comment or vot
 - +0 or -0 for neutral comments or weak opinions.
 - It's okay to have input without voting.
 - Silence gives assent.
+- In a pull request review:
+  - Approval is considered a +1 vote on the pull request. 
+  - "Request changes" is considered a -1 vote on the pull request.
 - A pull request is ready to be merged when either of the following is true:
   - A pull request has at least two +1 votes, no -1 votes, and has been open for at least 3 days.
   - A pull request has no -1 votes, and has been open for at least 14 days.
