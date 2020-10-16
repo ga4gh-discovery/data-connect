@@ -14,8 +14,10 @@
     - [Query](#query)
       - [Query Example](#query-example)
         - [Query Request](#query-request)
+          - [Positional Query Parameters](#positional-query-parameters)
+          - [Correspondence Between SQL and JSON Data Types in Search Request](#correspondence-between-sql-and-json-data-types-in-search-request)
         - [Query Result](#query-result)
-      - [Correspondence Between SQL and JSON Data Types](#correspondence-between-sql-and-json-data-types)
+      - [Correspondence Between SQL and JSON Data Types in the Query Result](#correspondence-between-sql-and-json-data-types-in-the-query-result)
     - [Semantic Data Types](#semantic-data-types)
       - [Example: Semantic Data Types on a Table](#example-semantic-data-types-on-a-table)
       - [Attaching Semantic Data Types To Query Results](#attaching-semantic-data-types-to-query-results)
@@ -223,6 +225,51 @@ Request body:
 { "query": "SELECT * from search_postgres_pgpc.ontology.axiom WHERE to_term='UBERON_0000464'"}
 ```
 
+###### Positional Query Parameters
+
+This query has the effect as the previous example, but is expressed using a positional parameter:
+
+```
+POST Request:
+/search
+
+Header:
+content-type: application/json
+
+Request body:
+{
+  "query": "SELECT * from search_postgres_pgpc.ontology.axiom WHERE to_term=?"
+  "parameters": [ "UBERON_0000464" ]
+}
+```
+
+A positional parameter is marked by a `?` anywhere a literal value of any type could appear in the query.
+
+If a query has no positional parameters, the client MAY omit the `parameters` property from the request.
+If the client supplies `parameters` in a query with no positional parameters, its value MUST be an empty
+array.
+
+If a query has one or more positional parameters, the request body MUST include a `parameters` property,
+which is a JSON array whose element count matches the number of `?` placeholders in the query. Values
+will be substituted from the array into the query on the server side in the order the `?` placeholders
+appear in the text of the SQL query.
+
+###### Correspondence Between SQL and JSON Data Types in Search Request
+
+The SQL type of a `?` placeholder in the query is determined by its corresponding entry in the
+`parameters` array, according to the following table.
+
+| JSON Parameter Type                            | SQL Type  | Example Values                                |
+| ---------------------------------------------- | --------- | --------------------------------------------- |
+| boolean                                        | boolean   | `true`, `false`                               |
+| number                                         | double    | `123`, `-7000`, `123.456`, `7.445e-17`        |
+| string                                         | varchar   | `"Hello world"`, `"12345678910"`              |
+| array (note all elements must have same type)  | array     | `[ 1, 3, 5 ]`, `[ "one", "three", "five" ]`   |
+| object                                         | row       | `{ "colname1": "colvalue1", "colname2": 42 }` |
+
+Queries that require parameters with SQL types not covered above should use the SQL CAST operation. For
+example, `CAST(? AS DATE)`.
+
 ##### Query Result
 
 The result is returned in the same data structure as tables are returned by the discovery and browsing part of the GA4GH Search API: a **TableData** object.
@@ -255,7 +302,7 @@ The result is returned in the same data structure as tables are returned by the 
 }
 
 ```
-#### Correspondence Between SQL and JSON Data Types
+#### Correspondence Between SQL and JSON Data Types in the Query Result
 
 Data is manipulated in the query using the following types. Each SQL type is expressed as a physical JSON value in the response table. Semantic types (defined by JSON Schema reference URLs) are covered in the next section.
 
