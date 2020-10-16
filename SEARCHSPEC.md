@@ -1,6 +1,6 @@
-# Discovery Search Specification
+# GA4GH Search Specification
 
-- [Discovery Search Specification](#discovery-search-specification)
+- [GA4GH Search Specification](#ga4gh-search-specification)
   - [Introduction](#introduction)
     - [Intended Audience](#intended-audience)
     - [Purpose and Motivation](#purpose-and-motivation)
@@ -43,24 +43,24 @@ The intended audience of this specification includes both data providers and dat
 
 The ever growing new biomedical techniques, such as next-generation genome sequencing, imaging, and others are creating vast amounts of data. Everyday researchers and clinicians accumulate and analyze the world's exponentially growing volumes of genomic and clinical data. With this large data comes the challenge for exploring and finding the data, while interpreting various available formats.
 
-In this specification, we offer a simple, uniform mechanism to publish, discover, query, and analyze any format of biomedical data. There are thousands of ways data can be stored or moved over the network. Any “rectangular” data that fits into rows & columns can be represented via the Search API. This is useful for all kinds of data as we now have a common way to use the information regardless of the way it was collected. 
+In this specification, we offer a simple, uniform mechanism to publish, discover, query, and analyze any format of biomedical data. There are thousands of ways data can be stored or moved over the network. Any “rectangular” data that fits into rows & columns can be represented via the GA4GH Search API. This is useful for all kinds of data as we now have a common way to use the information regardless of the way it was collected. 
 
-Search API enables an ecosystem of compatible tools and components that search genotypic and phenotypic data. This document describes the overall structure of the Search API and specifies how a Search API implementation should parse, execute, and respond to a query expressed in the SQL language. Independently developed implementations that conform to this specification can be used interchangeably by a client, or networked together into a tree-structured federation of search nodes.
+GA4GH Search API enables an ecosystem of compatible tools and components that search genotypic and phenotypic data. This document describes the overall structure of the GA4GH Search API and specifies how a GA4GH Search API implementation should parse, execute, and respond to a query expressed in the SQL language. Independently developed implementations that conform to this specification can be used interchangeably by a client, or networked together into a tree-structured federation of search nodes.
 
 
 ### Traits
 
-The Search API was designed with the following constraints in mind:
+GA4GH Search API was designed with the following constraints in mind:
 
-*   Supports Federation: Search API serves as a general-purpose framework for building federatable search-based applications across multiple implementations. Federations of the search framework reference common schemas and properties.
-*   General: Admits use cases that have not yet been thought of
-*   Minimal: Search API is purposely kept minimal so that the barriers to publishing existing data are as small as possible. 
-*   Backend Agnostic: This property makes it possible to implement the framework across a large variety of backend datastores.
+* Supports Federation: GA4GH Search API serves as a general-purpose framework for building federatable search-based applications across multiple implementations. Federations of the search framework reference common schemas and properties.
+* General: Admits use cases that have not yet been thought of
+* Minimal: GA4GH Search API is purposely kept minimal so that the barriers to publishing existing data are as small as possible. 
+* Backend Agnostic: This property makes it possible to implement the framework across a large variety of backend datastores.
 
 
 ### Applications
 
-Various applications can be built on top of Search API implementations such as
+Various applications can be built on top of GA4GH Search API implementations such as
 
 *   Data and metadata indexers
 *   Query tools
@@ -77,7 +77,7 @@ Various applications can be built on top of Search API implementations such as
 
 ### Overview
 
-The primary container for data in the Search API is the **Table**. Tables contain rows of data, where each row is a JSON object with key/value pairs. The table describes the structure of its row objects using [JSON Schema](https://json-schema.org/). Row attributes can take on any legal JSON value, eg. numbers, strings, booleans, nulls, arrays, and nested JSON objects.
+The primary container for data in the GA4GH Search API is the **Table**. Tables contain rows of data, where each row is a JSON object with key/value pairs. The table describes the structure of its row objects using [JSON Schema](https://json-schema.org/). Row attributes can take on any legal JSON value, eg. numbers, strings, booleans, nulls, arrays, and nested JSON objects.
 
 The API supports browsing and discovery of data models and table metadata, listing table data, and optionally querying table data using arbitrarily complex expressions including joins and aggregations. The query language is SQL with domain specific functions to facilitate informative typing of the result fields. 
 
@@ -90,10 +90,10 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ### Discovery and Browsing
 
-The Discovery and Browsing part of the Search API consists of the following REST operations:
+The Discovery and Browsing part of the GA4GH Search API consists of the following REST operations:
 | Request                    | Description                                                                 |
 | -------------------------- | --------------------------------------------------------------------------- |
-| GET /tables                | Retrieve a paginated list of tables available from this Search API instance |
+| GET /tables                | Retrieve a paginated list of tables available from this GA4GH Search API instance |
 | GET /table/{id}/info\[^1\] | Retrieve the data model associated with the given table                     |
 | GET /table/{id}/data       | Retrieve the data model and data rows (paginated) from the given table      |
 
@@ -225,7 +225,7 @@ Request body:
 
 ##### Query Result
 
-The result is returned in the same data structure as tables are returned by the discovery and browsing part of the Search API: a **TableData** object.
+The result is returned in the same data structure as tables are returned by the discovery and browsing part of the GA4GH Search API: a **TableData** object.
 
 ```
 
@@ -282,7 +282,7 @@ Data is manipulated in the query using the following types. Each SQL type is exp
 
 To enable discovery of tables based on the kind of information contained within them, and to enable query tools to offer to filter and join data from different sources in a sensible way, tables need to declare not only the physical type of their rows (eg. how data is represented as JSON) but also the semantic type (what the data means). This means that any datasource which can conform to this requirement, may be exposed as a Table.
 
-The Search API describes the _meaning_ of data through JSON Schema references ($ref). Clients can discover that attributes in different tables refer to the same concept as each other by examining the target of each attribute’s JSON Schema reference. If the $ref URLs are the same, then the client knows that the attributes have the same meaning.
+GA4GH Search API describes the _meaning_ of data through JSON Schema references ($ref). Clients can discover that attributes in different tables refer to the same concept as each other by examining the target of each attribute’s JSON Schema reference. If the $ref URLs are the same, then the client knows that the attributes have the same meaning.
 
 Clients can use the attribute meanings to:
 
@@ -290,7 +290,7 @@ Clients can use the attribute meanings to:
 *   Display table attributes in a meaningful way
 *   Construct queries across tables in an informed way which retains the underlying meaning of the data, or create new meaning
 
-This system of identifying types through reference URLs is amenable to building up cross-references. With a rich set of cross references, a Search API client can help join up data from sources that use different nomenclatures.
+This system of identifying types through reference URLs is amenable to building up cross-references. With a rich set of cross references, a GA4GH Search API client can help join up data from sources that use different nomenclatures.
 
 
 #### Example: Semantic Data Types on a Table 
@@ -338,7 +338,7 @@ Assume the following JSON Schema is published at https://schemablocks.org/schema
 
 
 
-Then data exposed through the Search API could refer to the concept of “ABO Blood Group” as: 
+Then data exposed through GA4GH Search API could refer to the concept of “ABO Blood Group” as: 
 
 "$ref": "[https://schemablocks.org/schemas/example/blood-group/v1.0.0/BloodGroup.json](https://schemablocks.org/schemas/example/blood-group/v1.0.0/BloodGroup.json)".
 
@@ -420,9 +420,9 @@ Then the Search service would respond with:
 
 ### SQL Functions
 
-The Search API’s SQL dialect has been selected for compatibility with current major open source database platforms including Presto SQL, PostgreSQL, and MySQL, as well as BigQuery. There are occasional name or signature differences, but a Search API implementation atop any of the major database platforms should be able to pass through queries that use the functions listed below with only minor tweaks.
+GA4GH Search API’s SQL dialect has been selected for compatibility with current major open source database platforms including Presto SQL, PostgreSQL, and MySQL, as well as BigQuery. There are occasional name or signature differences, but a GA4GH Search API implementation atop any of the major database platforms should be able to pass through queries that use the functions listed below with only minor tweaks.
 
-The functions below are a subset of those available in PrestoSQL 341. In a conformant Search API implementation, these functions must behave according to the Presto documentation. To assist with implementations directly on other database platforms, the [PrestoSQL Functions Support Matrix](https://docs.google.com/document/d/1y51qNuoe2ELX9kCOyQbFB4jihiKt2N8Qcd6-zzadIvk) captures the differences between platforms in granular detail. 
+The functions below are a subset of those available in PrestoSQL 341. In a conformant GA4GH Search API implementation, these functions must behave according to the Presto documentation. To assist with implementations directly on other database platforms, the [PrestoSQL Functions Support Matrix](https://docs.google.com/document/d/1y51qNuoe2ELX9kCOyQbFB4jihiKt2N8Qcd6-zzadIvk) captures the differences between platforms in granular detail. 
 
 *   **Logical Operators**
     *   `AND`, `OR`, `NOT`
@@ -733,7 +733,7 @@ This section provides advice to implementers. Nothing in this section is require
 
 ### Interop with other data storage and transmission standards 
 
-This section demonstrates how to expose data stored in commonly used formats using Discovery Search Table structures and their embedded JSON schema specifications.
+This section demonstrates how to expose data stored in commonly used formats using GA4GH Search Table structures and their embedded JSON schema specifications.
 
 
 #### Phenopackets 

@@ -1,16 +1,16 @@
 openapi: "3.0.2"
 info:
-  title: GA4GH Discovery Search API
+  title: GA4GH Search API
   version: 0.2.0
   description: |
-    Search is an API for searching biomedical data.
+    GA4GH Search is an API for searching biomedical data.
 
-    More information on [GitHub](https://github.com/ga4gh-discovery/ga4gh-discovery-search).
+    More information on [GitHub](https://github.com/ga4gh-discovery/ga4gh-search).
   license:
     name: 'Apache 2.0'
-    url: 'https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-discovery-search/develop/LICENSE'
+    url: 'https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-search/develop/LICENSE'
   contact:
-    name: 'GA4GH Discovery Search Team'
+    name: 'GA4GH Search Team'
     email: 'ga4gh-discovery-search@ga4gh.org'
 security:
   - bearerAuth: []
