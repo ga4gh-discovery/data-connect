@@ -87,7 +87,7 @@ paths:
       description: Optional operation that accepts a SearchRequest and returns a TableData
       operationId: search
       requestBody:
-        description: The query to execute
+        description: Query to execute
         required: true
         content:
           application/json:
@@ -167,7 +167,7 @@ components:
           $ref: "http://json-schema.org/draft-07/schema#"
         data:
           type: array
-          description: Page of JSON values, each adhering to the schema given in the "data_model" property
+          description: Page of JSON values, each adhering to the schema given in the `data_model` property
           items:
             # Each item must conform to the schema provided in the "data_model" section of this Table.
             # Not sure if this constraint can be expressed in OpenAPI 3.0.
@@ -184,21 +184,19 @@ components:
           format: uri
     SearchRequest:
       description:
-        A SQL query with zero or more positional parameters. Supported SQL grammar, data types, and functions are
-        described in [the specification](https://github.com/ga4gh-discovery/ga4gh-discovery-search/blob/develop/SEARCHSPEC.md#query).
-      example:
-        query: SELECT some_string, some_num FROM a_table WHERE some_string=? AND some_num=?
-        parameters:
-          - hello
-          - 42
+        Request body containing an SQL query with zero or more positional parameters.
+      type: object
       required:
         - query
-      type: object
       properties:
         query:
           type: string
+          description: Query in SQL. Supported SQL grammar, data types, and functions are described in [the specification](https://github.com/ga4gh-discovery/ga4gh-search/blob/develop/SEARCHSPEC.md#query).
+          example: SELECT some_string, some_num FROM a_table WHERE some_string=? AND some_num=?
         parameters:
           type: array
           items: {}
+          description: Positional parameters for the query in `query` property.
+          example: [ hello, 42 ]
     Service:
       $ref: 'https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-service-info/v1.0.0/service-info.yaml#/components/schemas/Service'
