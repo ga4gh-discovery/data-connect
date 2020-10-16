@@ -1,27 +1,25 @@
 # GA4GH Search Specification
 
+This document describes the overall structure of the GA4GH Search and specifies how a GA4GH Search implementation should parse, execute, and respond to a query expressed in the SQL language. Independently developed implementations that conform to this specification can be used interchangeably by a client, or networked together into a tree-structured federation of search nodes.
+
+## Table of Contents
+
 - [GA4GH Search Specification](#ga4gh-search-specification)
-  - [Introduction](#introduction)
-    - [Intended Audience](#intended-audience)
-    - [Purpose and Motivation](#purpose-and-motivation)
-    - [Traits](#traits)
-    - [Applications](#applications)
-  - [Specification](#specification)
-    - [Overview](#overview)
-    - [Conventions](#conventions)
-    - [Discovery and Browsing](#discovery-and-browsing)
-      - [Discovery and Browsing Examples](#discovery-and-browsing-examples)
-    - [Query](#query)
-      - [Query Example](#query-example)
-        - [Query Request](#query-request)
-        - [Query Result](#query-result)
-      - [Correspondence Between SQL and JSON Data Types](#correspondence-between-sql-and-json-data-types)
-    - [Semantic Data Types](#semantic-data-types)
-      - [Example: Semantic Data Types on a Table](#example-semantic-data-types-on-a-table)
-      - [Attaching Semantic Data Types To Query Results](#attaching-semantic-data-types-to-query-results)
-      - [Example: Semantic Data Types in Query Results](#example-semantic-data-types-in-query-results)
-    - [SQL Functions](#sql-functions)
-    - [Pagination and Long Running Queries](#pagination-and-long-running-queries)
+  - [Overview](#overview)
+  - [Conventions](#conventions)
+  - [Discovery and Browsing](#discovery-and-browsing)
+    - [Discovery and Browsing Examples](#discovery-and-browsing-examples)
+  - [Query](#query)
+    - [Query Example](#query-example)
+      - [Query Request](#query-request)
+      - [Query Result](#query-result)
+    - [Correspondence Between SQL and JSON Data Types](#correspondence-between-sql-and-json-data-types)
+  - [Semantic Data Types](#semantic-data-types)
+    - [Example: Semantic Data Types on a Table](#example-semantic-data-types-on-a-table)
+    - [Attaching Semantic Data Types To Query Results](#attaching-semantic-data-types-to-query-results)
+    - [Example: Semantic Data Types in Query Results](#example-semantic-data-types-in-query-results)
+  - [SQL Functions](#sql-functions)
+  - [Pagination and Long Running Queries](#pagination-and-long-running-queries)
   - [Supplementary Information](#supplementary-information)
     - [Interop with other data storage and transmission standards](#interop-with-other-data-storage-and-transmission-standards)
       - [Phenopackets](#phenopackets)
@@ -31,51 +29,7 @@
     - [Implementing a Federation of SQL Query Nodes](#implementing-a-federation-of-sql-query-nodes)
   - [Appendix A: SQL Grammar](#appendix-a-sql-grammar)
 
-## Introduction
-
-
-### Intended Audience
-
-The intended audience of this specification includes both data providers and data consumers who are implementers of the specification. Data custodians can implement to make their biomedical data more discoverable.
-
-
-### Purpose and Motivation 
-
-The ever growing new biomedical techniques, such as next-generation genome sequencing, imaging, and others are creating vast amounts of data. Everyday researchers and clinicians accumulate and analyze the world's exponentially growing volumes of genomic and clinical data. With this large data comes the challenge for exploring and finding the data, while interpreting various available formats.
-
-In this specification, we offer a simple, uniform mechanism to publish, discover, query, and analyze any format of biomedical data. There are thousands of ways data can be stored or moved over the network. Any “rectangular” data that fits into rows & columns can be represented via the GA4GH Search API. This is useful for all kinds of data as we now have a common way to use the information regardless of the way it was collected. 
-
-GA4GH Search API enables an ecosystem of compatible tools and components that search genotypic and phenotypic data. This document describes the overall structure of the GA4GH Search API and specifies how a GA4GH Search API implementation should parse, execute, and respond to a query expressed in the SQL language. Independently developed implementations that conform to this specification can be used interchangeably by a client, or networked together into a tree-structured federation of search nodes.
-
-
-### Traits
-
-GA4GH Search API was designed with the following constraints in mind:
-
-* Supports Federation: GA4GH Search API serves as a general-purpose framework for building federatable search-based applications across multiple implementations. Federations of the search framework reference common schemas and properties.
-* General: Admits use cases that have not yet been thought of
-* Minimal: GA4GH Search API is purposely kept minimal so that the barriers to publishing existing data are as small as possible. 
-* Backend Agnostic: This property makes it possible to implement the framework across a large variety of backend datastores.
-
-
-### Applications
-
-Various applications can be built on top of GA4GH Search API implementations such as
-
-*   Data and metadata indexers
-*   Query tools
-*   Data federations
-*   Concept cross-references
-*   Parameters for batch workflows
-*   Workflow result summaries
-*   Patient matchmaking
-*   (Most importantly) Things we haven’t yet imagined!
-
-
-## Specification
-
-
-### Overview
+## Overview
 
 The primary container for data in the GA4GH Search API is the **Table**. Tables contain rows of data, where each row is a JSON object with key/value pairs. The table describes the structure of its row objects using [JSON Schema](https://json-schema.org/). Row attributes can take on any legal JSON value, eg. numbers, strings, booleans, nulls, arrays, and nested JSON objects.
 
@@ -83,12 +37,12 @@ The API supports browsing and discovery of data models and table metadata, listi
 
 All discovery, browsing and query operations are specified formally in the [OpenAPI specification](https://github.com/ga4gh-discovery/ga4gh-discovery-search/blob/develop/spec/search-api.yaml) document.
 
-### Conventions
+## Conventions
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://tools.ietf.org/html/rfc2119).
 
 
-### Discovery and Browsing
+## Discovery and Browsing
 
 The Discovery and Browsing part of the GA4GH Search API consists of the following REST operations:
 | Request                    | Description                                                                 |
@@ -97,9 +51,9 @@ The Discovery and Browsing part of the GA4GH Search API consists of the followin
 | GET /table/{id}/info\[^1\] | Retrieve the data model associated with the given table                     |
 | GET /table/{id}/data       | Retrieve the data model and data rows (paginated) from the given table      |
 
+More information on the table structure is provided in [TABLE.md](TABLE.md).
 
-
-#### Discovery and Browsing Examples
+### Discovery and Browsing Examples
 
 
 ```
@@ -196,7 +150,7 @@ GET /table/`search_postgres_pgpc`.ontology.axiom/data
 }
 ```
 
-### Query
+## Query
 
 The Query part of the Search API consists of the following REST operation:
 
@@ -205,10 +159,10 @@ The Query part of the Search API consists of the following REST operation:
 | POST /search               | Executes the given SQL query and returns the results as a Table             |
 
 
-#### Query Example
+### Query Example
 
 
-##### Query Request
+#### Query Request
 
 Here is a concrete example of a search query against a search implementation.
 
@@ -223,7 +177,7 @@ Request body:
 { "query": "SELECT * from search_postgres_pgpc.ontology.axiom WHERE to_term='UBERON_0000464'"}
 ```
 
-##### Query Result
+#### Query Result
 
 The result is returned in the same data structure as tables are returned by the discovery and browsing part of the GA4GH Search API: a **TableData** object.
 
@@ -255,7 +209,7 @@ The result is returned in the same data structure as tables are returned by the 
 }
 
 ```
-#### Correspondence Between SQL and JSON Data Types
+### Correspondence Between SQL and JSON Data Types
 
 Data is manipulated in the query using the following types. Each SQL type is expressed as a physical JSON value in the response table. Semantic types (defined by JSON Schema reference URLs) are covered in the next section.
 
@@ -278,7 +232,7 @@ Data is manipulated in the query using the following types. Each SQL type is exp
 | map                           | object                                                       | { "key": "value” }                                           |
 | row                           | object                                                       | { "colname": "colvalue” }                                    |
 
-### Semantic Data Types
+## Semantic Data Types
 
 To enable discovery of tables based on the kind of information contained within them, and to enable query tools to offer to filter and join data from different sources in a sensible way, tables need to declare not only the physical type of their rows (eg. how data is represented as JSON) but also the semantic type (what the data means). This means that any datasource which can conform to this requirement, may be exposed as a Table.
 
@@ -293,7 +247,7 @@ Clients can use the attribute meanings to:
 This system of identifying types through reference URLs is amenable to building up cross-references. With a rich set of cross references, a GA4GH Search API client can help join up data from sources that use different nomenclatures.
 
 
-#### Example: Semantic Data Types on a Table 
+### Example: Semantic Data Types on a Table 
 
 Assume the following JSON Schema is published at https://schemablocks.org/schemas/example/blood-group/v1.0.0/BloodGroup.json:
 
@@ -345,7 +299,7 @@ Then data exposed through GA4GH Search API could refer to the concept of “ABO 
 SchemaBlocks is the recommended repository for centrally defined types, but any URL that points to a valid JSON Schema definition is acceptable. In many cases, the quickest route to publishing data will be to translate existing data dictionaries into JSON Schema and publish those alongside the dataset. However, the dataset will provide greater utility to its consumers if concepts are mapped to SchemaBlocks definitions where possible.
 
 
-#### Attaching Semantic Data Types To Query Results
+### Attaching Semantic Data Types To Query Results
 
 Since query results are also Tables, there are many scenarios where users would benefit from semantic schema references being embedded in query results as well as static views of tables.
 
@@ -361,7 +315,7 @@ WHERE t.age > 18
 Any selected columns that are not wrapped in the ga4gh_type() function will only have their physical characteristics described in the result table’s schema. This is perfectly acceptable for some client applications, but greatly limits the value of result tables that are archived or forwarded to another tool for further processing.
 
 
-#### Example: Semantic Data Types in Query Results
+### Example: Semantic Data Types in Query Results
 
 When a user issues the following query to the /search endpoint
 
@@ -418,7 +372,7 @@ Then the Search service would respond with:
 }
 ```
 
-### SQL Functions
+## SQL Functions
 
 GA4GH Search API’s SQL dialect has been selected for compatibility with current major open source database platforms including Presto SQL, PostgreSQL, and MySQL, as well as BigQuery. There are occasional name or signature differences, but a GA4GH Search API implementation atop any of the major database platforms should be able to pass through queries that use the functions listed below with only minor tweaks.
 
@@ -602,7 +556,7 @@ Note: Arrays are mostly absent in MySQL
     *   `cardinality(x)` → `bigint`*
 *   ga4gh_type (described above)
 
-### Pagination and Long Running Queries
+## Pagination and Long Running Queries
 
 **Pagination sequence**
 
@@ -731,17 +685,17 @@ The algorithm provided here simply illustrates one way to comply with the rules 
 This section provides advice to implementers. Nothing in this section is required of a conforming implementation.
 
 
-### Interop with other data storage and transmission standards 
+## Interop with other data storage and transmission standards 
 
 This section demonstrates how to expose data stored in commonly used formats using GA4GH Search Table structures and their embedded JSON schema specifications.
 
 
-#### Phenopackets 
+### Phenopackets 
 
 Phenopacket is a GA4GH approved standard file format for sharing phenotypic information. A phenopacket file contains a set of mandatory and optional fields to share information about a patient or participant’s phenotype, such as clinical diagnosis, age of onset, results from lab tests, and disease severity.
 
 
-##### Concrete Example 
+#### Concrete Example 
 
 Here is a detailed example of a directory full of Phenopacket files exposed as a single table via the GA4GH Search API. Each row corresponds to one Phenopacket. The table has two columns: 
 
@@ -869,7 +823,7 @@ RESPONSE:
 
 ```
 
-##### Organizing Into Tables 
+#### Organizing Into Tables 
 
 Here we demonstrate two possibilities for organizing a collection of Phenopacket JSON files into tables. Other layouts are also possible.
 
@@ -891,14 +845,14 @@ The difference between the two formats is the way in which the phenopacket json 
 
 ![phenopacket tables in a bucket example](assets/phenopacket-tables-in-a-bucket-example.svg "phenopacket tables in a bucket example")
 
-### How to Secure Implementations Based on Presto Connectors or PostgreSQL Foreign Data Wrappers
+## How to Secure Implementations Based on Presto Connectors or PostgreSQL Foreign Data Wrappers
 
 *   Filter data at the connector level
 *   Use simple OAuth scopes to decide what data can be returned
 *   If certain scopes should only see aggregated data (for privacy reasons), use separate aggregated tables (or views). The connector should only pull data from these pre-summarized views.
 
 
-### Implementing a Federation of SQL Query Nodes 
+## Implementing a Federation of SQL Query Nodes 
 
 *   Two approaches: “foreign data wrappers” and “fan-out/hub-and-spoke”
 *   Foreign data wrappers:
