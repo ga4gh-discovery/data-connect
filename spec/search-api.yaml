@@ -13,7 +13,7 @@ info:
     name: 'GA4GH Search Team'
     email: 'ga4gh-discovery-search@ga4gh.org'
 security:
-  - bearerAuth: []
+  - bearerAuth: [ ]
 paths:
   /tables:
     get:
@@ -31,6 +31,10 @@ paths:
                 $ref: "#/components/schemas/ListTablesResponse"
         '500':
           description: An unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /table/{table_name}/info:
     get:
       summary: Get a Table
@@ -53,9 +57,13 @@ paths:
               schema:
                 $ref: "#/components/schemas/Table"
         '404':
-          description: This server does not implement the data operation
+          description: The table doesn't exist
         '500':
           description: An unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /table/{table_name}/data:
     get:
       summary: Fetch data from a Table
@@ -78,14 +86,25 @@ paths:
               schema:
                 $ref: "#/components/schemas/TableData"
         '404':
-          description: This server does not implement the data operation
+          description: The table doesn't exist
         '500':
           description: An unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /search:
     post:
       summary: Perform a search on Tables
-      description: Optional operation that accepts a Query and returns a TableData
+      description: Optional operation that accepts a SearchRequest and returns a TableData
       operationId: search
+      requestBody:
+        description: Query to execute
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchRequest"
       tags:
         - search
       responses:
@@ -95,10 +114,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/TableData"
+        '400':
+          description: The query is invalid
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
         '404':
           description: This server does not implement the search operation
         '500':
           description: An unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /service-info:
     get:
       summary: 'Show information about the Search service'
@@ -115,8 +144,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Service'
-        '500':
-          description: An unexpected error occurred
 components:
   securitySchemes:
     bearerAuth:
@@ -134,6 +161,8 @@ components:
             $ref: "#/components/schemas/Table"
         pagination:
           $ref: '#/components/schemas/Pagination'
+        errors:
+          $ref: "#/components/schemas/ErrorList"
     Table:
       required:
         - name
@@ -148,6 +177,8 @@ components:
           description: Optional description of the Table
         data_model:
           $ref: "http://json-schema.org/draft-07/schema#"
+        errors:
+          $ref: "#/components/schemas/ErrorList"
       description: |
         Describes a Table hosted by this search node.
     TableData:
@@ -160,14 +191,57 @@ components:
           $ref: "http://json-schema.org/draft-07/schema#"
         data:
           type: array
-          description: Page of JSON values, each adhering to the schema given in the "data_model" property
+          description: Page of JSON values, each adhering to the schema given in the `data_model` property
           items:
             # Each item must conform to the schema provided in the "data_model" section of this Table.
             # Not sure if this constraint can be expressed in OpenAPI 3.0.
             type: object
         pagination:
           $ref: "#/components/schemas/Pagination"
+        errors:
+          $ref: "#/components/schemas/ErrorList"
       description: A paginated collection of tabular data
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          $ref: "#/components/schemas/ErrorList"
+      description: The response body when no part of the request can be fulfilled
+    ErrorList:
+      type: array
+      description: List of errors encountered
+      items:
+        $ref: "#/components/schemas/Error"
+    Error:
+      type: object
+      properties:
+        source:
+          type: string
+          description: >
+            The "source" field should only be present when the error originated in an attached data source backing the Search
+            API. The value of source can be any of the following:
+
+            1. A fully qualified table `name`
+            2. Any prefix of a table `name` that ends before a `.` character in the name. For example
+            if there is a table called `foo.bar.baz`, valid prefixes would be `foo` and `foo.bar`. Partial prefixes
+            which do not end just before a `.`, are not valid. For example: `foo.b` and `fo` are not allowed.
+
+            If the error originated inside the Search API implementation and is not associated with any particular table
+            or group of tables, then the source must be absent. An example of this would be an error occurring from a bug
+            in the implementation. Additionally, if the error is due to a bad request from the client, the source must
+            also be absent.
+        title:
+          type: string
+          description: |
+            A short, human-readable description of the error.
+            The value should not change from occurrence to occurrence of an error, except for purposes of localization.
+          example: 'Internal server error'
+        detail:
+          type: string
+          description: 'A human-readable explanation specific to this occurrence of the error.'
+          example: 'Internal server error'
+      required:
+        - title
     Pagination:
       type: object
       properties:
@@ -175,5 +249,21 @@ components:
           type: string
           description: URL pointing to the next page of the same Table. Null or absent on last page.
           format: uri
+    SearchRequest:
+      description:
+        Request body containing an SQL query with zero or more positional parameters.
+      type: object
+      required:
+        - query
+      properties:
+        query:
+          type: string
+          description: Query in SQL. Supported SQL grammar, data types, and functions are described in [the specification](https://github.com/ga4gh-discovery/ga4gh-search/blob/develop/SEARCHSPEC.md#query).
+          example: SELECT some_string, some_num FROM a_table WHERE some_string=? AND some_num=?
+        parameters:
+          type: array
+          items: {}
+          description: Positional parameters for the query in `query` property.
+          example: [ hello, 42 ]
     Service:
       $ref: 'https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-service-info/v1.0.0/service-info.yaml#/components/schemas/Service'
