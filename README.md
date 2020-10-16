@@ -1,8 +1,8 @@
 ![](https://www.ga4gh.org/wp-content/themes/ga4gh-theme/gfx/GA-logo-horizontal-tag-RGB.svg)
 
-# Search <a href="https://github.com/ga4gh-discovery/ga4gh-discovery-search/blob/develop/spec/search-api.yaml"><img src="http://validator.swagger.io/validator?url=https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-discovery-search/develop/spec/search-api.yaml" alt="Swagger Validator" height="20em" width="72em"></a> [![](https://travis-ci.org/ga4gh-discovery/ga4gh-discovery-search.svg?branch=develop)](https://travis-ci.org/ga4gh-discovery/ga4gh-discovery-search) [![](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-discovery-search/develop/LICENSE)
+# GA4GH Search <a href="https://github.com/ga4gh-discovery/ga4gh-search/blob/develop/spec/search-api.yaml"><img src="http://validator.swagger.io/validator?url=https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-search/develop/spec/search-api.yaml" alt="Swagger Validator" height="20em" width="72em"></a> [![](https://travis-ci.org/ga4gh-discovery/ga4gh-search.svg?branch=develop)](https://travis-ci.org/ga4gh-discovery/ga4gh-search) [![](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-search/develop/LICENSE)
 
-`Search` is a framework for searching genomics and clinical data. 
+GA4GH Search is a framework for searching genomics and clinical data. 
 
 The Search framework is comprised of a collection of complementary standards that data custodians can implement to make their biomedical data more discoverable.
 
@@ -26,7 +26,7 @@ The Discovery Work Stream develops `Search` as a general-purpose framework for b
 
 ## How to view
 
-Search API is specified in OpenAPI in [search-api.yaml](./spec/search-api.yaml), which [you can view using Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-discovery-search/develop/spec/search-api.yaml).
+Search API is specified in OpenAPI in [search-api.yaml](./spec/search-api.yaml), which [you can view using Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-search/develop/spec/search-api.yaml).
 
 ## How to test
 
@@ -41,16 +41,16 @@ The following standards are complementary but not required by the Search framewo
 
 ## Architecture
 
-<img src="assets/ga4gh-discovery-search.svg">
+<img src="assets/ga4gh-search.svg">
 <!--
-    To edit this image, load assets/ga4gh-discovery-search.xml into draw.io and regenerate svg
+    To edit this image, load assets/ga4gh-search.xml into draw.io and regenerate svg
 -->
 
 ## Components
 
 The search API consists of [Table](TABLE.md) and Query APIs, describing search results and queries, respectively.
 
-## Discovery Search API Specification
+## GA4GH Search API Specification
 
 See [SEARCHSPEC.md](SEARCHSPEC.md)
 
