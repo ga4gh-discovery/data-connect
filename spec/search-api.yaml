@@ -1,7 +1,7 @@
 openapi: "3.0.2"
 info:
   title: GA4GH Search API
-  version: 0.2.0
+  version: 1.0.0
   description: |
     GA4GH Search is an API for searching biomedical data.
 
