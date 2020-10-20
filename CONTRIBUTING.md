@@ -22,11 +22,30 @@ Some general rules to follow:
 - Create a branch for each update that you're working on. These branches are often called "feature" or "topic" branches. Any changes that you push to your feature branch will automatically be shown in the pull request.
 - Keep your pull requests as small as possible. Large pull requests are hard to review. Try to break up your changes into self-contained and incremental pull requests.
 - The first line of commit messages should be a short (&lt;80 character) summary, followed by an empty line and then any details that you want to share about the commit.
+- Each pull request should be associated with an issue.
 - Please try to follow [common commit message conventions](https://chris.beams.io/posts/git-commit/).
+
+### Voting
+Once a pull request or issue have been submitted, maintainers can comment or vote on to express their opinion following the [Apache voting system](https://www.apache.org/foundation/voting.html). Quick summary:
+
+- +1 something you agree with
+- -1 if you have a strong objection to an issue, which will be taken very seriously. A -1 vote should provide an alternative solution.
+- +0 or -0 for neutral comments or weak opinions.
+- It's okay to have input without voting.
+- Silence gives assent.
+- In a pull request review:
+  - Approval is considered a +1 vote on the pull request. 
+  - "Request changes" is considered a -1 vote on the pull request.
+- A pull request is ready to be merged when either of the following is true:
+  - A pull request has at least two +1 votes, no -1 votes, and has been open for at least 3 days.
+  - A pull request has no -1 votes, and has been open for at least 14 days.
+    - We sometimes waive the time constraint for cosmetic-only changes -- use good judgment. If an issue gets any -1 votes, the comments on the issue need to reach consensus before the issue can be resolved one way or the other. There isn't any strict time limit on a contentious issue.
+
+The project will strive for full consensus on everything until it runs into a problem with this model.
 
 ### Topic branches
 
-If you wish to collaborate on a new feature with other GA4GH members, you can create a topic branch. Once a topic branch exists, pull requests can be made against it the usual way. It may also be brought up to date with new changes merged into develop by anyone with commit access, if the changes produce merely a fast-forward merge for each constituent branch. However, if changes from the develop branch create a new merge commit in or or more of the repositories, that commit needs to be reviewed in a pull request.
+If you wish to collaborate on a new feature with other GA4GH members, you can create a topic branch. Once a topic branch exists, pull requests can be made against it the usual way. It may also be brought up to date with new changes merged into `develop` by anyone with commit access, if the changes produce merely a fast-forward merge for each constituent branch. However, if changes from the `develop` branch create a new merge commit, that commit needs to be reviewed in a pull request.
 
 Changes made in a topic branch can be merged into develop by creating a pull request against the `develop` branch and then resolving the normal way.
 
