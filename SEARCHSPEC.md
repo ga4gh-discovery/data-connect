@@ -1,104 +1,61 @@
-![](https://www.ga4gh.org/wp-content/themes/ga4gh-theme/gfx/GA-logo-horizontal-tag-RGB.svg)
-# Discovery Search Specification
+# GA4GH Search Specification
 
-- [Discovery Search Specification](#discovery-search-specification)
-  - [Introduction](#introduction)
-    - [Intended Audience](#intended-audience)
-    - [Purpose and Motivation](#purpose-and-motivation)
-    - [Traits](#traits)
-    - [Applications](#applications)
-  - [Specification](#specification)
-    - [Overview](#overview)
-    - [Conventions](#conventions)
-    - [Discovery and Browsing](#discovery-and-browsing)
+This document describes the overall structure of the GA4GH Search and specifies how a GA4GH Search implementation should parse, execute, and respond to a query expressed in the SQL language. Independently developed implementations that conform to this specification can be used interchangeably by a client or networked together into a tree-structured federation of search nodes.
+
+## Table of Contents
+
+- [GA4GH Search Specification](#ga4gh-search-specification)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+  - [Conventions](#conventions)
+  - [Discovery and Browsing](#discovery-and-browsing)
       - [Route Naming](#route-naming)
       - [Discovery and Browsing Examples](#discovery-and-browsing-examples)
-    - [Query](#query)
-      - [Query Example](#query-example)
-        - [Query Request](#query-request)
-        - [Query Result](#query-result)
-      - [Correspondence Between SQL and JSON Data Types](#correspondence-between-sql-and-json-data-types)
-    - [Semantic Data Types](#semantic-data-types)
-      - [Example: Semantic Data Types on a Table](#example-semantic-data-types-on-a-table)
-      - [Attaching Semantic Data Types To Query Results](#attaching-semantic-data-types-to-query-results)
-      - [Example: Semantic Data Types in Query Results](#example-semantic-data-types-in-query-results)
-    - [SQL Functions](#sql-functions)
-    - [Pagination and Long Running Queries](#pagination-and-long-running-queries)
-  - [Supplementary Information](#supplementary-information)
-    - [Interop with other data storage and transmission standards](#interop-with-other-data-storage-and-transmission-standards)
-      - [Phenopackets](#phenopackets)
-        - [Concrete Example](#concrete-example)
-        - [Organizing Into Tables](#organizing-into-tables)
-    - [How to Secure Implementations Based on Presto Connectors or PostgreSQL Foreign Data Wrappers](#how-to-secure-implementations-based-on-presto-connectors-or-postgresql-foreign-data-wrappers)
-    - [Implementing a Federation of SQL Query Nodes](#implementing-a-federation-of-sql-query-nodes)
-  - [Appendix A: SQL Grammar](#appendix-a-sql-grammar)
+  - [Query](#query)
+    - [Query Example](#query-example)
+      - [Query Request](#query-request)
+        - [Positional Query Parameters](#positional-query-parameters)
+        - [Correspondence Between SQL and JSON Data Types in Search Request](#correspondence-between-sql-and-json-data-types-in-search-request)
+      - [Query Result](#query-result)
+        - [Correspondence Between SQL and JSON Data Types in the Query Result](#correspondence-between-sql-and-json-data-types-in-the-query-result)
+  - [Semantic Data Types](#semantic-data-types)
+    - [Example: Semantic Data Types on a Table](#example-semantic-data-types-on-a-table)
+    - [Attaching Semantic Data Types To Query Results](#attaching-semantic-data-types-to-query-results)
+    - [Example: Semantic Data Types in Query Results](#example-semantic-data-types-in-query-results)
+  - [SQL Functions](#sql-functions)
+  - [Pagination and Long Running Queries](#pagination-and-long-running-queries)
+- [Supplementary Information](#supplementary-information)
+  - [Interop with other data storage and transmission standards](#interop-with-other-data-storage-and-transmission-standards)
+    - [Phenopackets](#phenopackets)
+      - [Concrete Example](#concrete-example)
+      - [Organizing Into Tables](#organizing-into-tables)
+  - [How to Secure Implementations Based on Presto Connectors or PostgreSQL Foreign Data Wrappers](#how-to-secure-implementations-based-on-presto-connectors-or-postgresql-foreign-data-wrappers)
+  - [Implementing a Federation of SQL Query Nodes](#implementing-a-federation-of-sql-query-nodes)
+- [Appendix A: SQL Grammar](#appendix-a-sql-grammar)
 
-## Introduction
+## Overview
 
-
-### Intended Audience
-
-The intended audience of this specification includes both data providers and data consumers who are implementers of the specification. Data custodians can implement to make their biomedical data more discoverable.
-
-
-### Purpose and Motivation 
-
-The ever growing new biomedical techniques, such as next-generation genome sequencing, imaging, and others are creating vast amounts of data. Everyday researchers and clinicians accumulate and analyze the world's exponentially growing volumes of genomic and clinical data. With this large data comes the challenge for exploring and finding the data, while interpreting various available formats.
-
-In this specification, we offer a simple, uniform mechanism to publish, discover, query, and analyze any format of biomedical data. There are thousands of ways data can be stored or moved over the network. Any “rectangular” data that fits into rows & columns can be represented via the Search API. This is useful for all kinds of data as we now have a common way to use the information regardless of the way it was collected. 
-
-Search API enables an ecosystem of compatible tools and components that search genotypic and phenotypic data. This document describes the overall structure of the Search API and specifies how a Search API implementation should parse, execute, and respond to a query expressed in the SQL language. Independently developed implementations that conform to this specification can be used interchangeably by a client, or networked together into a tree-structured federation of search nodes.
-
-
-### Traits
-
-The Search API was designed with the following constraints in mind:
-
-*   Supports Federation: Search API serves as a general-purpose framework for building federatable search-based applications across multiple implementations. Federations of the search framework reference common schemas and properties.
-*   General: Admits use cases that have not yet been thought of
-*   Minimal: Search API is purposely kept minimal so that the barriers to publishing existing data are as small as possible. 
-*   Backend Agnostic: This property makes it possible to implement the framework across a large variety of backend datastores.
-
-
-### Applications
-
-Various applications can be built on top of Search API implementations such as
-
-*   Data and metadata indexers
-*   Query tools
-*   Data federations
-*   Concept cross-references
-*   Parameters for batch workflows
-*   Workflow result summaries
-*   Patient matchmaking
-*   (Most importantly) Things we haven’t yet imagined!
-
-
-## Specification
-
-
-### Overview
-
-The primary container for data in the Search API is the **Table**. Tables contain rows of data, where each row is a JSON object with key/value pairs. The table describes the structure of its row objects using [JSON Schema](https://json-schema.org/). Row attributes can take on any legal JSON value, eg. numbers, strings, booleans, nulls, arrays, and nested JSON objects.
+The primary container for data in the GA4GH Search API is the **Table**. Tables contain rows of data, where each row is a JSON object with key/value pairs. The table describes the structure of its row objects using [JSON Schema](https://json-schema.org/). Row attributes can take on any legal JSON value, such as numbers, strings, booleans, nulls, arrays, and nested JSON objects.
 
 The API supports browsing and discovery of data models and table metadata, listing table data, and optionally querying table data using arbitrarily complex expressions including joins and aggregations. The query language is SQL with domain specific functions to facilitate informative typing of the result fields. 
 
 All discovery, browsing and query operations are specified formally in the [OpenAPI specification](https://ga4gh-discovery.github.io/ga4gh-discovery-search/docs/) document.
 
-### Conventions
+## Conventions
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://tools.ietf.org/html/rfc2119).
+The key words `MUST`, `MUST NOT`, `REQUIRED`, `SHALL`, `SHALL NOT`, `SHOULD`, `SHOULD NOT`, `RECOMMENDED`,  `MAY`, and `OPTIONAL` in this document are to be interpreted as described in [RFC 2119](https://tools.ietf.org/html/rfc2119).
 
 
-### Discovery and Browsing
+## Discovery and Browsing
 
-The Discovery and Browsing part of the Search API consists of the following REST operations:
+The Discovery and Browsing part of the GA4GH Search API consists of the following REST operations:
 | Request                    | Description                                                                 |
 | -------------------------- | --------------------------------------------------------------------------- |
-| GET /tables                | Retrieve a paginated list of tables available from this Search API instance |
-| GET /table/{id}/info\[^1\] | Retrieve the data model associated with the given table                     |
-| GET /table/{id}/data       | Retrieve the data model and data rows (paginated) from the given table      |
+| `GET /tables`                | Retrieve a paginated list of tables available from this GA4GH Search API instance |
+| `GET /table/{id}/info\[^1\]` | Retrieve the data model associated with the given table                     |
+| `GET /table/{id}/data`       | Retrieve the data model and data rows (paginated) from the given table      |
 
+More information on the table structure is provided in [TABLE.md](TABLE.md).
 
 #### Route Naming
 
@@ -121,7 +78,7 @@ If we had used `/tables` and `/tables/{id}/data` then the “tables in a bucket�
 GET /tables
 ```
 
-```
+```json
 {
   "tables": [
     {
@@ -148,7 +105,7 @@ GET /tables
 ```
 GET `/table/example_project.ontology.axiom/info`
 ```
-```
+```json
 {
   "name": "example_project.ontology.axiom",
   "data_model": {
@@ -186,9 +143,9 @@ GET `/table/example_project.ontology.axiom/info`
 ```
 GET /table/example_project.ontology.axiom/data
 ```
-```
+```json
 {
-  "data_model": { <described in the /info example above> },
+  "data_model": { ...described in the /info example above },
   "data": [
     {
       "ontology": "http://purl.obolibrary.org/obo/hp.owl",
@@ -212,23 +169,23 @@ GET /table/example_project.ontology.axiom/data
 }
 ```
 
-### Query
+## Query
 
 The Query part of the Search API consists of the following REST operation:
 
 | Request                    | Description                                                                 |
 | -------------------------- | --------------------------------------------------------------------------- |
-| POST /search               | Executes the given SQL query and returns the results as a Table             |
+| `POST /search`               | Executes the given SQL query and returns the results as a Table             |
 
 
-#### Query Example
+### Query Example
 
 
-##### Query Request
+#### Query Request
 
 Here is a concrete example of a search query against a search implementation.
 
-```
+```json
 POST Request:
 /search
 
@@ -239,9 +196,54 @@ Request body:
 { "query": "SELECT * from example_project.ontology.axiom WHERE to_term='UBERON_0000464'"}
 ```
 
-##### Query Result
+##### Positional Query Parameters
 
-The result is returned in the same data structure as tables are returned by the discovery and browsing part of the Search API: a **TableData** object.
+This query has the effect as the previous example, but is expressed using a positional parameter:
+
+```json
+POST Request:
+/search
+
+Header:
+content-type: application/json
+
+Request body:
+{
+  "query": "SELECT * from search_postgres_pgpc.ontology.axiom WHERE to_term=?"
+  "parameters": [ "UBERON_0000464" ]
+}
+```
+
+A positional parameter is marked by a `?` anywhere a literal value of any type could appear in the query.
+
+If a query has no positional parameters, the client MAY omit the `parameters` property from the request.
+If the client supplies `parameters` in a query with no positional parameters, its value **must** be an empty
+array.
+
+If a query has one or more positional parameters, the request body **must** include a `parameters` property,
+which is a JSON array whose element count matches the number of `?` placeholders in the query. Values
+will be substituted from the array into the query on the server side in the order the `?` placeholders
+appear in the text of the SQL query.
+
+##### Correspondence Between SQL and JSON Data Types in Search Request
+
+The SQL type of a `?` placeholder in the query is determined by its corresponding entry in the
+`parameters` array, according to the following table.
+
+| JSON Parameter Type                            | SQL Type  | Example Values                                |
+| ---------------------------------------------- | --------- | --------------------------------------------- |
+| `boolean`                                        | `boolean`   | `true`, `false`                               |
+| `number`                                         | `double`    | `123`, `-7000`, `123.456`, `7.445e-17`        |
+| `string`                                         | `varchar`   | `"Hello world"`, `"12345678910"`              |
+| `array` (note all elements must have same type)  | `array`     | `[ 1, 3, 5 ]`, `[ "one", "three", "five" ]`   |
+| `object`                                         | `row`       | `{ "colname1": "colvalue1", "colname2": 42 }` |
+
+Queries that require parameters with SQL types not covered above should use the SQL CAST operation. For
+example, `CAST(? AS DATE)`.
+
+#### Query Result
+
+The result is returned in the same data structure as tables are returned by the discovery and browsing part of the GA4GH Search API: a `TableData` object.
 
 ```
 
@@ -271,34 +273,34 @@ The result is returned in the same data structure as tables are returned by the 
 }
 
 ```
-#### Correspondence Between SQL and JSON Data Types
+##### Correspondence Between SQL and JSON Data Types in the Query Result
 
 Data is manipulated in the query using the following types. Each SQL type is expressed as a physical JSON value in the response table. Semantic types (defined by JSON Schema reference URLs) are covered in the next section.
 
 | SQL Type                      | JSON Type                                                    | Example Values                                               |
 | ----------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| boolean                       | boolean                                                      | true false                                                   |
-| tinyint, smallint, integer    | number                                                       | 123 -7000                                                    |
-| real, double                  | number                                                       | 123.456 7.445e-17                                            |
-| decimal, bigint               | string                                                       | "12345.678910"                                               |
-| varchar, char                 | string                                                       | "Hello world"                                                |
-| JSON                          | Same JSON type (object, array, string, number, boolean, or null) | { "k1": "v1", "k2": false }[ 1, 3, 5, "seven", [ 1 ] ] "Hello JSON" 123.456 false null |
-| date                          | string in ISO 8601 format                                    | "2020-05-27"                                                 |
-| time [without time zone]      | string in ISO 8601 format                                    | "12:22:27.000"                                               |
-| time with time zone           | string in ISO 8601 format                                    | "12:22:27.000Z" "12:22:27.000-03:00"                         |
-| timestamp [without time zone] | string in ISO 8601 format                                    | "2020-05-27T12:22:27.000"                                    |
-| timestamp with time zone      | string in ISO 8601 format                                    | "2020-05-27T12:22:27.000Z" "2020-05-27T12:22:27.000-05:00"   |
-| interval day to month         | String in ISO 8601 period format                             | "P3Y2M"                                                      |
-| interval day to second        | String in ISO 8601 duration format                           | "P3DT4H3M2S" "PT3M2S" "PT4H3M"                               |
-| array                         | array                                                        | [ 1, 3, 5, "seven", [ 1 ] ]                                  |
-| map                           | object                                                       | { "key": "value” }                                           |
-| row                           | object                                                       | { "colname": "colvalue” }                                    |
+| `boolean`                       | `boolean`                                                      | `true` `false`                                                   |
+| `tinyint`, `smallint`, `integer`    | `number`                                                       | `123` `-7000`                                                    |
+| `real`, `double`                  | `number`                                                       | `123.456 7.445e-17`                                            |
+| `decimal`, `bigint`               | `string`                                                       | `"12345.678910"`                                               |
+| `varchar`, `char`                 | `string`                                                       | `"Hello world"`                                                |
+| `JSON`                          | Same `JSON` type (`object`, `array`, `string`, `number`, `boolean`, or `null`) | `{ "k1": "v1", "k2": false }``[ 1, 3, 5, "seven", [ 1 ] ]` `"Hello JSON"` `123.456` `false` `null` |
+| `date`                          | `string` in [[ISO 8601 format](https://www.iso.org/iso-8601-date-and-time-format.html)                                     | `"2020-05-27"`                                                 |
+| `time` [without time zone]      | `string` in [ISO 8601 format](https://www.iso.org/iso-8601-date-and-time-format.html)                                    | `"12:22:27.000"`                                               |
+| `time` with time zone           | `string` in [ISO 8601 format](https://www.iso.org/iso-8601-date-and-time-format.html)                                    | `"12:22:27.000Z"` `"12:22:27.000-03:00"  `                       |
+| `timestamp` [without time zone] | `string` in [ISO 8601 format](https://www.iso.org/iso-8601-date-and-time-format.html)                                    | `"2020-05-27T12:22:27.000"`                                   |
+| `timestamp` with time zone      | `string` in [ISO 8601 format](https://www.iso.org/iso-8601-date-and-time-format.html)                                    | `"2020-05-27T12:22:27.000Z" "2020-05-27T12:22:27.000-05:00"`   |
+| `INTERVAL` day to month         | `string` in [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) period format                             | `"P3Y2M"`                                                      |
+| `INTERVAL` day to second        | `string` in [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) duration format                           | `"P3DT4H3M2S"` `"PT3M2S"` `"PT4H3M"`                               |
+| `array`                         | `array`                                                        | `[ 1, 3, 5, "seven", [ 1 ] ]`                                  |
+| `map`                           | `object`                                                       | `{ "key": "value” }`                                           |
+| `row`                           | `object`                                                       | `{ "colname": "colvalue” }`                                    |
 
-### Semantic Data Types
+## Semantic Data Types
 
-To enable discovery of tables based on the kind of information contained within them, and to enable query tools to offer to filter and join data from different sources in a sensible way, tables need to declare not only the physical type of their rows (eg. how data is represented as JSON) but also the semantic type (what the data means). This means that any datasource which can conform to this requirement, may be exposed as a Table.
+To enable discovery of tables based on the kind of information contained within them and to enable query tools to offer to filter and join data from different sources in a sensible way, tables need to declare both physical type of their rows (eg. how data is represented as JSON) and the semantic type (what the data means). This means that any datasource which can conform to this requirement may be exposed as a Table.
 
-The Search API describes the _meaning_ of data through JSON Schema references ($ref). Clients can discover that attributes in different tables refer to the same concept as each other by examining the target of each attribute’s JSON Schema reference. If the $ref URLs are the same, then the client knows that the attributes have the same meaning.
+GA4GH Search API describes the **meaning** of data through JSON Schema references (`$ref`). Clients can discover that attributes in different tables refer to the same concept as each other by examining the target of each attribute’s JSON Schema reference. If the `$ref` URLs are the same, then the client knows that the attributes have the same meaning.
 
 Clients can use the attribute meanings to:
 
@@ -306,14 +308,14 @@ Clients can use the attribute meanings to:
 *   Display table attributes in a meaningful way
 *   Construct queries across tables in an informed way which retains the underlying meaning of the data, or create new meaning
 
-This system of identifying types through reference URLs is amenable to building up cross-references. With a rich set of cross references, a Search API client can help join up data from sources that use different nomenclatures.
+This system of identifying types through reference URLs is amenable to building up cross-references. With a rich set of cross references, a GA4GH Search API client can help join up data from sources that use different nomenclatures.
 
 
-#### Example: Semantic Data Types on a Table 
+### Example: Semantic Data Types on a Table 
 
 Assume the following JSON Schema is published at https://schemablocks.org/schemas/example/blood-group/v1.0.0/BloodGroup.json:
 
-```
+```json
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://schemablocks.org/schemas/example/blood-group/v1.0.0",
@@ -354,20 +356,20 @@ Assume the following JSON Schema is published at https://schemablocks.org/schema
 
 
 
-Then data exposed through the Search API could refer to the concept of “ABO Blood Group” as: 
+Then data exposed through GA4GH Search API could refer to the concept of “ABO Blood Group” as: 
 
-"$ref": "[https://schemablocks.org/schemas/example/blood-group/v1.0.0/BloodGroup.json](https://schemablocks.org/schemas/example/blood-group/v1.0.0/BloodGroup.json)".
+`$ref`: "[https://schemablocks.org/schemas/example/blood-group/v1.0.0/BloodGroup.json](https://schemablocks.org/schemas/example/blood-group/v1.0.0/BloodGroup.json)".
 
 SchemaBlocks is the recommended repository for centrally defined types, but any URL that points to a valid JSON Schema definition is acceptable. In many cases, the quickest route to publishing data will be to translate existing data dictionaries into JSON Schema and publish those alongside the dataset. However, the dataset will provide greater utility to its consumers if concepts are mapped to SchemaBlocks definitions where possible.
 
 
-#### Attaching Semantic Data Types To Query Results
+### Attaching Semantic Data Types To Query Results
 
 Since query results are also Tables, there are many scenarios where users would benefit from semantic schema references being embedded in query results as well as static views of tables.
 
 When submitting a SQL query to the /search endpoint, the tool generating the query can wrap each selected column in the function `ga4gh_type()`, which directs the Search implementation to generate a corresponding JSON Schema `$ref` for that column in the result table.
 
-```
+```sql
 SELECT ga4gh_type(
   t.age, '$ref:https://schemablocks.org/schemas/sb-phenopackets/current/Age.json#properties/age') AS age
 FROM mytable t
@@ -377,7 +379,7 @@ WHERE t.age > 18
 Any selected columns that are not wrapped in the ga4gh_type() function will only have their physical characteristics described in the result table’s schema. This is perfectly acceptable for some client applications, but greatly limits the value of result tables that are archived or forwarded to another tool for further processing.
 
 
-#### Example: Semantic Data Types in Query Results
+### Example: Semantic Data Types in Query Results
 
 When a user issues the following query to the /search endpoint
 
@@ -434,11 +436,11 @@ Then the Search service would respond with:
 }
 ```
 
-### SQL Functions
+## SQL Functions
 
-The Search API’s SQL dialect has been selected for compatibility with current major open source database platforms including Presto SQL, PostgreSQL, and MySQL, as well as BigQuery. There are occasional name or signature differences, but a Search API implementation atop any of the major database platforms should be able to pass through queries that use the functions listed below with only minor tweaks.
+GA4GH Search API’s SQL dialect has been selected for compatibility with current major open source database platforms including Presto SQL, PostgreSQL, and MySQL, and BigQuery. There are occasional name or signature differences, but a GA4GH Search API implementation atop any of the major database platforms should be able to pass through queries that use the functions listed below with only minor tweaks.
 
-The functions below are a subset of those available in PrestoSQL 341. In a conformant Search API implementation, these functions must behave according to the Presto documentation. To assist with implementations directly on other database platforms, the [PrestoSQL Functions Support Matrix](https://docs.google.com/document/d/1y51qNuoe2ELX9kCOyQbFB4jihiKt2N8Qcd6-zzadIvk) captures the differences between platforms in granular detail. 
+The functions below are a subset of those available in PrestoSQL 341. In a conformant GA4GH Search API implementation, these functions must behave according to the Presto documentation. To assist with implementations directly on other database platforms, the [PrestoSQL Functions Support Matrix](https://docs.google.com/document/d/1y51qNuoe2ELX9kCOyQbFB4jihiKt2N8Qcd6-zzadIvk) captures the differences between platforms in granular detail. 
 
 *   **Logical Operators**
     *   `AND`, `OR`, `NOT`
@@ -537,31 +539,32 @@ The functions below are a subset of those available in PrestoSQL 341. In a confo
         *   `trim(string)` → `varchar`
         *   `upper(string)` → `varchar`
 *   **Date manipulation** 
-**Be aware of different quotation (‘) syntax requirements between MySQL and PostgreSQL. BigQuery does not support the +/- operators for dates. Convenience methods could be replaced with EXTRACT().**
-    *   **Operators:**
-        *   `+`, `- *`
-        *   `AT TIME ZONE`*
-    *   **Functions:**
-        *   `current_date`
-        *   `current_time`
-        *   `current_timestamp`
-        *   `current_timestamp(p)`*
-        *   `date(x)` → `date`*
-        *   `date_trunc(unit, x)` → [same as input]*
-        *   `date_add(unit, value, timestamp)` → [same as input]*
-        *   `date_diff(unit, timestamp1, timestamp2)` → `bigint`*
-        *   `extract(field FROM x)` → `bigint`*
-        *   `from_unixtime(unixtime)` -> `timestamp(3)`*
-        *   `from_unixtime(unixtime, zone)` → `timestamp(3) with time zone`*
-        *   `from_unixtime(unixtime, hours, minutes)` → `timestamp(3) with time zone`*
-        *   `Localtime`*
-        *   `localtimestamp`*
-        *   `localtimestamp(p)`*
-        *   `now()` → `timestamp(3)` with time zone*
-        *   `to_unixtime(timestamp)` → `double`*
-    *   **MySQL-like date functions:**
-        *   `date_format(timestamp, format)` → `varchar`*
-        *   `date_parse(string, format)` → `timestamp(3)`*
+>Be aware of different quotation (`'`) syntax requirements between MySQL and PostgreSQL. BigQuery does not support the `+`/`-` operators for dates. Convenience methods could be replaced with `EXTRACT()`.
+
+*   **Operators:**
+    *   `+`, `- *`
+    *   `AT TIME ZONE`*
+*   **Functions:**
+    *   `current_date`
+    *   `current_time`
+    *   `current_timestamp`
+    *   `current_timestamp(p)`*
+    *   `date(x)` → `date`*
+    *   `date_trunc(unit, x)` → [same as input]*
+    *   `date_add(unit, value, timestamp)` → [same as input]*
+    *   `date_diff(unit, timestamp1, timestamp2)` → `bigint`*
+    *   `extract(field FROM x)` → `bigint`*
+    *   `from_unixtime(unixtime)` -> `timestamp(3)`*
+    *   `from_unixtime(unixtime, zone)` → `timestamp(3) with time zone`*
+    *   `from_unixtime(unixtime, hours, minutes)` → `timestamp(3) with time zone`*
+    *   `Localtime`*
+    *   `localtimestamp`*
+    *   `localtimestamp(p)`*
+    *   `now()` → `timestamp(3)` with time zone*
+    *   `to_unixtime(timestamp)` → `double`*
+*   **MySQL-like date functions:**
+    *   `date_format(timestamp, format)` → `varchar`*
+    *   `date_parse(string, format)` → `timestamp(3)`*
 *   **Aggregate functions** 
 **Note that Presto provides a much larger superset of functions. Bitwise, map, and approximate aggregations are mostly absent. Only BigQuery has a few native approximate aggregation functions.
     *   `array_agg(x)` → `array&lt;`[same as input]>*
@@ -603,63 +606,63 @@ The functions below are a subset of those available in PrestoSQL 341. In a confo
         *   `lag(x[, offset[, default_value]])` → [same as input]
 *   **JSON functions 
 **In general, function signatures and behaviour differs across implementations for many JSON related functions.
-    *   `json_array_length(json)` → bigint*
-    *   `json_extract(json, json_path)` → json*
+    *   `json_array_length(json)` → `bigint`*
+    *   `json_extract(json, json_path)` → `json`*
     *   `json_extract_scalar(json, json_path)` → varchar*
     *   `json_format(json)` → `varchar`*
     *   `json_size(json, json_path)` → `bigint`*
-*   Functions for working with nested and repeated data (ROW and ARRAY) 
-See also UNNEST, which is part of the SQL grammar and allows working with nested arrays as if they were rows in a joined table.
+*   Functions for working with nested and repeated data (`ROW` and `ARRAY`) 
+See also `UNNEST`, which is part of the SQL grammar and allows working with nested arrays as if they were rows in a joined table.
 
 Note: Arrays are mostly absent in MySQL
-    *   Array Subscript Operator: []
-    *   Array Concatenation Operator: ||
+    *   Array Subscript Operator: `[]`
+    *   Array Concatenation Operator: `||`
     *   `concat(array1, array2, ..., arrayN)` → `array`
     *   `cardinality(x)` → `bigint`*
-*   ga4gh_type (described above)
+*   `ga4gh_type` (described above)
 
-### Pagination and Long Running Queries
+## Pagination and Long Running Queries
 
 **Pagination sequence**
 
-A pagination sequence is the singly-linked list of URLs formed by following the next_page_url property of the pagination section of an initial TableData or ListTablesResponse. A pagination sequence begins at the first response returned from any request that yields a TableData or ListTablesResponse, and ends at the page in the sequence whose pagination property is omitted, whose pagination.next_page_url is omitted, or whose pagination.next_page_url is null.
+A pagination sequence is the singly-linked list of URLs formed by following the `next_page_url` property of the pagination section of an initial `TableData` or `ListTablesResponse`. A pagination sequence begins at the first response returned from any request that yields a `TableData` or `ListTablesResponse`, and ends at the page in the sequence whose pagination property is omitted, whose `pagination.next_page_url` is omitted, or whose `pagination.next_page_url` is `null`.
 
-Servers MAY return a unique pagination sequence in response to successive requests for the same query, table data listing, or table listing.
+Servers **may** return a unique pagination sequence in response to successive requests for the same query, table data listing, or table listing.
 
-Except for the last page, pagination.next_page_url property MUST be either an absolute URL or a relative reference as defined by [RFC 3986 section 4.2](https://tools.ietf.org/html/rfc3986#section-4.2) whose base URL is the URL that the page containing the reference was fetched from.
+Except for the last page, `pagination.next_page_url property` **must** be either an absolute URL or a relative reference as defined by [RFC 3986 section 4.2](https://tools.ietf.org/html/rfc3986#section-4.2) whose base URL is the URL that the page containing the reference was fetched from.
 
-Every non-empty TableData page in a pagination sequence MUST include a data_model property. If present, the data_model property MUST be a valid JSON Schema.
+Every non-empty `TableData` page in a pagination sequence **must** include a `data_model` property. If present, the `data_model` property `must` be a valid JSON Schema.
 
-Across all TableData pages in the pagination sequence that have a data_model value, the data_models MUST be identical. Some TableData pages may lack a data_model. See the empty page rules below.
+Across all `TableData` pages in the pagination sequence that have a `data_model` value, the `data_models` **must** be identical. Some `TableData` pages may lack a `data_model`. See the empty page rules below.
 
-Servers MAY respond with an HTTP 4xx error code if the same page is requested more than once.
+Servers **may** respond with an `HTTP 4xx` error code if the same page is requested more than once.
 
-Due to both rules above, clients MUST NOT rely on the ability to re-fetch previously encountered pages.
+Due to both rules above, clients **must not** rely on the ability to re-fetch previously encountered pages.
 
-Servers MAY include a Retry-After HTTP header in each response that is part of a pagination sequence, and clients MUST respect the delay specified by such header before attempting to fetch the next page.
+Servers **may** include a Retry-After HTTP header in each response that is part of a pagination sequence, and clients **must** respect the delay specified by such header before attempting to fetch the next page.
 
 **Empty TableData pages**
 
-While many types of queries will be completed quickly, others will take minutes or even hours to yield a result. The simplest solution would be a synchronous design: query requests block until data is ready, then return a TableData response with the initial rows of the result set. However, asking clients to block for hours on a single HTTP response is fraught with difficulty: open connections are costly and fragile. If an intermediary times out the request, the results will be lost and the client must start over.
+While many types of queries will be completed quickly, others will take minutes or even hours to yield a result. The simplest solution would be a synchronous design: query requests block until data is ready, then return a `TableData` response with the initial rows of the result set. However, asking clients to block for hours on a single HTTP response is fraught with difficulty: open connections are costly and fragile. If an intermediary times out the request, the results will be lost and the client must start over.
 
 To allow servers to direct clients to poll for results rather than hold open HTTP connections for long-running queries, the following special pagination rules apply to empty pages.
 
-An empty page is defined as a TableData object whose data property is a zero element array.
+An empty page is defined as a `TableData` object whose data property is a zero element array.
 
 A pagination sequence MAY include any number of empty pages anywhere in the sequence.
 
-An empty TableData page MAY omit its data_model property entirely. This allows servers to direct clients to poll for results before the result schema has been determined.
+An empty `TableData` page **may** omit its data_model property entirely. This allows servers to direct clients to poll for results before the result schema has been determined.
 
-A server that returns an empty page SHOULD include a Retry-after header in the HTTP response. If a client encounters an empty page with no Retry-after header, the client SHOULD delay at least 1 second before requesting the next page.
+A server that returns an empty page **should** include a `Retry-After` header in the HTTP response. If a client encounters an empty page with no `Retry-After` header, the client **should** delay at least 1 second before requesting the next page.
 
 **Example: Server returning empty pages to make client poll**
 
-This example illustrates a server returning a series of empty pages to a client while it is preparing the result set. The client polls for results by following next_page_url at the rate specified by the server. The form of the pagination URLs are only an example of one possible scheme. Servers are free to employ any pagination URL scheme.
+This example illustrates a server returning a series of empty pages to a client while it is preparing the result set. The client polls for results by following `next_page_url` at the rate specified by the server. The form of the pagination URLs are only an example of one possible scheme. Servers are free to employ any pagination URL scheme.
 
 **Initial Request**
 
 
-```
+```json
 POST /search
 content-type: application/json
 
@@ -676,7 +679,7 @@ retry-after: 1000
 **2nd request (Polling after sleeping for 1000ms)**
 
 
-```
+```json
 GET /search/v1/statement/abc123/queued/1
 
 HTTP/1.1 200 OK
@@ -690,7 +693,7 @@ retry-after: 1000
 **3rd request (Polling again after sleeping for 1000ms)**
 
 
-```
+```json
 GET /search/v1/statement/abc123/queued/2
 
 HTTP/1.1 200 OK
@@ -704,7 +707,7 @@ retry-after: 1000
 **4th request (Polling again after sleeping for 1000ms)**
 
 
-```
+```json
 GET /search/v1/statement/abc123/executing/1
 
 HTTP/1.1 200 OK
@@ -717,7 +720,7 @@ content-type: application/json
 **Final request (no delay because page was nonempty and no retry-after header was present on the response)**
 
 
-```
+```json
 GET /search/v1/statement/abc123/executing/2
 
 HTTP/1.1 200 OK
@@ -735,41 +738,41 @@ The algorithm provided here simply illustrates one way to comply with the rules 
 
 1. Start with an empty data buffer and undefined data model.
 2. Loop:
-    1. If the response is an error, report the error and abort
-    2. If no data_model has been seen so far, check if this page contains a data_model. If so, define the data model for the whole pagination sequence as this page’s data_model.
+    1. If the response is an **error**, report the **error** and **abort**
+    2. If no `data_model` has been seen so far, check if this page contains a `data_model`. If so, define the data model for the whole pagination sequence as this page’s `data_model`.
     3. Append the row data from the current page to the data buffer (there may be 0 rows on any given page)
-    4. Delay for the time specified in the “Retry-After” HTTP response header for the current page (default is no delay)
-    5. If there is a pagination object and it has a non-null next_page_url, fetch that URL, make that response the current page, and start back at step 2a; otherwise end.
+    4. Delay for the time specified in the `Retry-After` HTTP response header for the current page (default is no delay)
+    5. If there is a pagination object and it has a non-null `next_page_url`, fetch that URL, make that response the current page, and start back at step 2a; otherwise end.
 
 
-## Supplementary Information 
+# Supplementary Information 
 
 This section provides advice to implementers. Nothing in this section is required of a conforming implementation.
 
 
-### Interop with other data storage and transmission standards 
+## Interop with other data storage and transmission standards 
 
-This section demonstrates how to expose data stored in commonly used formats using Discovery Search Table structures and their embedded JSON schema specifications.
+This section demonstrates how to expose data stored in commonly used formats using GA4GH Search Table structures and their embedded JSON schema specifications.
 
 
-#### Phenopackets 
+### Phenopackets 
 
 Phenopacket is a GA4GH approved standard file format for sharing phenotypic information. A phenopacket file contains a set of mandatory and optional fields to share information about a patient or participant’s phenotype, such as clinical diagnosis, age of onset, results from lab tests, and disease severity.
 
 
-##### Concrete Example 
+#### Concrete Example 
 
 Here is a detailed example of a directory full of Phenopacket files exposed as a single table via the GA4GH Search API. Each row corresponds to one Phenopacket. The table has two columns: 
 
-*   **id**, the ID of that row’s phenopacket
-*   **phenopacket**, the entire contents of the Phenopacket as a JSON object
+*   `id`, the ID of that row’s phenopacket
+*   `phenopacket`, the entire contents of the Phenopacket as a JSON object
 
 ```
 /tables
 ```
 
 
-```
+```json
 {
   "tables": [
   {
@@ -795,7 +798,7 @@ Here is a detailed example of a directory full of Phenopacket files exposed as a
 ```
 /table/sample_phenopackets_B/info
 ```
-```
+```json
 {
   "name": "sample_phenopackets_B",
   "description": "Table / directory containing Phenopacket JSON files",
@@ -820,7 +823,7 @@ Here is a detailed example of a directory full of Phenopacket files exposed as a
 ```
 
 
-```
+```json
 {
   "data_model": {
     "$id": "https://storage.googleapis.com/ga4gh-phenopackets-example/phenopacket-with-id",
@@ -860,7 +863,7 @@ Here is a detailed example of a directory full of Phenopacket files exposed as a
 /table/sample_phenopackets_B/search
 ```
 
-```
+```sql
 
 REQUEST:
 ---------------------------------------------------------------------------------------
@@ -885,36 +888,36 @@ RESPONSE:
 
 ```
 
-##### Organizing Into Tables 
+#### Organizing Into Tables 
 
 Here we demonstrate two possibilities for organizing a collection of Phenopacket JSON files into tables. Other layouts are also possible.
 
-FLAT hierarchy - all files in a single table
+`flat` hierarchy - all files in a single table
 
 *   [https://storage.googleapis.com/ga4gh-phenopackets-example/flat/tables](https://storage.googleapis.com/ga4gh-phenopackets-example/flat/tables)
 *   [https://storage.googleapis.com/ga4gh-phenopackets-example/flat/table/phenopacket_table/info](https://storage.googleapis.com/ga4gh-phenopackets-example/flat/table/phenopacket_table/info)
 *   [https://storage.googleapis.com/ga4gh-phenopackets-example/flat/table/phenopacket_table/data](https://storage.googleapis.com/ga4gh-phenopackets-example/flat/table/phenopacket_table/data)
 
-BY_SUBJECT hierarchy - one table per subject ID
+`by_subject` hierarchy - one table per subject ID
 
 *   [https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/tables](https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/tables)
 *   [https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/table/PMID:27435956_longitudinal/info](https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/table/PMID:27435956_longitudinal/info)
 *   [https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/table/PMID:27435956_longitudinal/data](https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/table/PMID:27435956_longitudinal/data) (has 1 phenopacket)
 *   [https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/table/PMID:27040691_longitudinal/data](https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/table/PMID:27040691_longitudinal/data) (has multiple phenopackets)
 
-The difference between the two formats is the way in which the phenopacket json data is structured in one table (flat) or multiple tables (by_subject) as shown in the following diagram.
+The difference between the two formats is the way in which the phenopacket json data is structured in one table (`flat`) or multiple tables (`by_subject`) as shown in the following diagram.
 
 
 ![phenopacket tables in a bucket example](assets/phenopacket-tables-in-a-bucket-example.svg "phenopacket tables in a bucket example")
 
-### How to Secure Implementations Based on Presto Connectors or PostgreSQL Foreign Data Wrappers
+## How to Secure Implementations Based on Presto Connectors or PostgreSQL Foreign Data Wrappers
 
 *   Filter data at the connector level
 *   Use simple OAuth scopes to decide what data can be returned
 *   If certain scopes should only see aggregated data (for privacy reasons), use separate aggregated tables (or views). The connector should only pull data from these pre-summarized views.
 
 
-### Implementing a Federation of SQL Query Nodes 
+## Implementing a Federation of SQL Query Nodes 
 
 *   Two approaches: “foreign data wrappers” and “fan-out/hub-and-spoke”
 *   Foreign data wrappers:
@@ -924,12 +927,12 @@ The difference between the two formats is the way in which the phenopacket json 
         *   Apache Hive: Deserializers (SerDe without a serialization support)
 
 
-## Appendix A: SQL Grammar
+# Appendix A: SQL Grammar
 
 This is the ANTLR grammar from Presto SQL version 323 (ASL 2.0 license), with the DML and DDL parts removed.
 
 
-```
+```SQL
 grammar DiscoverySearch;
 
 tokens {
