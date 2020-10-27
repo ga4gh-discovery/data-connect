@@ -128,7 +128,7 @@ The specification allows for a no-code implementation as a collection of files s
 - ```table/{table_name}/data_{pageNumber}```, which will be linked in the next_page_url of the first table  (e.g. ```mytable```).
 - ```table/{table_name}/data_models/{schemaFile}```: Though not required, data models may be linked via [$ref](https://json-schema.org/latest/json-schema-core.html#rfc.section.8.3). Data models can also be stored as static JSON documents, and be referred to by relative or absolute URLs.
 
-A concrete, example test implementation is [available](https://storage.googleapis.com/ga4gh-tables-example/tables) (list endpoint) with [documentation](https://storage.googleapis.com/ga4gh-tables-example/EXAMPLE.md).
+A concrete, example test implementation is available [here](https://storage.googleapis.com/ga4gh-tables-example/tables).
 
 ### Google Sheets implementation
 A Google Sheets spreadsheet can also be exposed via the Tables API using the sheets adapter, located [here](https://github.com/DNAstack/ga4gh-search-adapter-google-sheets).
