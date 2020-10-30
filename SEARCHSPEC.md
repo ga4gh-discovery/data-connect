@@ -27,6 +27,7 @@ This document describes the overall structure of the GA4GH Search and specifies 
     - [Phenopackets](#phenopackets)
       - [Concrete Example](#concrete-example)
       - [Organizing Into Tables](#organizing-into-tables)
+      - [References](#references)
   - [How to Secure Implementations Based on Presto Connectors or PostgreSQL Foreign Data Wrappers](#how-to-secure-implementations-based-on-presto-connectors-or-postgresql-foreign-data-wrappers)
   - [Implementing a Federation of SQL Query Nodes](#implementing-a-federation-of-sql-query-nodes)
 - [Appendix A: SQL Grammar](#appendix-a-sql-grammar)
@@ -752,8 +753,6 @@ Here is a detailed example of a directory full of Phenopacket files exposed as a
 ```
 /tables
 ```
-
-
 ```
 {
   "tables": [
@@ -774,8 +773,6 @@ Here is a detailed example of a directory full of Phenopacket files exposed as a
  ]
 }
 ```
-
-
 
 ```
 /table/hpo_phenopackets/info
@@ -803,8 +800,6 @@ Here is a detailed example of a directory full of Phenopacket files exposed as a
 ```
 /table/hpo_phenopackets/data
 ```
-
-
 ```
 {
   "data_model": {
@@ -844,9 +839,7 @@ Here is a detailed example of a directory full of Phenopacket files exposed as a
 ```
 /table/hpo_phenopackets/search
 ```
-
 ```
-
 REQUEST:
 ---------------------------------------------------------------------------------------
 WITH pp_genes AS (
@@ -863,34 +856,36 @@ SELECT pp_genes.*
 FROM pp_genes 
 WHERE gene_symbol LIKE 'ANTXR%'
 LIMIT 100;
+
 RESPONSE:
 ------------------------------------------------------------+-----------------+--------
  PMID:30050362-Schussler-2018-ANTXR2-II-3_                  | NCBIGene:118429 | ANTXR2      
  PMID:27587992-Salas-Alanís-2016-ANTXR1-14_year_old_brother | NCBIGene:84168  | ANTXR1
-
 ```
 
 #### Organizing Into Tables 
 
 Here we demonstrate two possibilities for organizing a collection of Phenopacket JSON files into tables. Other layouts are also possible.
 
-FLAT hierarchy - all files in a single table
-
-*   [https://storage.googleapis.com/ga4gh-phenopackets-example/flat/tables](https://storage.googleapis.com/ga4gh-phenopackets-example/flat/tables)
-*   [https://storage.googleapis.com/ga4gh-phenopackets-example/flat/table/phenopacket_table/info](https://storage.googleapis.com/ga4gh-phenopackets-example/flat/table/phenopacket_table/info)
-*   [https://storage.googleapis.com/ga4gh-phenopackets-example/flat/table/phenopacket_table/data](https://storage.googleapis.com/ga4gh-phenopackets-example/flat/table/phenopacket_table/data)
-
-BY_SUBJECT hierarchy - one table per subject ID
-
-*   [https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/tables](https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/tables)
-*   [https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/table/PMID:27435956_longitudinal/info](https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/table/PMID:27435956_longitudinal/info)
-*   [https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/table/PMID:27435956_longitudinal/data](https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/table/PMID:27435956_longitudinal/data) (has 1 phenopacket)
-*   [https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/table/PMID:27040691_longitudinal/data](https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/table/PMID:27040691_longitudinal/data) (has multiple phenopackets)
+| FLAT hierarchy - all files in a single table                                                                                       | BY_SUBJECT hierarchy - one table per subject ID                                                                                                                                |
+| ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [/flat/tables](https://storage.googleapis.com/ga4gh-phenopackets-example/flat/tables)                                              |[/by_subject/tables](https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/tables)                                                                                          |
+| [/flat/table/hpo_phenopackets/info](https://storage.googleapis.com/ga4gh-phenopackets-example/flat/table/hpo_phenopackets/info)    |[/by_subject/table/PMID:27435956_longitudinal/info](https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/table/PMID:27435956_longitudinal/info)                            |
+| [/flat/table/gecco_phenopackets/info](https://storage.googleapis.com/ga4gh-phenopackets-example/flat/table/gecco_phenopackets/info)|                                                                                                                                                                                |
+| [/flat/table/hpo_phenopackets/data](https://storage.googleapis.com/ga4gh-phenopackets-example/flat/table/hpo_phenopackets/data)    |[/by_subject/table/PMID:27435956_longitudinal/data](https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/table/PMID:27435956_longitudinal/data) (has 1 phenopacket)        |
+| [/flat/table/gecco_phenopackets/data](https://storage.googleapis.com/ga4gh-phenopackets-example/flat/table/gecco_phenopackets/data)|[/by_subject/table/PMID:27040691_longitudinal/data](https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/table/PMID:27040691_longitudinal/data) (has multiple phenopackets)|
 
 The difference between the two formats is the way in which the phenopacket json data is structured in one table (flat) or multiple tables (by_subject) as shown in the following diagram.
 
-
 ![phenopacket tables in a bucket example](assets/phenopacket-tables-in-a-bucket-example.svg "phenopacket tables in a bucket example")
+
+
+#### References
+* [HPO (Human Phenotype Ontology) phenopackets](https://storage.googleapis.com/ga4gh-phenopackets-example/flat/table/hpo_phenopackets/info) 
+are fetched from a publicly available metadata source [https://zenodo.org/record/3905420#.X3Sd2pNKj6h](https://zenodo.org/record/3905420#.X3Sd2pNKj6h)
+* [Gecco phenopackets](https://storage.googleapis.com/ga4gh-phenopackets-example/flat/table/gecco_phenopackets/info)
+are fetched from BioSamples database [http://www.ebi.ac.uk/biosamples](http://www.ebi.ac.uk/biosamples)
+
 
 ## How to Secure Implementations Based on Presto Connectors or PostgreSQL Foreign Data Wrappers
 
