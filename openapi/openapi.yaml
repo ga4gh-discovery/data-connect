@@ -5,7 +5,31 @@ info:
   description: |
     GA4GH Search is an API for searching biomedical data.
 
+    More information on:
+
+    - [GitHub Pages](../)
+
+    - [Full Discovery Search Specification](../SEARCHSPEC.html)
+
+    ---
+
+    # Overview
+
+    The primary container for data in the Search API is the **Table**. Tables
+    contain rows of data, where each row is a JSON object with key/value pairs.
+    The table describes the structure of its row objects using [JSON
+    Schema](https://json-schema.org/). Row attributes can take on any legal JSON
+    value, eg. numbers, strings, booleans, nulls, arrays, and nested JSON
+    objects.
+
+    The API supports browsing and discovery of data models and table metadata,
+    listing table data, and optionally querying table data using arbitrarily
+    complex expressions including joins and aggregations. The query language is
+    SQL with domain specific functions to facilitate informative typing of the
+    result fields. 
+    
     More information on [GitHub](https://github.com/ga4gh-discovery/ga4gh-search).
+    
   license:
     name: 'Apache 2.0'
     url: 'https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-search/develop/LICENSE'
@@ -67,7 +91,7 @@ paths:
   /table/{table_name}/data:
     get:
       summary: Fetch data from a Table
-      description: Optional operation that returns data from a Table
+      description: Optional operation that returns data from a Table.
       operationId: getData
       tags:
         - tables
@@ -121,7 +145,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
         '404':
-          description: This server does not implement the search operation
+          description: The search operation is not implemented by this server
         '500':
           description: An unexpected error occurred
           content:
@@ -191,7 +215,7 @@ components:
           $ref: "http://json-schema.org/draft-07/schema#"
         data:
           type: array
-          description: Page of JSON values, each adhering to the schema given in the `data_model` property
+          description: Page of JSON values. Each JSON item in the page must adhere to the schema provided in data_model.
           items:
             # Each item must conform to the schema provided in the "data_model" section of this Table.
             # Not sure if this constraint can be expressed in OpenAPI 3.0.

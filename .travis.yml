@@ -1,11 +1,22 @@
-language: java
-dist: bionic
-sudo: false
-jdk:
-  - openjdk11
 env:
-  - GH_URL=https://raw.githubusercontent.com FILE_TO_VALIDATE=spec/search-api.yaml URL_TO_VALIDATE=$GH_URL/${TRAVIS_PULL_REQUEST_SLUG:-$TRAVIS_REPO_SLUG}/${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}/$FILE_TO_VALIDATE
-before_install:
-  - git clone --branch=v1.1.0 https://github.com/mcupak/oas-validator.git
-script:
-  - ./oas-validator/validate.sh "$URL_TO_VALIDATE"
+  - GH_URL=https://raw.githubusercontent.com FILE_TO_VALIDATE=openapi/openapi.yaml URL_TO_VALIDATE=$GH_URL/${TRAVIS_PULL_REQUEST_SLUG:-$TRAVIS_REPO_SLUG}/${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}/$FILE_TO_VALIDATE
+jobs:
+  include:
+    - stage: build_docs
+      language: node_js
+      node_js:
+        - "12"
+      before_script:
+      - git clone --branch=v1.1.0 https://github.com/mcupak/oas-validator.git
+      - npm install -g @redocly/openapi-cli && npm install -g redoc-cli
+      - npm install -g gh-openapi-docs
+      script:
+      - ./oas-validator/validate.sh "$URL_TO_VALIDATE"
+      - gh-openapi-docs
+      deploy:
+        provider: pages
+        skip-cleanup: true
+        keep_history: true
+        github-token: $GITHUB_TOKEN
+        on:
+          all_branches: true
