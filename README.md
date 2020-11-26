@@ -3,7 +3,7 @@
 # GA4GH Search 
 <a href="https://github.com/ga4gh-discovery/ga4gh-discovery-search/blob/develop/openapi/openapi.yaml"><img src="http://validator.swagger.io/validator?url=https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-discovery-search/develop/openapi/openapi.yaml" alt="Swagger Validator" height="20em" width="72em"></a> [![](https://travis-ci.org/ga4gh-discovery/ga4gh-discovery-search.svg?branch=develop)](https://travis-ci.org/ga4gh-discovery/ga4gh-discovery-search) [![](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-discovery-search/develop/LICENSE)
 
-GA4GH Search is an API specification for a simple, uniform mechanism to publish, discover, query and retrieve the biomedical data that is a companion to the data objects available through other GA4GH APIs. The data expected to be made available through Search are those typically used to filter subjects, sample and files, and by which data scientists make meaningful comparisons between genomic data and other data types. The data that can be handled in Search are what are frequently termed 'metadata'. Search leaves the specific definition of those data to the appropriate scientific specializations, and accomodates the standards, such as SchemaBlocks and FHIR, in which they are expressed. 
+GA4GH Search is an API specification for a simple, uniform mechanism to publish, discover, query and retrieve the biomedical data that is a companion to the data objects available through other GA4GH APIs. The data expected to be made available through Search are those typically used to filter subjects, sample and files, and by which data scientists make meaningful comparisons across genomic data files. The data that can be handled in Search are what are frequently termed 'metadata'. Search leaves the specific definition of those data to the appropriate scientific specializations, and accomodates the standards, such as SchemaBlocks and FHIR, in which they are expressed. 
 
 GA4GH Search is a standard for searching biomedical data developed by the [Discovery Work Stream](https://github.com/ga4gh-discovery/ga4gh-discovery.github.io) of the [Global Alliance for Genomics & Health](http://ga4gh.org).
 
@@ -35,6 +35,8 @@ GA4GH Search is a standard for searching biomedical data developed by the [Disco
 ## Summary
 
 The Search API is composed of two principal components: a **Table Discovery API** that exposes table listings and descriptions of available data tables, and a **Query API** that supports SQL queries over those data. It is intentionally general-purpose and minimal. It does not prescribe a particular backend implementation or a data model, and supports federation by design. A focus on tables means users work with a paradigm familiar to them and on which the analysis tools they use are commonly based. A commonly used example of this paradigm is the dataframe in tools such as R and Python data analysis. The tabular approach still allows for nested data structures within it.
+
+An example use case would be a researcher who has learned about the COPDGene dataset from dbGaP. They have determined the dataset is relevant to an analysis they are conducting, but the data is previously unseen by the researcher. GA4GH Search would enable the pre-existing schema of the subject phenotype and sample attribute data, provided by the submitters of the COPDGene dataset, to be made available to that researcher in a way that they can understand what data is available, its format and structure. The researcher would work via an interface that is driven by the machine readable schema in the standard form provided by GA4GH Search. Additionally, the schema is provided in a way that allows the researcher to make use of semantic mappinng and transformational tools that will reduce the time they need to spend manipulating the data before analysis. 
 
 
 ## Purpose and Motivation
@@ -94,6 +96,11 @@ Various applications can be built on top of GA4GH Search, such as
 ## Out of scope
 - Developing data models. GA4GH Search **does not** define data models. It defers that effort to others in the GA4GH or outside implementers.
 - Application development. GA4GH Search **does not** prescribe a specific application. It is intentionally general-purpose. It defers to other efforts in the Discovery Work Stream, GA4GH, and beyond to build domain-specific applications.
+- Search does not pre-suppose or require that the sources made available through it are harmonized to a given standard. The specification recognizes that aggregating data from non-harmonized sources will:
+  - Remain a challenge for data consumers
+  - Need to be specfic to purpose
+  - Be subject to different and evolving computational approaches. These are best conducted as part of post-Search analysis.
+  - Require Search to provide the semantic metadata that enables mapping. Illustrative examples will be provided. 
 
 
 
@@ -138,7 +145,7 @@ A Google Sheets spreadsheet can also be exposed via the Tables API using the she
 
 ### Implementation based on PrestoSQL
 
-DNAstack has provided an [implementation of GA4GH Search](https://github.com/dnastack/ga4gh-search-adapter-presto) on top of [PrestoSQL](https://prestosql.io/).
+DNAstack has provided an [implementation of GA4GH Search](https://github.com/dnastack/ga4gh-search-adapter-presto) on top of [PrestoSQL](https://prestosql.io/). This implementation includes examples of data stored in FHIR and Phenopackets formats.
 
 
 ## Security
