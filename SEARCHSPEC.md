@@ -8,9 +8,9 @@ This document describes the overall structure of the GA4GH Search and specifies 
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
   - [Conventions](#conventions)
-  - [Discovery and Browsing](#discovery-and-browsing)
+  - [Table Discovery and Browsing](#discovery-and-browsing)
       - [Route Naming](#route-naming)
-      - [Discovery and Browsing Examples](#discovery-and-browsing-examples)
+      - [Table Discovery and Browsing Examples](#discovery-and-browsing-examples)
   - [Query](#query)
     - [Query Example](#query-example)
       - [Query Request](#query-request)
@@ -47,14 +47,14 @@ All discovery, browsing and query operations are specified formally in the [Open
 The key words `MUST`, `MUST NOT`, `REQUIRED`, `SHALL`, `SHALL NOT`, `SHOULD`, `SHOULD NOT`, `RECOMMENDED`,  `MAY`, and `OPTIONAL` in this document are to be interpreted as described in [RFC 2119](https://tools.ietf.org/html/rfc2119).
 
 
-## Discovery and Browsing
+## Table Discovery and Browsing
 
-The Discovery and Browsing part of the GA4GH Search API consists of the following REST operations:
+The Table Discovery and Browsing part of the GA4GH Search API allows the following REST operations to obtain information about the tables available.  Machine actionable descriptions of their schema and semantics are provided.
 | Request                    | Description                                                                 |
 | -------------------------- | --------------------------------------------------------------------------- |
 | `GET /tables`                | Retrieve a paginated list of tables available from this GA4GH Search API instance |
-| `GET /table/{id}/info\[^1\]` | Retrieve the data model associated with the given table                     |
-| `GET /table/{id}/data`       | Retrieve the data model and data rows (paginated) from the given table      |
+| `GET /table/{id}/info\[^1\]` | Retrieve the data model (JSON Schema) associated with the given table |
+| `GET /table/{id}/data`       | Retrieve the data rows (paginated) from the given table and the data model of the retrieved data. |
 
 More information on the table structure is provided in [TABLE.md](TABLE.md).
 
@@ -72,7 +72,7 @@ The choice of `/table/{id}` over the more common `/tables/{id}` is deliberate. A
 
 If we had used `/tables` and `/tables/{id}/data` then the “tables in a bucket” implementation would not have been possible. The first two entries above would need the same filename, but one is a file and the other is a directory, which is a conflict. Naming a directory and file with the same name isn’t possible in most filesystems.
 
-#### Discovery and Browsing Examples
+#### Table Discovery and Browsing Examples
 
 
 ```
@@ -362,6 +362,8 @@ Then data exposed through GA4GH Search API could refer to the concept of “ABO 
 `$ref`: "[https://schemablocks.org/schemas/example/blood-group/v1.0.0/BloodGroup.json](https://schemablocks.org/schemas/example/blood-group/v1.0.0/BloodGroup.json)".
 
 SchemaBlocks is the recommended repository for centrally defined types, but any URL that points to a valid JSON Schema definition is acceptable. In many cases, the quickest route to publishing data will be to translate existing data dictionaries into JSON Schema and publish those alongside the dataset. However, the dataset will provide greater utility to its consumers if concepts are mapped to SchemaBlocks definitions where possible.
+
+Many columns in datasets will contain identifiers. A column description should provide machine actionable information about the type of identifiers used. The general purpose CURIE SchemaBlock may be used https://schemablocks.org/schemas/sb-vr-spec/current/Curie.json.  Preferably the column should description should indicate the specific CURIE prefix (namespace) for the identifiers. This should cover both the use case where the values in the described table are prefixed, and the use case where they are not. In either case, the identifer name space provided in the column metadata allows simple identification of what other resources the column can be linked to.
 
 
 ### Attaching Semantic Data Types To Query Results
