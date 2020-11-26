@@ -2,6 +2,8 @@
 
 # GA4GH Search <a href="https://github.com/ga4gh-discovery/ga4gh-search/blob/develop/spec/search-api.yaml"><img src="http://validator.swagger.io/validator?url=https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-search/develop/spec/search-api.yaml" alt="Swagger Validator" height="20em" width="72em"></a> [![](https://travis-ci.org/ga4gh-discovery/ga4gh-search.svg?branch=develop)](https://travis-ci.org/ga4gh-discovery/ga4gh-search) [![](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-search/develop/LICENSE)
 
+GA4GH Search is an API specification for a simple, uniform mechanism to publish, discover, query and retrieve the biomedical data that is a companion to the data objects available through other GA4GH APIs. The data expected to be made available through Search are those typically used to filter subjects, sample and files, and by which data scientists make meaningful comparisons between genomic data and other data types. The data that can be handled in Search are what are frequently termed 'metadata'. Search leaves the specific definition of those data to the appropriate scientific specializations, and accomodates the standards, such as SchemaBlocks and FHIR, in which they are expressed. 
+
 GA4GH Search is a standard for searching biomedical data developed by the [Discovery Work Stream](https://github.com/ga4gh-discovery/ga4gh-discovery.github.io) of the [Global Alliance for Genomics & Health](http://ga4gh.org).
 
 
@@ -26,17 +28,16 @@ GA4GH Search is a standard for searching biomedical data developed by the [Disco
 - [Testing](#testing)
 - [Reporting Security Issues](#reporting-security-issues)
 
-
 ## Summary
 
-GA4GH Search is an API specification for a simple, uniform mechanism to publish, discover, query and retrieve biomedical data. It allows data providers to semantically describe their data sources, and consumers to use those descriptions to devise scientifically useful queries. The API is composed of two principal components: a **Table Discovery API** that exposes table listings and descriptions of available data tables, and a **Query API** that supports SQL queries over those data. It is intentionally general-purpose and minimal. It does not prescribe a particular backend implementation or a data model, and supports federation by design. A focus on tables means users work with a paradigm familiar to them and on which the analysis tools they use are commonly based. The tabular approach still allows for nested data structures within it.
+The Search API is composed of two principal components: a **Table Discovery API** that exposes table listings and descriptions of available data tables, and a **Query API** that supports SQL queries over those data. It is intentionally general-purpose and minimal. It does not prescribe a particular backend implementation or a data model, and supports federation by design. A focus on tables means users work with a paradigm familiar to them and on which the analysis tools they use are commonly based. A commonly used example of this paradigm is the dataframe in tools such as R and Python data analysis. The tabular approach still allows for nested data structures within it.
 
 
 ## Purpose and Motivation
 
-The ever growing new biomedical techniques, such as next-generation genome sequencing, imaging, and others are creating vast amounts of data. Everyday researchers and clinicians accumulate and analyze the world's exponentially growing volumes of genomic and clinical data. With this large data comes the challenge for exploring and finding the data, while interpreting various available formats.
+Ever advancing biomedical techniques, such as next-generation genome sequencing, multiplex imaging, single cell techniques and others are creating data with novel and unique structure. While standardization within scientific and clinical disciplines is ongoing, the diversity of those disciplines and specializtions will remain with us. As researchers and clinicians accumulate, analyze and attempt to interpret what these data can tell them comes the challenge of exploring and understanding this diversity.
 
-In this specification, we offer a simple, uniform mechanism to publish, discover, query, and analyze any format of biomedical data. There are thousands of ways data can be stored or moved over the network. Any “rectangular” data that fits into rows & columns can be represented via GA4GH Search. This is useful for all kinds of data as we now have a common way to use the information regardless of the way it was collected.
+In this specification, we offer a simple, uniform mechanism to publish, discover, query, and analyze any format of biomedical data. There are thousands of ways data can be stored or moved over the network. Any “rectangular” data that fits into rows & columns can be represented via GA4GH Search. This is useful for all kinds of data as we now have a common way to use the information regardless of the domain where it originated.
 
 
 ## Background
