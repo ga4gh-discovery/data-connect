@@ -29,7 +29,7 @@ GA4GH Search is a standard for searching biomedical data developed by the [Disco
 
 ## Summary
 
-GA4GH Search is an API specification for a simple, uniform mechanism to publish, discover, query, and analyze biomedical data, any “rectangular” data that fits into rows and columns. The API is composed of two principal components: a _Tables API_ that exposes structured tabular data, and a _Query API_ that supports SQL queries over data. It is intentionally general-purpose and minimal. It does not prescribe a particular backend implementation or a data model, and supports federation by design. 
+GA4GH Search is an API specification for a simple, uniform mechanism to publish, discover, query and retrieve biomedical data. It allows data providers to semantically describe their data sources, and consumers to use those descriptions to devise scientifically useful queries. The API is composed of two principal components: a **Table Discovery API** that exposes table listings and descriptions of available data tables, and a **Query API** that supports SQL queries over those data. It is intentionally general-purpose and minimal. It does not prescribe a particular backend implementation or a data model, and supports federation by design. A focus on tables means users work with a paradigm familiar to them and on which the analysis tools they use are commonly based. The tabular approach still allows for nested data structures within it.
 
 
 ## Purpose and Motivation
