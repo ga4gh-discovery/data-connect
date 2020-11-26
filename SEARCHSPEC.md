@@ -7,8 +7,8 @@ This document describes the overall structure of the GA4GH Search and specifies 
 - [GA4GH Search Specification](#ga4gh-search-specification)
   - [Overview](#overview)
   - [Conventions](#conventions)
-  - [Table Discovery and Browsing](#discovery-and-browsing)
-      - [Table Discovery and Browsing Examples](#discovery-and-browsing-examples)
+  - [Table Discovery and Browsing](#table-discovery-and-browsing)
+      - [Table Discovery and Browsing Examples](#table-discovery-and-browsing-examples)
   - [Query](#query)
     - [Query Example](#query-example)
       - [Query Request](#query-request)
@@ -55,9 +55,7 @@ The Table Discovery and Browsing part of the GA4GH Search API allows the followi
 
 More information on the table structure is provided in [TABLE.md](TABLE.md).
 
-### Discovery and Browsing Examples
-
-#### Table Discovery and Browsing Examples
+### Table Discovery and Browsing Examples
 
 ```
 GET /tables
@@ -68,20 +66,20 @@ GET /tables
     {
       "name": "search_cloud.brca_exchange.v32",
       "data_model": {
-        "$ref": "https://ga4gh-search-adapter-presto-public.staging.dnastack.com/table/search_cloud.brca_exchange.v32/info"
+        "$ref": "https://example.com/table/search_cloud.brca_exchange.v32/info"
       }
     },
     {
       "name": "search_postgres_pgpc.ontology.axiom",
       "data_model": {
-        "$ref":     "https://ga4gh-search-adapter-presto-public.staging.dnastack.com/table/search_postgres_pgpc.ontology.axiom/info"
+        "$ref":     "https://example.com/table/search_postgres_pgpc.ontology.axiom/info"
         }
     },
     ...
     ...
   ],
   "pagination": {
-    "next_page_url": "https://ga4gh-search-adapter-presto-public.staging.dnastack.com/tables/catalog/search_drs"
+    "next_page_url": "https://example.com/tables/catalog/search_drs"
   }
 }
 ```
@@ -93,7 +91,7 @@ GET `/table/search_postgres_pgpc.ontology.axiom/info`
 {
   "name": "search_postgres_pgpc.ontology.axiom",
   "data_model": {
-    "$id": "https://ga4gh-search-adapter-presto-public.staging.dnastack.com/table/search_postgres_pgpc.ontology.axiom/info",
+    "$id": "https://example.com/table/search_postgres_pgpc.ontology.axiom/info",
     "description": "Automatically generated schema",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "properties": {
@@ -123,7 +121,6 @@ GET `/table/search_postgres_pgpc.ontology.axiom/info`
 ```
 
 
-
 ```
 GET /table/`search_postgres_pgpc`.ontology.axiom/data
 ```
@@ -149,7 +146,7 @@ GET /table/`search_postgres_pgpc`.ontology.axiom/data
     ...
   ],
   "pagination": {
-    "next_page_url": "https://ga4gh-search-adapter-presto-public.staging.dnastack.com/search/v1/statement/executing/20200901_013328_00039_szpff/y4134d1e51a8262d0f8fed899b2eed9fd02e200e9/1"
+    "next_page_url": "https://example.com/search/v1/statement/executing/20200901_013328_00039_szpff/y4134d1e51a8262d0f8fed899b2eed9fd02e200e9/1"
 }
 ```
 
@@ -252,7 +249,7 @@ The result is returned in the same data structure as tables are returned by the 
     ...
   ],
   "pagination": {
-    "next_page_url": "https://ga4gh-search-adapter-presto-public.staging.dnastack.com/search/v1/statement/executing/20200831_235126_36756_szpff/yf9a38c74873e654f04309fe956cb40c8fb2d022f/1"
+    "next_page_url": "https://example.com/search/v1/statement/executing/20200831_235126_36756_szpff/yf9a38c74873e654f04309fe956cb40c8fb2d022f/1"
   }
 }
 
