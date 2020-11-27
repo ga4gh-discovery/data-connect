@@ -35,7 +35,7 @@ This document describes the overall structure of the GA4GH Search and specifies 
 
 The primary container for data in the GA4GH Search API is the **Table**. Tables contain rows of data, where each row is a JSON object with key/value pairs. The table describes the structure of its row objects using [JSON Schema](https://json-schema.org/). Row attributes can take on any legal JSON value, eg. numbers, strings, booleans, nulls, arrays, and nested JSON objects.
 
-The API supports browsing and discovery of data models and table metadata, listing table data, and optionally querying table data using arbitrarily complex expressions including joins and aggregations. The query language is SQL with domain specific functions to facilitate informative typing of the result fields. 
+The API supports browsing and discovery of data models and table metadata, listing table data, and optionally querying table data using arbitrarily complex expressions including joins and aggregations. The query language is SQL with domain-specific functions to facilitate informative typing of the result fields. 
 
 All discovery, browsing and query operations are specified formally in the [OpenAPI specification](https://github.com/ga4gh-discovery/ga4gh-discovery-search/blob/develop/spec/search-api.yaml) document.
 
@@ -47,6 +47,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 ## Table Discovery and Browsing
 
 The Table Discovery and Browsing part of the GA4GH Search API allows the following REST operations to obtain information about the tables available.  Machine actionable descriptions of their schema and semantics are provided.
+
 | Request                    | Description                                                                 |
 | -------------------------- | --------------------------------------------------------------------------- |
 | GET /tables                | Retrieve a paginated list of tables available from this GA4GH Search API instance |
@@ -343,7 +344,7 @@ Then data exposed through GA4GH Search API could refer to the concept of “ABO 
 
 SchemaBlocks is the recommended repository for centrally defined types, but any URL that points to a valid JSON Schema definition is acceptable. In many cases, the quickest route to publishing data will be to translate existing data dictionaries into JSON Schema and publish those alongside the dataset. However, the dataset will provide greater utility to its consumers if concepts are mapped to SchemaBlocks definitions where possible.
 
-Many columns in datasets will contain identifiers. A column description should provide machine actionable information about the type of identifiers used. The general purpose CURIE SchemaBlock may be used https://schemablocks.org/schemas/sb-vr-spec/current/Curie.json.  Preferably the column should description should indicate the specific CURIE prefix (namespace) for the identifiers. This should cover both the use case where the values in the described table are prefixed, and the use case where they are not. In either case, the identifer name space provided in the column metadata allows simple identification of what other resources the column can be linked to.
+Many columns in datasets will contain identifiers. A column description should provide machine actionable information about the type of identifiers used. The general purpose CURIE SchemaBlock may be used https://schemablocks.org/schemas/sb-vr-spec/current/Curie.json.  Preferably the column should description should indicate the specific CURIE prefix (namespace) for the identifiers. This should cover both the use case where the values in the described table are prefixed, and the use case where they are not. In either case, the identifier name space provided in the column metadata allows simple identification of what other resources the column can be linked to.
 
 
 ### Attaching Semantic Data Types To Query Results
@@ -501,7 +502,7 @@ The functions below are a subset of those available in PrestoSQL 341. In a confo
         *   `LIKE`
     *   **Functions:**
         *   `chr(n)` → `varchar`*
-        *   `codepoint(string)` → `i`nteger`*
+        *   `codepoint(string)` → `integer`*
         *   `format(format, args...)` → `varchar`
         *   `length(string)` → `bigint`
         *   `lower(string)` → `varchar`
