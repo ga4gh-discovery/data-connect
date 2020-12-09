@@ -60,7 +60,7 @@ The intended audience of this standard includes:
 - Data model developers within and outside of GA4GH looking to make their data models searchable and interoperable with other standards.
 
 ## API Specification
-You can view our [Full Discovery Search Specification](./SEARCHSPEC.md) and our [Open API 3 Specification](https://ga4gh-discovery.github.io/ga4gh-discovery-search/docs/).
+You can view our [Full Discovery Search Specification](./SEARCHSPEC.md) and our [Open API 3 Specification](https://ga4gh-discovery.github.io/ga4gh-search/docs/).
 
 To see example request/reponse pairs using this API specification, [click here](./SEARCHSPEC.md#discovery-and-browsing) 
 
