@@ -14,14 +14,17 @@ GA4GH Search is a standard for searching biomedical data developed by the [Disco
 - [Background](#background)
 - [Intended Audience](#intended-audience)
 - [Specification](#specification)
+- [Documentation](#documentation)
 - [Benefits](#benefits)
 - [Use cases](#use-cases)
 - [Applications](#applications)
 - [Out of scope](#out-of-scope)
 - [Implementations](#implementations)
-  - [Tables-in-a-bucket (no-code implementation)](#tables-in-a-bucket-no-code-implementation)
-  - [Google Sheets implementation](#google-sheets-implementation)
-  - [Implementation based on PrestoSQL](#implementation-based-on-prestosql)
+  - [Server implementations](#server-implementations)
+    - [Tables-in-a-bucket (no-code implementation)](#tables-in-a-bucket-no-code-implementation)
+    - [Google Sheets implementation](#google-sheets-implementation)
+    - [Implementation based on PrestoSQL](#implementation-based-on-prestosql)
+  - [Client implementations](#client-implementations)
 - [Security](#security)
 - [CORS](#cors)
 - [Contributing](#contributing)
@@ -72,6 +75,11 @@ The intended audience of this standard includes:
 ## Specification
 
 The specification is described in [SEARCHSPEC.md](SEARCHSPEC.md). The API is further specified in OpenAPI format in [search-api.yaml](./spec/search-api.yaml), which [can be viewed with Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-search/develop/spec/search-api.yaml).
+
+
+## Documentation
+
+Documentation for adopters is available [here](https://ga4gh-discovery.github.io/ga4gh-search-docs/) ([GitHub](https://github.com/ga4gh-discovery/ga4gh-search-docs)).
 
 
 ## Benefits
@@ -129,13 +137,15 @@ Architecture of a GA4GH Search system:
     To edit this image, load assets/ga4gh-search.xml into draw.io and regenerate svg
 -->
 
-Sample implementations:
+### Server implementations
+
+Several open-source implementations are available:
 
 - [Tables-in-a-bucket (no-code implementation)](#dataset-in-a-bucket-no-code-implementation)
 - [Google Sheets implementation](#google-sheets-implementation)
 - [Implementation based on PrestoSQL](#implementation-based-on-prestosql)
 
-### Tables-in-a-bucket (no-code implementation)
+#### Tables-in-a-bucket (no-code implementation)
 The specification allows for a no-code implementation as a collection of files served statically (e.g. in a cloud bucket, or a Git repository). To do this, you need the following JSON files:
 
 - ```tables```: served in response to ```GET /tables```
@@ -146,13 +156,21 @@ The specification allows for a no-code implementation as a collection of files s
 
 A concrete, example test implementation is available [here](https://storage.googleapis.com/ga4gh-tables-example/tables).
 
-### Google Sheets implementation
+#### Google Sheets implementation
 A Google Sheets spreadsheet can also be exposed via the Tables API using the sheets adapter, located [here](https://github.com/DNAstack/ga4gh-search-adapter-google-sheets).
 
-### Implementation based on PrestoSQL
+#### Implementation based on PrestoSQL
 
 DNAstack has provided an [implementation of GA4GH Search](https://github.com/dnastack/ga4gh-search-adapter-presto) on top of [PrestoSQL](https://prestosql.io/). This implementation includes examples of data stored in FHIR and Phenopackets formats.
 
+### Client implementations
+
+Several open-source implementations based on different technology stacks are available:
+- Python 
+- R
+- CLI
+  
+See [documentation](https://ga4gh-discovery.github.io/ga4gh-search-docs/) ([source](https://github.com/ga4gh-discovery/ga4gh-search-docs)) for more information.
 
 ## Security
 
