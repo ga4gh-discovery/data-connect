@@ -180,4 +180,4 @@ Use [Swagger Validator Badge](https://github.com/swagger-api/validator-badge) to
 
 ## Contributing
 
-The GA4GH is an open community that strives for inclusivity. Guidelines for contributing to this repository are listed in [CONTRIBUTING.md](CONTRIBUTING.md). Teleconferences and corresponding [meeting minutes](https://docs.google.com/document/d/1sG--PPVlVWb1-_ZN7cHta79uU9tU2y-17U11PYzvMu8/edit#heading=h.lwhinfkfmlx4) are open to the public. To learn how to contribute to this effort, please email Rishi Nag (rishi.nag@ga4gh.org). 
+The GA4GH is an open community that strives for inclusivity. Guidelines for contributing to this repository are listed in [CONTRIBUTING.md](CONTRIBUTING.md). Teleconferences and corresponding [meeting minutes](https://w3id.org/ga4gh/minutes/discovery-search) are open to the public. To learn how to contribute to this effort, please [contact us](ga4gh-discovery-search@ga4gh.org). 
