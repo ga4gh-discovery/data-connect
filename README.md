@@ -24,9 +24,8 @@ GA4GH Search is a standard for searching biomedical data developed by the [Disco
   - [Implementation based on PrestoSQL](#implementation-based-on-prestosql)
 - [Security](#security)
 - [CORS](#cors)
-- [Contributing](#contributing)
 - [Testing](#testing)
-- [Reporting Security Issues](#reporting-security-issues)
+- [Contributing](#contributing)
 
 ## Summary
 
@@ -166,23 +165,19 @@ Authorization: Bearer [access_token]
 
 The policies and processes used to perform user authentication and authorization, and the means through which access tokens are issued, are beyond the scope of this API specification. GA4GH recommends the use of the [OpenID Connect](https://openid.net/connect/) and [OAuth 2.0 framework (RFC 6749)](https://tools.ietf.org/html/rfc6749) for authentication and authorization.
 
+A stand-alone security review has been performed on the API. Nevertheless, any implementation that is linked to from the documentation accompanying the API is done so without any security guarantees. If you integrate this code into your application it is AT YOUR OWN RISK AND RESPONSIBILITY to arrange for an audit to ensure compliance with any applicable regulatory and security requirements, especially where personal data may be at issue.
+
+To report security issues with the specification, please send an email to security-notification@ga4gh.org.
 
 ## CORS
 Cross-origin resource sharing (CORS) is an essential technique used to overcome the same origin content policy seen in browsers. This policy restricts a webpage from making a request to another website and leaking potentially sensitive information. However the same origin policy is a barrier to using open APIs. GA4GH open API implementers should enable CORS to an acceptable level as defined by their internal policy. For any public API implementations should allow requests from any server.
 
 GA4GH published a [CORS best practices document](https://docs.google.com/document/d/1Ifiik9afTO-CEpWGKEZ5TlixQ6tiKcvug4XLd9GNcqo/edit?usp=sharing), which implementers should refer to for guidance when enabling CORS on public API instances.
 
-
-## Contributing
-
-The GA4GH is an open community that strives for inclusivity. Guidelines for contributing to this repository are listed in [CONTRIBUTING.md](CONTRIBUTING.md). Teleconferences and corresponding [meeting minutes](https://docs.google.com/document/d/1sG--PPVlVWb1-_ZN7cHta79uU9tU2y-17U11PYzvMu8/edit#heading=h.lwhinfkfmlx4) are open to the public. To learn how to contribute to this effort, please email Rishi Nag (rishi.nag@ga4gh.org). 
-
-
 ## Testing
 
 Use [Swagger Validator Badge](https://github.com/swagger-api/validator-badge) to validate the YAML file, or its [OAS Validator](https://github.com/mcupak/oas-validator) wrapper.
 
+## Contributing
 
-## Reporting Security Issues
-
-Please send an email to security-notification@ga4gh.org.
+The GA4GH is an open community that strives for inclusivity. Guidelines for contributing to this repository are listed in [CONTRIBUTING.md](CONTRIBUTING.md). Teleconferences and corresponding [meeting minutes](https://w3id.org/ga4gh/minutes/discovery-search) are open to the public. To learn how to contribute to this effort, please [contact us](ga4gh-discovery-search@ga4gh.org). 
