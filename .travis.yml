@@ -20,7 +20,7 @@ script:
 deploy:
         provider: pages
         skip-cleanup: true
-        keep_history: true
+        keep_history: false
         github-token: $GITHUB_TOKEN
         on:
           branch: release-1.0.0
