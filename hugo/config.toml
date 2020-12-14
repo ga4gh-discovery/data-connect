@@ -1,0 +1,65 @@
+baseURL = "http://example.org/ga4gh-search/"
+languageCode = "en-us"
+title = "GA4GH Discovery Search API"
+theme = "clyde"
+pygmentsUseClasses=true
+publishDir = "docs"
+relativeURLs = true
+canonifyURLs = true
+
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.extensions]
+      definitionList = true
+      footnote = true
+      linkify = true
+      strikethrough = true
+      table = true
+      taskList = true
+      typographer = true
+    [markup.goldmark.parser]
+      attribute = true
+      autoHeadingID = true
+      autoHeadingIDType = "github"
+    [markup.goldmark.renderer]
+      hardWraps = false
+      unsafe = false
+      xhtml = false
+      
+[params]
+    company = "GA4GH Discovery Workstream"
+    #colors
+    secondary = "#1E1F21"
+    sidebar_bg = "#f6f6f8"
+    sidebar_primary = "#1E1F21"
+    primary = "#fff"
+    accent = "#e34a3a"
+    grey200 = "#F9F9FA"
+    grey600 = "#1E1F21"
+    grey_head= "#EFEFF3"
+
+    logo = "/images/logo.png"
+
+[outputs]
+    section = ["JSON", "HTML"]
+
+[menu]
+  [[menu.main]]
+    identifier = "api"
+    pre = "<i class='icon-code'></i>"
+    name = "Open API 3 Reference"
+    url = "/api"
+    weight = -999
+  [[menu.main]]
+    identifier = "git"
+    pre = "<i class='icon-github'></i>"
+    name = "Doc Source"
+    url = "https://github.com/ga4gh-discovery/ga4gh-search"
+    weight = -130
+  [[menu.main]]
+    identifier = "workstream"
+    pre = "<i class='icon-github'></i>"
+    name = "Discovery Workstream"
+    url = "https://github.com/ga4gh-discovery/"
+    weight = -120
