@@ -1,0 +1,171 @@
+.sidebar-h1:hover {
+    color: inherit;
+}
+
+.sidebar-h1 {
+    padding: 0 24px 0 0px !important;
+    font-family: Proxima Nova;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 140%;
+    margin: 0px;
+    color: inherit;
+}
+.sidebar-h2 {
+    color: inherit;
+}
+.sidebar-h2 {
+    font-family: Proxima Nova;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 140%;
+    padding: 8px 24px 8px 17px !important;
+    margin-left: 14px !important;
+    margin: 0px;
+    color: inherit;
+}
+
+.sidebar {
+    width: 225px;
+    margin: 0;
+    background-color: var(--sidebar-bg);
+    color: var(--sidebar-primary);
+    order: -1; /* default is 0 */
+    overflow-y: hidden;
+    flex-direction: column;
+    display: flex;
+    flex-shrink: 0;
+    height: 100%;
+}
+
+.sidebar-button{
+    margin: 0;
+    padding: 8px 0px 8px 0px !important;
+}
+
+.sidebar-card {
+    background-color: var(--sidebar-bg) !important;
+    border: 0px !important;
+    overflow: auto;
+    width: inherit;
+    height: inherit;
+}
+
+.navicon {
+    font-size: 22px;
+    margin-right: 16px;
+    padding-left: 24px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}  
+
+.nav-list{
+    padding-left: 20px; 
+}
+.nav-link{
+    margin-left: 0px; 
+    padding: 0px 0px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: start;
+    color: var(--grey600);
+}
+
+.nav-link:hover{
+    color: var(--sidebar-primary);
+}
+
+.nav-collapse{
+    display: none;
+}
+.nav-collapse.show{
+    display: block;
+}
+
+.nav-highlight{
+    color: var(--sidebar-primary);
+}   
+
+#logo{
+    margin-top: 24px;
+    margin-left: 20px;
+    width: 32px;
+    margin-bottom: 44px;
+}
+
+.nav-highlight{
+    color: var(--sidebar-primary) !important;
+    
+}
+
+.nav-highlight.mainitem{
+    color: var(--sidebar-primary) !important;
+}
+
+
+.sidebar-h2.nav-highlight.subitem{
+    border-left: 2px solid var(--accent);
+}
+
+.sidebar-h2.subitem{
+    border-left: 2px solid var(--sidebar-primary);
+}
+
+#logo-collapse-btn {
+    background-color: transparent;
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    border: none;
+}
+
+#logo-collapse-btn:focus {
+    outline: none;
+}
+
+#logo-collapse-btn:hover {
+    cursor: default;
+}
+
+@media (max-width: 1400px) {
+    /* CSS that should be displayed if width is equal to or less than 1000px goes here */
+    .sidebar .sidebar-h1{
+        display: none;
+    }
+    .sidebar .collapse{
+        display: none;
+    }
+    .sidebar{
+        width: 72px;
+    }
+
+    @media(hover: hover) and (pointer: fine) {
+        .sidebar:hover .sidebar-h1{
+            display: flex;
+        }
+        .sidebar:hover .collapse.show{
+            display: flex;
+        }
+        .sidebar:hover{
+            width: 225px;
+        }
+    }
+
+    #logo-collapse-btn:hover {
+        cursor: pointer;
+    }
+
+    .sidebar.show .sidebar-h1{
+        display: flex;
+    }
+    .sidebar.show .collapse.show{
+        display: flex;
+    }
+    .sidebar.show{
+        width: 225px;
+    }
+}

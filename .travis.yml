@@ -7,5 +7,20 @@ env:
   - GH_URL=https://raw.githubusercontent.com FILE_TO_VALIDATE=spec/search-api.yaml URL_TO_VALIDATE=$GH_URL/${TRAVIS_PULL_REQUEST_SLUG:-$TRAVIS_REPO_SLUG}/${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}/$FILE_TO_VALIDATE
 before_install:
   - git clone --branch=v1.1.0 https://github.com/mcupak/oas-validator.git
+  - npm install -g @redocly/openapi-cli && npm install -g redoc-cli
+  - wget "https://github.com/gohugoio/hugo/releases/download/v0.79.0/hugo_extended_0.79.0_Linux-64bit.deb" && sudo dpkg -i hugo*.deb
 script:
   - ./oas-validator/validate.sh "$URL_TO_VALIDATE"
+  - hugo version # prints the Hugo version, just in case.
+  - git submodule update --init --recursive
+  - git submodule update --recursive --remote 
+  - git submodule foreach git checkout master 
+  - git submodule foreach git pull origin master 
+  - make build
+deploy:
+        provider: pages
+        skip-cleanup: true
+        keep_history: true
+        github-token: $GITHUB_TOKEN
+        on:
+          branch: release-1.0.0

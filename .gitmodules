@@ -1,0 +1,3 @@
+[submodule "hugo/themes/clyde"]
+	path = hugo/themes/clyde
+	url = https://github.com/gewenyu99/clyde.git
