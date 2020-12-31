@@ -344,7 +344,13 @@ Then data exposed through GA4GH Search API could refer to the concept of “ABO 
 
 SchemaBlocks is the recommended repository for centrally defined types, but any URL that points to a valid JSON Schema definition is acceptable. In many cases, the quickest route to publishing data will be to translate existing data dictionaries into JSON Schema and publish those alongside the dataset. However, the dataset will provide greater utility to its consumers if concepts are mapped to SchemaBlocks definitions where possible.
 
-Many columns in datasets will contain identifiers. A column description should provide machine actionable information about the type of identifiers used. The general purpose CURIE SchemaBlock may be used https://schemablocks.org/schemas/sb-vr-spec/current/Curie.json.  Preferably the column should description should indicate the specific CURIE prefix (namespace) for the identifiers. This should cover both the use case where the values in the described table are prefixed, and the use case where they are not. In either case, the identifier name space provided in the column metadata allows simple identification of what other resources the column can be linked to.
+#### Identifiers
+
+Many columns in datasets will contain identifiers of related objects. The descriptions for such columns should provide machine actionable information about the type of identifiers used. The general purpose CURIE SchemaBlock may be used https://schemablocks.org/schemas/sb-vr-spec/current/Curie.json.  Preferably the column should description should indicate the specific CURIE prefix (namespace) for the identifiers. This should cover both the use case where the values in the described table are prefixed, and the use case where they are not. In either case, the identifier name space provided in the column metadata allows simple identification of what other resources the column can be linked to.
+
+#### DRS Identifiers
+
+A common use case will be to provide GA4GH [Data Repository Service](https://github.com/ga4gh/data-repository-service-schemas) (DRS) identifiers which can be used to retrieve specific digital files for analysis. Where a column of a table contains DRS ids the column description should indicate this. DRS ids maybe host based URIs, or a CURIE as above.
 
 
 ### Attaching Semantic Data Types To Query Results

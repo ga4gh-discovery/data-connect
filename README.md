@@ -2,7 +2,7 @@
 
 # GA4GH Search <a href="https://github.com/ga4gh-discovery/ga4gh-search/blob/develop/spec/search-api.yaml"><img src="http://validator.swagger.io/validator?url=https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-search/develop/spec/search-api.yaml" alt="Swagger Validator" height="20em" width="72em"></a> [![](https://travis-ci.org/ga4gh-discovery/ga4gh-search.svg?branch=develop)](https://travis-ci.org/ga4gh-discovery/ga4gh-search) [![](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-search/develop/LICENSE)
 
-GA4GH Search is an API specification for a simple, uniform mechanism to publish, discover, query and retrieve the biomedical data that is a companion to the data objects available through other GA4GH APIs. The data expected to be made available through Search are those typically used to filter subjects, sample and files, and by which data scientists make meaningful comparisons across genomic data files. The data that can be handled in Search are what are frequently termed 'metadata'. Search leaves the specific definition of those data to the appropriate scientific specializations, and accomodates the standards, such as SchemaBlocks and FHIR, in which they are expressed. 
+GA4GH Search is an API specification for a simple, uniform mechanism to publish, discover, query and retrieve the biomedical data that is a companion to the data objects available through other GA4GH APIs. The data expected to be made available through Search are those typically used to filter subjects, sample and files, and by which data scientists make meaningful comparisons across genomic data files. The data that can be handled in Search are what are frequently termed 'metadata'. Search leaves the specific definition of those data to the appropriate scientific specializations, and accomodates the standards, such as SchemaBlocks and FHIR, in which those definitions are expressed. 
 
 GA4GH Search is a standard for searching biomedical data developed by the [Discovery Work Stream](https://github.com/ga4gh-discovery/ga4gh-discovery.github.io) of the [Global Alliance for Genomics & Health](http://ga4gh.org).
 
@@ -35,7 +35,7 @@ The Search API is composed of two principal components: a **Table Discovery API*
 
 Specific use cases provided in support of a low-level API such as GA4GH Search may belie its general applicability. Nevertheless, specific use cases illustrate its application.
 
-One example would be a researcher who has learned about the COPDGene dataset from dbGaP. They have determined the dataset is relevant to an analysis they are conducting, but the data is previously unseen by the researcher. GA4GH Search would enable the pre-existing schema of the subject phenotype and sample attribute data, provided by the submitters of the COPDGene dataset, to be made available to that researcher in a way that they can understand what data is available, its format and structure. The researcher would work via an interface that is driven by the machine readable schema in the standard form provided by GA4GH Search. Additionally, the schema is provided in a way that allows the researcher to make use of semantic mappinng and transformational tools that will reduce the time they need to spend manipulating the data before analysis. 
+One example would be a researcher who has learned about the COPDGene dataset from dbGaP. They have determined the dataset is relevant to an analysis they are conducting, but the data is previously unseen by the researcher. GA4GH Search would enable the pre-existing schema of the subject phenotype and sample attribute data, provided by the submitters of the COPDGene dataset, to be made available to that researcher in a way that they can understand what data is available, its format and structure. The researcher would work via an interface that is driven by the machine readable schema in the standard form provided by GA4GH Search. Additionally, the schema is provided in a way that allows the researcher to make use of semantic mapping and transformational tools that will reduce the time they need to spend manipulating the data before analysis. 
 
 Similarly this [pancreatic cancer dataset](https://www.ebi.ac.uk/ega/datasets/EGAD00001003153) in EGA can be described via the same standard way allowing a data scientist to combine it with data from other sources. 
 
@@ -44,7 +44,7 @@ Both use cases above have been explored within the example implementations of GA
 
 ## Purpose and Motivation
 
-Ever advancing biomedical techniques, such as next-generation genome sequencing, multiplex imaging, single cell techniques and others are creating data with novel and unique structure. While standardization within scientific and clinical disciplines is ongoing, the diversity of those disciplines and specializtions will remain with us. As researchers and clinicians accumulate, analyze and attempt to interpret what these data can tell them comes the challenge of exploring and understanding this diversity.
+Ever advancing biomedical techniques, such as next-generation genome sequencing, multiplex imaging, single cell techniques and others are creating data with novel and unique structure. While standardization within scientific and clinical disciplines is ongoing, the diversity of those disciplines and specializations will remain with us. As researchers and clinicians accumulate, analyze and attempt to interpret what these data can tell them comes the challenge of exploring and understanding this diversity.
 
 In this specification, we offer a simple, uniform mechanism to publish, discover, query, and analyze any format of biomedical data. There are thousands of ways data can be stored or moved over the network. Any “rectangular” data that fits into rows & columns can be represented via GA4GH Search. This is useful for all kinds of data as we now have a common way to use the information regardless of the domain where it originated.
 
@@ -62,7 +62,7 @@ The Discovery Work Stream develops GA4GH Search as a general-purpose framework f
 
 The intended audience of this standard includes:
 - Data custodians looking to make their data discoverable and searchable, especially in a federated way. 
-- Data consumers looking to discover and search data in an interoperable way, incl. outside of genomics community.
+- Data consumers looking to discover and search data in an interoperable way, including outside of genomics community.
 - Developers of applications, such as data explorers.
 - API developers within and outside GA4GH looking to incorporate search functionality in their APIs.
 - Data model developers within and outside of GA4GH looking to make their data models searchable and interoperable with other standards.
@@ -114,8 +114,8 @@ Various applications can be built on top of GA4GH Search, such as
 - Application development. GA4GH Search **does not** prescribe a specific application. It is intentionally general-purpose. It defers to other efforts in the Discovery Work Stream, GA4GH, and beyond to build domain-specific applications.
 - Search does not pre-suppose or require that the sources made available through it are harmonized to a given standard. The specification recognizes that aggregating data from non-harmonized sources will:
   - Remain a challenge for data consumers
-  - Need to be specfic to purpose
-  - Be subject to different and evolving computational approaches. These are best conducted as part of post-Search analysis.
+  - Need to be specific to the purpose of the user
+  - Be subject to different and evolving semantic computational approaches. These are best conducted as part of post-Search analysis.
   - Require Search to provide the semantic metadata that enables mapping. Illustrative examples will be provided. 
 
 
