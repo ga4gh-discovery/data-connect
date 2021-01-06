@@ -428,9 +428,9 @@ Then the Search service would respond with:
 
 ## SQL Functions
 
-GA4GH Search API’s SQL dialect has been selected for compatibility with current major open source database platforms including Presto SQL, PostgreSQL, and MySQL, as well as BigQuery. There are occasional name or signature differences, but a GA4GH Search API implementation atop any of the major database platforms should be able to pass through queries that use the functions listed below with only minor tweaks.
+GA4GH Search specification is implementation-agnostic and does not prescribe use of a relational database or a particular database technology. However, for convenience, its SQL dialect has been selected for compatibility with current major open source database platforms including PrestoSQL, PostgreSQL, MySQL, and well as BigQuery. There are occasional name or signature differences, but a GA4GH Search API implementation atop any of the major database platforms should be able to pass through queries that use the functions listed below with only minor tweaks.
 
-The functions below are a subset of those available in PrestoSQL 341. In a conformant GA4GH Search API implementation, these functions must behave according to the Presto documentation. To assist with implementations directly on other database platforms, the [PrestoSQL Functions Support Matrix](https://docs.google.com/document/d/1y51qNuoe2ELX9kCOyQbFB4jihiKt2N8Qcd6-zzadIvk) captures the differences between platforms in granular detail. 
+With PrestoSQL being a popular database choice in GA4GH Search implementations, we've chosen its grammar as the basis for the grammar supported by GA4GH Search. Functions below are a subset of those available in PrestoSQL 341, and must behave according to the PrestoSQL documentation in a conformant GA4GH Search implementation. To assist with implementations directly on other database platforms, the [PrestoSQL Functions Support Matrix](https://docs.google.com/document/d/1y51qNuoe2ELX9kCOyQbFB4jihiKt2N8Qcd6-zzadIvk) captures the differences between platforms in granular detail. 
 
 *   **Logical Operators**
     *   `AND`, `OR`, `NOT`
@@ -918,11 +918,11 @@ The difference between the two formats is the way in which the phenopacket json 
 
 # Appendix A: SQL Grammar
 
-This is the ANTLR grammar from Presto SQL version 323 (ASL 2.0 license), with the DML and DDL parts removed.
+ANTLR grammar for GA4GH Search (based on PrestoSQL v. 323, ASL 2.0 license), with the DML and DDL parts removed:
 
 
 ```
-grammar DiscoverySearch;
+grammar Ga4ghSearch;
 
 tokens {
     DELIMITER

@@ -78,7 +78,7 @@ The specification is described in [SEARCHSPEC.md](SEARCHSPEC.md). The API is fur
 
 ## Documentation
 
-Documentation for adopters is available [here](https://ga4gh-discovery.github.io/ga4gh-search-docs/) ([GitHub](https://github.com/ga4gh-discovery/ga4gh-search-docs)).
+Documentation for adopters is available through [GitHub Pages](https://ga4gh-discovery.github.io/ga4gh-search/) in this repo.
 
 
 ## Benefits

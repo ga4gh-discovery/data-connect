@@ -60,3 +60,6 @@ Session.vim
 
 #********** IntelliJ files ******
 *.iml
+
+# built docs
+docs/
