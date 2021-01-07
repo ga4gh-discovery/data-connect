@@ -41,7 +41,7 @@ canonifyURLs = true
 
     logo = "/images/logo.png"
 
-    home = "/docs/getting-started/introduction/"
+    home = "/docs/getting-started/introduction"
 
 [outputs]
     section = ["JSON", "HTML"]
