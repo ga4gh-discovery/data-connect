@@ -1,7 +1,7 @@
 ---
 title: "Upload results"
 weight: 4
-draft: false
+draft: true
 lastmod: 2020-11-5
 # search related keywords
 type: docs
