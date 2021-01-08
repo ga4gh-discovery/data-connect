@@ -5,8 +5,15 @@ build: build_api_docs
 	echo "start doc build"
 	git submodule update --init --recursive
 	echo "start hugo build"
-	cd hugo && hugo --minify -d ../docs/ 
+	cd hugo && hugo --minify -d ../built_docs/ 
 	echo "end build"
+build_prod: build_api_docs
+	echo "start prod doc build"
+	echo -e "\033[33mUSE MAKE BUILD FOR TESTING LOCALLY, DON'T TRACK docs/!\033[0m"
+	git submodule update --init --recursive
+	echo "start hugo build"
+	cd hugo && hugo --minify -d ../docs/ 
+	echo "end prod build"
 build_api_docs:
 	echo "start api docs build"
 	redoc-cli bundle spec/search-api.yaml
