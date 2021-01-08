@@ -50,13 +50,13 @@ canonifyURLs = true
   [[menu.main]]
     identifier = "api"
     pre = "<i class='icon-code'></i>"
-    name = "Open API 3 Reference"
+    name = "API"
     url = "/api"
     weight = -999
   [[menu.main]]
     identifier = "specs"
     pre = "<i class='icon-file-text'></i>"
-    name = "Search Specs"
+    name = "Specifications"
     url = "https://github.com/gewenyu99/ga4gh-search/blob/release-1.0.0/SEARCHSPEC.md"
     weight = -130
   [[menu.main]]
