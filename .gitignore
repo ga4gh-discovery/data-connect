@@ -62,4 +62,4 @@ Session.vim
 *.iml
 
 # built docs
-docs/
+built_docs/

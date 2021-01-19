@@ -16,7 +16,7 @@ script:
   - git submodule update --recursive --remote 
   - git submodule foreach git checkout master 
   - git submodule foreach git pull origin master 
-  - make build
+  - make build_prod
 deploy:
         provider: pages
         skip-cleanup: true

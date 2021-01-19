@@ -41,6 +41,8 @@ canonifyURLs = true
 
     logo = "/images/logo.png"
 
+    home = "/docs/getting-started/introduction"
+
 [outputs]
     section = ["JSON", "HTML"]
 
@@ -48,18 +50,18 @@ canonifyURLs = true
   [[menu.main]]
     identifier = "api"
     pre = "<i class='icon-code'></i>"
-    name = "Open API 3 Reference"
+    name = "API"
     url = "/api"
     weight = -999
   [[menu.main]]
-    identifier = "git"
-    pre = "<i class='icon-github'></i>"
-    name = "Doc Source"
-    url = "https://github.com/ga4gh-discovery/ga4gh-search"
+    identifier = "specs"
+    pre = "<i class='icon-file-text'></i>"
+    name = "Specifications"
+    url = "https://github.com/gewenyu99/ga4gh-search/blob/release-1.0.0/SEARCHSPEC.md"
     weight = -130
   [[menu.main]]
-    identifier = "workstream"
+    identifier = "github"
     pre = "<i class='icon-github'></i>"
-    name = "Discovery Workstream"
-    url = "https://github.com/ga4gh-discovery/"
+    name = "Github"
+    url = "https://github.com/ga4gh-discovery/ga4gh-search/"
     weight = -120
