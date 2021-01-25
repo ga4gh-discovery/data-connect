@@ -25,7 +25,7 @@ Checkout the following examples for some inspiration.
 ---
 [Full API Specifications](/api)
 
-[Example Usecases](/docs/use-exisitng-data/)
+[Example Use Cases](/docs/use-exisitng-data/)
 {{%/content-textbox%}}
 {{</code/float-window>}}
 {row-divider}
