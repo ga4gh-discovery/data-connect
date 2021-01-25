@@ -1,6 +1,6 @@
 ---
 title: "Consume Data"
-weight: 3
+weight: 4
 draft: false
 lastmod: 2020-11-5
 # search related keywords
@@ -122,7 +122,7 @@ Once you've visited a page and consumed data from it, you can't go back to it or
 
 On the right, we provide examples to consume data from the Search API using the GA4GH Commandline Interface, the R client, Python, and cURL.
 
-> [Need help installing client libraries?](../../../../docs/getting-started/intro/doc/)
+> [Need help installing client libraries?](/docs/getting-started/clients/)
 
 {divider}
 {{<code/float-window>}}

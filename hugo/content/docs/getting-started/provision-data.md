@@ -1,6 +1,6 @@
 ---
 title: "Provision Data"
-weight: 2
+weight: 3
 draft: false
 lastmod: 2020-11-5
 # search related keywords
@@ -25,7 +25,7 @@ Checkout the following examples for some inspiration.
 ---
 [Full API Specifications](/api)
 
-[Placeholder for custodian examples](https://github.com/ga4gh-discovery/ga4gh-search)
+[Example Usecases](/docs/use-exisitng-data/)
 {{%/content-textbox%}}
 {{</code/float-window>}}
 {row-divider}
@@ -51,7 +51,7 @@ Here's how you'll need to organize your folders
 
 This example was shown as a demo during the 2020 GA4GH Plenary. This app will run a reference Search implementation on docker and use a Presto instance hosted by DNAstack as the data source.
 
-You’ll need docker set up on your system to run the Spring app, and you’ll need to have one of the client libraries installed from the [Introduction Section](/docs/getting-started/).
+You’ll need docker set up on your system to run the Spring app, and you’ll need to have one of the client libraries installed from the [Installing Clients Section](/docs/getting-started/clients/).
 
 Further information about this example can be found [here](/docs/use-exisitng-data/using-preso/doc/).
 {divider}
