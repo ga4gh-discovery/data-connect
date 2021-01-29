@@ -95,14 +95,24 @@ Various applications can be built on top of GA4GH Search, such as
 
 ## Use cases
 
-The following use case examples help illustrate the capabilities of GA4GH Search:
+Consider the following use case samples to gain a more concrete idea of GA4GH Search's capabilities. Search has two main components, schema discovery and query. This section will provide use case samples for each component.
+
+### Table discovery
+
+The following narritives were explored in the example implementations of GA4GH Search surrounding the schema discovery abilities of Search:
+
+- A researcher who has learned about the COPDGene dataset from dbGaP. They have determined the dataset is relevant to an analysis they are conducting, but the data is previously unseen by the researcher. GA4GH Search would enable the pre-existing schema of the subject phenotype and sample attribute data, provided by the submitters of the COPDGene dataset, to be made available to that researcher in a way that they can understand what data is available, as well as its format and structure. The researcher would work via an interface that is driven by the machine readable schema in the standard form provided by GA4GH Search. Additionally, the schema is provided in a way that allows the researcher to make use of semantic mapping and transformational tools that will reduce the time they need to spend manipulating the data before analysis. 
+
+- Similarly this [pancreatic cancer dataset](https://www.ebi.ac.uk/ega/datasets/EGAD00001003153) in EGA can be described via the same standard way allowing a data scientist to combine it with data from other sources.
+
+### Queries
+
+The following are examples of queries that can be answered via GA4GH Search:
 
 - Find subjects with HP:0001519 and candidate gene FBN1 (use case of [Matchmaker Exchange](https://www.matchmakerexchange.org/))
 - Find male subjects with HP:0009726 consented for General Research Use (use case of [European Genome-phenome Archive](https://www.ebi.ac.uk/ega/home))
 - Find adult males diagnosed with autism having a harmful mutation in SHANK1 (use case of [Autism Sharing Initiative](http://autismsharinginitiative.org))
 - Find dataset from subject on European data center hosted on Amazon (use case of [Cloud Work Stream](https://github.com/ga4gh/wiki/wiki))
-- Standardized description of exisitng datasets, allowing users to combile them with data from other sources (use case of [Pancreatic Cancer Dataset](https://www.ebi.ac.uk/ega/datasets/EGAD00001003153))
-- A researcher who has learned about the COPDGene dataset from dbGaP. They have determined the dataset is relevant to an analysis they are conducting, but the data is previously unseen by the researcher. GA4GH Search would enable the pre-existing schema of the subject phenotype and sample attribute data, provided by the submitters of the COPDGene dataset, to be made available to that researcher in a way that they can understand what data is available, as well as its format and structure. The researcher would work via an interface that is driven by the machine readable schema in the standard form provided by GA4GH Search. Additionally, the schema is provided in a way that allows the researcher to make use of semantic mapping and transformational tools that will reduce the time they need to spend manipulating the data before analysis. 
 
 Full summary of use cases can be found in [USECASES.md](USECASES.md).
 
