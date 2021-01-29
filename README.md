@@ -16,8 +16,8 @@ GA4GH Search is a standard for searching biomedical data developed by the [Disco
 - [Specification](#specification)
 - [Documentation](#documentation)
 - [Benefits](#benefits)
-- [Use cases](#use-cases)
 - [Applications](#applications)
+- [Use cases](#use-cases)
 - [Out of scope](#out-of-scope)
 - [Implementations](#implementations)
   - [Server implementations](#server-implementations)
@@ -33,16 +33,6 @@ GA4GH Search is a standard for searching biomedical data developed by the [Disco
 ## Summary
 
 The Search API is composed of two principal components: a **Table Discovery API** that exposes table listings and descriptions of available data tables, and a **Query API** that supports SQL queries over those data. It is intentionally general-purpose and minimal. It does not prescribe a particular backend implementation or a data model, and supports federation by design. A focus on tables means users work with a paradigm familiar to them and on which the analysis tools they use are commonly based. A commonly used example of this paradigm is the dataframe in tools such as R and Python data analysis. The tabular approach still allows for nested data structures within it.
-
-## Illustrative use cases
-
-Specific use cases provided in support of a low-level API such as GA4GH Search may belie its general applicability. Nevertheless, specific use cases illustrate its application.
-
-One example would be a researcher who has learned about the COPDGene dataset from dbGaP. They have determined the dataset is relevant to an analysis they are conducting, but the data is previously unseen by the researcher. GA4GH Search would enable the pre-existing schema of the subject phenotype and sample attribute data, provided by the submitters of the COPDGene dataset, to be made available to that researcher in a way that they can understand what data is available, its format and structure. The researcher would work via an interface that is driven by the machine readable schema in the standard form provided by GA4GH Search. Additionally, the schema is provided in a way that allows the researcher to make use of semantic mapping and transformational tools that will reduce the time they need to spend manipulating the data before analysis. 
-
-Similarly this [pancreatic cancer dataset](https://www.ebi.ac.uk/ega/datasets/EGAD00001003153) in EGA can be described via the same standard way allowing a data scientist to combine it with data from other sources. 
-
-Both use cases above have been explored within the example implementations of GA4GH Search. 
 
 
 ## Purpose and Motivation
@@ -90,19 +80,6 @@ Documentation for adopters is available through [GitHub Pages](https://ga4gh-dis
 - Backend agnostic. It is possible to implement the API across a large variety of backend datastores.
 - General purpose. Admits use cases that have not yet been thought of.
 
-
-## Use cases
-
-Sample use cases include:
-
-- Find subjects with HP:0001519 and candidate gene FBN1 (use case of [Matchmaker Exchange](https://www.matchmakerexchange.org/))
-- Find male subjects with HP:0009726 consented for General Research Use (use case of [European Genome-phenome Archive](https://www.ebi.ac.uk/ega/home))
-- Find adult males diagnosed with autism having a harmful mutation in SHANK1 (use case of [Autism Sharing Initiative](http://autismsharinginitiative.org))
-- Find dataset from subject on European data center hosted on Amazon (use case of [Cloud Work Stream](https://github.com/ga4gh/wiki/wiki))
-
-Full summary of use cases can be found in [USECASES.md](USECASES.md).
-
-
 ## Applications
 
 Various applications can be built on top of GA4GH Search, such as
@@ -116,6 +93,18 @@ Various applications can be built on top of GA4GH Search, such as
 - Patient matchmaking
 - (Most importantly) Things we haven’t yet imagined!
 
+## Use cases
+
+The following use case examples help illustrate the capabilities of GA4GH Search:
+
+- Find subjects with HP:0001519 and candidate gene FBN1 (use case of [Matchmaker Exchange](https://www.matchmakerexchange.org/))
+- Find male subjects with HP:0009726 consented for General Research Use (use case of [European Genome-phenome Archive](https://www.ebi.ac.uk/ega/home))
+- Find adult males diagnosed with autism having a harmful mutation in SHANK1 (use case of [Autism Sharing Initiative](http://autismsharinginitiative.org))
+- Find dataset from subject on European data center hosted on Amazon (use case of [Cloud Work Stream](https://github.com/ga4gh/wiki/wiki))
+- Standardized description of exisitng datasets, allowing users to combile them with data from other sources (use case of [Pancreatic Cancer Dataset](https://www.ebi.ac.uk/ega/datasets/EGAD00001003153))
+- A researcher who has learned about the COPDGene dataset from dbGaP. They have determined the dataset is relevant to an analysis they are conducting, but the data is previously unseen by the researcher. GA4GH Search would enable the pre-existing schema of the subject phenotype and sample attribute data, provided by the submitters of the COPDGene dataset, to be made available to that researcher in a way that they can understand what data is available, as well as its format and structure. The researcher would work via an interface that is driven by the machine readable schema in the standard form provided by GA4GH Search. Additionally, the schema is provided in a way that allows the researcher to make use of semantic mapping and transformational tools that will reduce the time they need to spend manipulating the data before analysis. 
+
+Full summary of use cases can be found in [USECASES.md](USECASES.md).
 
 ## Out of scope
 - Developing data models. GA4GH Search **does not** define data models. It defers that effort to others in the GA4GH or outside implementers.
@@ -125,7 +114,6 @@ Various applications can be built on top of GA4GH Search, such as
   - Need to be specific to the purpose of the user
   - Be subject to different and evolving semantic computational approaches. These are best conducted as part of post-Search analysis.
   - Require Search to provide the semantic metadata that enables mapping. Illustrative examples will be provided. 
-
 
 ## Implementations
 
