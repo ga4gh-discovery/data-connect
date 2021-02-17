@@ -140,7 +140,7 @@ Architecture of a GA4GH Search system:
 
 Several open-source implementations are available:
 
-- [Tables-in-a-bucket (no-code implementation)](#dataset-in-a-bucket-no-code-implementation)
+- [Tables-in-a-bucket (no-code implementation)](#tables-in-a-bucket-no-code-implementation)
 - [Google Sheets implementation](#google-sheets-implementation)
 - [Implementation based on PrestoSQL](#implementation-based-on-prestosql)
 
@@ -151,7 +151,12 @@ The specification allows for a no-code implementation as a collection of files s
 - ```table/{table_name}/info```: served in response to ```GET /table/{table_name}/info```.  e.g. a table with the name ```mytable``` should have a corresponding file ```table/mytable/info```
 - ```table/{table_name}/data```: served in response to ```GET /table/{table_name}/data```.  e.g. a table with the name ```mytable``` should have a corresponding file ```table/mytable/data```
 - ```table/{table_name}/data_{pageNumber}```, which will be linked in the next_page_url of the first table  (e.g. ```mytable```).
-- ```table/{table_name}/data_models/{schemaFile}```: Though not required, data models may be linked via [$ref](https://json-schema.org/latest/json-schema-core.html#rfc.section.8.3). Data models can also be stored as static JSON documents, and be referred to by relative or absolute URLs.
+  - The above is just an illustrative example. Search clients are capable of following any absolute or relative URL.
+  - The first page has to be called `/table/{table_name}/data`, then you can use any naming scheme you like for subsequent pages.
+  - All the nitty-gritty details of pagination are detailed in [the specification](SEARCHSPEC.md#pagination-and-long-running-queries).
+- ```table/{table_name}/data_models/{schemaFile}```
+  - Though not required, data models may be linked via [$ref](https://json-schema.org/latest/json-schema-core.html#rfc.section.8.3).
+  - Data models can also be stored anywhere as static JSON documents, and like data pages, can be referred to by relative or absolute URLs.
 
 A concrete, example test implementation is available [here](https://storage.googleapis.com/ga4gh-tables-example/tables).
 
