@@ -346,7 +346,7 @@ SchemaBlocks is the recommended repository for centrally defined types, but any 
 
 #### Identifiers
 
-Many columns in datasets will contain identifiers of related objects. The descriptions for such columns should provide machine actionable information about the type of identifiers used. The general purpose CURIE SchemaBlock may be used https://schemablocks.org/schemas/sb-vr-spec/current/Curie.json.  Preferably the column should description should indicate the specific CURIE prefix (namespace) for the identifiers. This should cover both the use case where the values in the described table are prefixed, and the use case where they are not. In either case, the identifier name space provided in the column metadata allows simple identification of what other resources the column can be linked to.
+Many columns in datasets will contain identifiers of related objects. The descriptions for such columns should provide machine actionable information about the type of identifiers used. The general purpose CURIE SchemaBlock may be used https://schemablocks.org/schemas/sb-vr-spec/current/Curie.json.  Preferably the column description should indicate the specific CURIE prefix (namespace) for the identifiers. This should cover both the use case where the values in the described table are prefixed, and the use case where they are not. In either case, the identifier name space provided in the column metadata allows simple identification of what other resources the column can be linked to.
 
 #### DRS Identifiers
 
@@ -375,7 +375,7 @@ When a user issues the following query to the /search endpoint
 
 ```
 select
-    ga4gh_type(id, '$ref:https://schemablocks.org/schemas/sb-phenopackets/current/Age.json#properties/age') as id,
+    ga4gh_type(id, '$ref:https://schemablocks.org/schemas/sb-phenopackets/current/Person.json#properties/individualId') as id,
     ga4gh_type(case
         when blood_type = '' then null
         else cast(row(
@@ -406,7 +406,7 @@ Then the Search service would respond with:
     "$schema": "http://json-schema.org/draft-07/schema#",
     "properties": {
       "id": {
-        "$ref": "https://schemablocks.org/schemas/sb-phenopackets/current/Age.json#properties/age"
+        "$ref": "https://schemablocks.org/schemas/sb-phenopackets/current/Person.json#properties/individualId"
       },
       "blood_group": {
         "$ref": "https://schemablocks.org/schemas/example/blood-group/v1.0.0/BloodGroup.json"
