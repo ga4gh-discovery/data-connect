@@ -49,7 +49,7 @@ Both use cases above have been explored within the example implementations of GA
 
 Ever advancing biomedical techniques, such as next-generation genome sequencing, multiplex imaging, single cell techniques and others are creating data with novel and unique structure. While standardization within scientific and clinical disciplines is ongoing, the diversity of those disciplines and specializations will remain with us. As researchers and clinicians accumulate, analyze and attempt to interpret what these data can tell them comes the challenge of exploring and understanding this diversity.
 
-In this specification, we offer a simple, uniform mechanism to publish, discover, query, and analyze any format of biomedical data. There are thousands of ways data can be stored or moved over the network. Any “rectangular” data that fits into rows & columns can be represented via GA4GH Search. This is useful for all kinds of data as we now have a common way to use the information regardless of the domain where it originated.
+In this specification, we offer a simple, uniform mechanism to publish, discover, query, and analyze any format of biomedical data. There are thousands of ways data can be stored or moved over the network. Any data that can be represented as an array of JSON objects–whether it looks like a collection of documents, nested objects, or it fits into rows and columns like a relational database–can be stored, described, and queried via GA4GH Search. This is useful for all kinds of data as we now have a common way to use the information regardless of the domain where it originated.
 
 
 ## Background
@@ -84,7 +84,7 @@ Documentation for adopters is available through [GitHub Pages](https://ga4gh-dis
 ## Benefits
 
 - Simple, interoperable, uniform mechanism to publish, discover, query, and analyze biomedical data.
-- Flexibility. Works with any “rectangular” data that fits into rows and columns. Does not prescribe a data model and as such, allows custodians to make their data available without extensive ETL transformations.
+- Flexibility. Works with any data that can be serialized as an array of JSON objects. Does not prescribe a data model and as such, allows custodians to make their data available without extensive ETL transformations.
 - Supports federation. Serves as a general-purpose framework for building federatable search-based applications across multiple implementations. Federations reference common schemas and properties.
 - Minimal by design. The API is purposely kept minimal so that the barriers to publishing existing data are as small as possible.
 - Backend agnostic. It is possible to implement the API across a large variety of backend datastores.
