@@ -6,11 +6,11 @@ lastmod: 2020-11-5
 # search related keywords
 type: docs
 layout: two-col
-description: This section provides information about setting up GA4GH Search API to expose data.
+description: This section provides information about setting up GA4GH Search to expose data.
 ---
 {row-divider}
 #### Browsing
-The minimum Search API implementations will support browsing by table. This means [these operations](https://gewenyu99.github.io/ga4gh-search-docs/api/#tag/tables) from the API specs are supported for table by table browsing.
+The minimum GA4GH Search implementations will support browsing by table. This means [these operations](https://gewenyu99.github.io/ga4gh-search-docs/api/#tag/tables) from the API specs are supported for table by table browsing.
 
 On the right is example code to browse [the tables-in-a-bucket](/docs/getting-started/provision-data/#tables-in-a-bucket-example) implementation of Search.
 {divider}
@@ -69,9 +69,9 @@ search-cli data subjects --api-url https://storage.googleapis.com/ga4gh-tables-e
 {row-divider}
 #### Queries
 
-The Search API supports query operation through SQL statements.
+GA4GH Search supports query operation through SQL statements.
 
-The GA4GH Search API's SQL dialect has a familiar interface inspired by current major open source database platforms, including Presto SQL, PostgreSQL, MySQL, and BigQuery. If you have prior experience with these database platforms, you'll feel right at home with only minor adjustments.
+GA4GH Search's SQL dialect has a familiar interface inspired by current major open source database platforms, including Presto SQL, PostgreSQL, MySQL, and BigQuery. If you have prior experience with these database platforms, you'll feel right at home with only minor adjustments.
 
 [Supported SQL functions](https://github.com/ga4gh-discovery/ga4gh-search/blob/develop/SEARCHSPEC.md#sql-functions)
 
@@ -112,15 +112,15 @@ LIMIT  5;
 
 {row-divider}
 
-#### Issuing queries using the Search API
+#### Issuing Queries Using GA4GH Search
 
-Search is a standard REST API. This means Search can be accessed through standard HTTP calls.
+GA4GH Search is a standard REST API. This means GA4GH Search can be accessed through standard HTTP calls.
 
-While Search API can be navigated using programs like cURL or Postman, it is best accessed programmatically. The results could return multiple pages, which is easier to navigate with programmatic access.
+While GA4GH Search can be navigated using programs like cURL or Postman, it is best accessed programmatically. The results could return multiple pages, which is easier to navigate with programmatic access.
 
 Once you've visited a page and consumed data from it, you can't go back to it or refresh.  
 
-On the right, we provide examples to consume data from the Search API using the GA4GH Commandline Interface, the R client, Python, and cURL.
+On the right, we provide examples to consume data from GA4GH Search using the GA4GH Commandline Interface, the R client, Python, and cURL.
 
 > [Need help installing client libraries?](/docs/getting-started/clients/)
 
@@ -236,8 +236,8 @@ curl --request POST \
 {{</code/float-window>}}
 
 {row-divider}
-## More Examples
-#### dbGaP GECCO Example
+#### More Examples
+##### dbGaP GECCO Example
 This is a public implementation of Search. Feel free to follow along with the examples and explore this endpoint with your own script.
 {{< tabs tabTotal="3" tabID="3" tabName1="Python" tabName2="R" tabName3="CLI">}}
 {{% tab tabNum="1" %}}
@@ -330,7 +330,9 @@ search-cli query -q "SELECT * FROM dbgap_demo.scr_gecco_susceptibility.subject_p
 {{< /tabs >}}
 
 {divider}
-#
+
+---
+
 ##### COVID Cloud Example
 This is a public implementation of Search. It is connected to multiple sources of data related to COVID19, such as data from [USA Facts](https://usafacts.org/issues/coronavirus/) used in this example.
 {{< tabs tabTotal="3" tabID="4" tabName1="Python" tabName2="R" tabName3="CLI">}}

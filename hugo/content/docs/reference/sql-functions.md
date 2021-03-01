@@ -6,9 +6,9 @@ lastmod: 2020-12-3
 type: docs
 layout: single-col
 ---
-GA4GH Search API’s SQL dialect has been selected for compatibility with current major open source database platforms including Presto SQL, PostgreSQL, and MySQL, and BigQuery. There are occasional name or signature differences, but a GA4GH Search API implementation atop any of the major database platforms should be able to pass through queries that use the functions listed below with only minor tweaks.
+GA4GH Search's SQL dialect has been selected for compatibility with current major open source database platforms including Presto SQL, PostgreSQL, and MySQL, and BigQuery. There are occasional name or signature differences, but a GA4GH Search implementation atop any of the major database platforms should be able to pass through queries that use the functions listed below with only minor tweaks.
 
-The functions below are a subset of those available in PrestoSQL 341. In a conformant GA4GH Search API implementation, these functions must behave according to the Presto documentation. To assist with implementations directly on other database platforms, the [PrestoSQL Functions Support Matrix](https://docs.google.com/document/d/1y51qNuoe2ELX9kCOyQbFB4jihiKt2N8Qcd6-zzadIvk) captures the differences between platforms in granular detail. 
+The functions below are a subset of those available in PrestoSQL 341. In a conformant GA4GH Search implementation, these functions must behave according to the Presto documentation. To assist with implementations directly on other database platforms, the [PrestoSQL Functions Support Matrix](https://docs.google.com/document/d/1y51qNuoe2ELX9kCOyQbFB4jihiKt2N8Qcd6-zzadIvk) captures the differences between platforms in granular detail. 
 
 *   **Logical Operators**
     *   `AND`, `OR`, `NOT`

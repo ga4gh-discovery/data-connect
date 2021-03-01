@@ -6,7 +6,7 @@ lastmod: 2020-12-3
 type: docs
 layout: single-col
 ---
-**Pagination sequence**
+**Pagination Sequence**
 
 A pagination sequence is the singly-linked list of URLs formed by following the `next_page_url` property of the pagination section of an initial `TableData` or `ListTablesResponse`. A pagination sequence begins at the first response returned from any request that yields a `TableData` or `ListTablesResponse`, and ends at the page in the sequence whose pagination property is omitted, whose `pagination.next_page_url` is omitted, or whose `pagination.next_page_url` is `null`.
 
@@ -24,7 +24,7 @@ Due to both rules above, clients **must not** rely on the ability to re-fetch pr
 
 Servers **may** include a Retry-After HTTP header in each response that is part of a pagination sequence, and clients **must** respect the delay specified by such header before attempting to fetch the next page.
 
-**Empty TableData pages**
+**Empty TableData Pages**
 
 While many types of queries will be completed quickly, others will take minutes or even hours to yield a result. The simplest solution would be a synchronous design: query requests block until data is ready, then return a `TableData` response with the initial rows of the result set. However, asking clients to block for hours on a single HTTP response is fraught with difficulty: open connections are costly and fragile. If an intermediary times out the request, the results will be lost and the client must start over.
 

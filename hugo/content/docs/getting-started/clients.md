@@ -8,8 +8,8 @@ type: docs
 layout: two-col
 ---
 {row-divider}
-### Installing Client Libraries
-Search has client libraries for R and Python, as well as a command-line interface. We’ll be using these client libraries in the following examples.
+#### Installing Client Libraries
+GA4GH Search has client libraries for R and Python, as well as a command-line interface. We’ll be using these client libraries in the following examples.
 {divider}
 {{<code/float-window>}}
 {{< tabs tabTotal="3" tabID="1" tabName1="Python" tabName2="R" tabName3="CLI">}}
