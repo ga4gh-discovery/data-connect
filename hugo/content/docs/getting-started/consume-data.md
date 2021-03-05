@@ -114,11 +114,11 @@ LIMIT  5;
 
 #### Issuing queries using the Search API
 
-Search is a standard REST API. This means Search can be accessed through standard HTTP calls.
+Search can be accessed through the straightforward HTTP calls described in its OpenAPI specification.
 
-While Search API can be navigated using programs like cURL or Postman, it is best accessed programmatically. The results could return multiple pages, which is easier to navigate with programmatic access.
+While Search API can be navigated using programs like cURL or Postman, it is best accessed programmatically. The results could be split into multiple pages, which is easier to navigate with programmatic access.
 
-Once you've visited a page and consumed data from it, you can't go back to it or refresh.  
+Fetch each page only once. Search servers are allowed to "forget" page URLs after you fetch them. This allows the server implementations to be more efficient.
 
 On the right, we provide examples to consume data from the Search API using the GA4GH Commandline Interface, the R client, Python, and cURL.
 
