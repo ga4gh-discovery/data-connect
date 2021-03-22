@@ -332,13 +332,13 @@ search-cli query -q "SELECT * FROM dbgap_demo.scr_gecco_susceptibility.subject_p
 {divider}
 #
 ##### COVID Cloud Example
-This is a public implementation of Search. It is connected to multiple sources of data related to COVID19, such as data from [USA Facts](https://usafacts.org/issues/coronavirus/) used in this example.
+This is a public implementation of Search for COVID Cloud. Find more about COVID Cloud [here](https://international.covidcloud.ca/).
 {{< tabs tabTotal="3" tabID="4" tabName1="Python" tabName2="R" tabName3="CLI">}}
 {{% tab tabNum="1" %}}
 [Follow along in Colab](https://colab.research.google.com/drive/1hnHTqquYP2HjUF0dDHn8FKiO9f7t0yGO?usp=sharing)
 ``` python
 from search_python_client.search import DrsClient, SearchClient
-base_url = 'https://search-presto-public-covid19.prod.dnastack.com/'
+base_url = 'https://ga4gh-search-adapter-presto-covid19-public.prod.dnastack.com/'
 search_client = SearchClient(base_url=base_url)
 ```
 ```python
@@ -349,32 +349,28 @@ import pprint
 pprint.pprint(tables)
 ```
 ```python
-#Get more information about a table returned
-table_info = search_client.get_table_info("coronavirus_public.covid19_usafacts.deaths")
+# Get more information about a table returned
+table_info = search_client.get_table_info("covid.cloud.sequences")
 pprint.pprint(table_info)
 ```
 ```python
 # Dig into the table a little further
-table_data_iterator = search_client.get_table_data("coronavirus_public.covid19_usafacts.deaths")
-```
-```python
+table_data_iterator = search_client.get_table_data("covid.cloud.sequences")
 # Limit to first 10 items
-tables = [next(table_data_iterator, None) for i in range(10)]
+tables = [next(table_data_iterator, None) for i in range(1)]
 tables = list(filter(None, tables))
 pprint.pprint(tables)
 ```
 ```python
-# Select all corona death cases from the state of LA, limited to 25 results and sorted by county name.
+# Select all sequences from GenBank
 query = """
 SELECT * 
-FROM coronavirus_public.covid19_usafacts.deaths
-WHERE state = 'LA'
-ORDER BY county_name
+FROM covid.cloud.sequences
+WHERE sequence_type='GenBank'
 LIMIT 25
 """
 ```
 ```python
-# Executing the query
 table_data_iterator = search_client.search_table(query)
 for item in table_data_iterator:
   print(item)
@@ -394,34 +390,36 @@ devtools::install_github("DNAstack/ga4gh-search-client-r")
 ``` R
 # Making the request
 library(httr)
-ga4gh.search::ga4gh_list_tables("https://search-presto-public-covid19.prod.dnastack.com")
+ga4gh.search::ga4gh_list_tables("https://ga4gh-search-adapter-presto-covid19-public.prod.dnastack.com")
 ```
 ``` R
-# Select all COVID death cases from the state of LA, limited to 25 results and sorted by county name.
-query <- "SELECT * FROM coronavirus_public.covid19_usafacts.deaths WHERE state = 'LA' ORDER BY county_name LIMIT 25"
+# Select all data from Genbank.
+query <- "SELECT * FROM covid.cloud.sequences WHERE sequence_type='GenBank' LIMIT 25"
 ```
 ``` R
 # Executing the query
-ga4gh.search::ga4gh_search("https://search-presto-public-covid19.prod.dnastack.com", query)
+ga4gh.search::ga4gh_search("https://ga4gh-search-adapter-presto-covid19-public.prod.dnastack.com", query)
 
 ```
 {{% /tab %}}
 {{% tab tabNum="3" %}}
 List tables
 ``` bash
-search-cli list --api-url "https://search-presto-public-covid19.prod.dnastack.com" 
+search-cli list --api-url "https://ga4gh-search-adapter-presto-covid19-public.prod.dnastack.com" 
 ```
 Get table info
 ``` bash
-search-cli info coronavirus_public.covid19_usafacts.deaths --api-url "https://search-presto-public-covid19.prod.dnastack.com" 
+search-cli info covid.cloud.sequences --api-url "https://ga4gh-search-adapter-presto-covid19-public.prod.dnastack.com" 
 ```
 Now run a query and pipe the results to a file called `results.txt`
 ``` bash
-search-cli query -q "SELECT * FROM coronavirus_public.covid19_usafacts.deaths WHERE state = 'LA' ORDER BY county_name LIMIT 25" \
-  --api-url "https://search-presto-public-covid19.prod.dnastack.com" > results.txt
+search-cli query -q "SELECT * FROM covid.cloud.sequences WHERE sequence_type='GenBank' LIMIT 25" \
+  --api-url "https://ga4gh-search-adapter-presto-covid19-public.prod.dnastack.com" > results.txt
 ```
 {{% /tab %}}
 
 {{< /tabs >}}
+
+#
 
 
