@@ -10,7 +10,7 @@ description: This section provides information about setting up GA4GH Search to 
 ---
 {row-divider}
 #### Browsing
-The minimum GA4GH Search implementations will support browsing by table. This means [these operations](https://gewenyu99.github.io/ga4gh-search-docs/api/#tag/tables) from the API specs are supported for table by table browsing.
+The minimum GA4GH Search implementations will support browsing by table. This means [these operations](https://ga4gh-discovery.github.io/ga4gh-search/api/#tag/tables) from the API specs are supported for table by table browsing.
 
 On the right is example code to browse [the tables-in-a-bucket](/docs/getting-started/provision-data/#tables-in-a-bucket-example) implementation of Search.
 {divider}
