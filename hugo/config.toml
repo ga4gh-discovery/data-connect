@@ -1,6 +1,6 @@
 baseURL = "http://example.org/ga4gh-search/"
 languageCode = "en-us"
-title = "GA4GH Discovery Search API"
+title = "GA4GH Search"
 theme = "clyde"
 pygmentsUseClasses=true
 publishDir = "docs"
@@ -43,8 +43,16 @@ canonifyURLs = true
 
     home = "/docs/getting-started/introduction"
 
+    show_title = true
+
+    heading_font = "Poppins"
+    body_font = "Roboto"
+    code_font = "Source Code Pro"
+
+
 [outputs]
     section = ["JSON", "HTML"]
+    home = ["JSON", "HTML"]
 
 [menu]
   [[menu.main]]
@@ -56,7 +64,7 @@ canonifyURLs = true
   [[menu.main]]
     identifier = "specs"
     pre = "<i class='icon-file-text'></i>"
-    name = "Specifications"
+    name = "Specification"
     url = "https://github.com/gewenyu99/ga4gh-search/blob/release-1.0.0/SEARCHSPEC.md"
     weight = -130
   [[menu.main]]

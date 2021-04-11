@@ -7,7 +7,7 @@ lastmod: 2020-11-5
 type: docs
 layout: single-col
 ---
-### The dbGaP GECCO example
+### The dbGaP GECCO Example
 
 In the [provision data section](/docs/getting-started/provision-data/), we've shown a quick start recipe with the [ga4gh-search-adapter-presto](https://github.com/DNAstack/ga4gh-search-adapter-presto) docker container connected to a Presto instance hosted at `https://presto-public.prod.dnastack.com`. This section provides more information on how this was accomplished.
 
@@ -64,7 +64,7 @@ docker run -d -p 5432:5432 --name ga4ghsearchadapterpresto -e POSTGRES_USER=ga4g
 ``` 
 {{%/content-textbox%}}
 
-**3. Run the adapter app**
+**3. Run the adapter App**
 
 {{%content-textbox%}}
 ``` bash

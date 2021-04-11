@@ -1,6 +1,6 @@
 ---
 title: "Provision Data"
-weight: 2
+weight: 3
 draft: false
 lastmod: 2020-11-5
 # search related keywords
@@ -11,7 +11,7 @@ layout: two-col
 {row-divider}
 #### Implementation
 
-The GA4GH API requires [table operations](/api/#tag/tables) to be implemented to specification for basic discovery and browsing. 
+GA4GH Search requires [table operations](/api/#tag/tables) to be implemented to specification for basic discovery and browsing. 
 
 Optional but not required, [query operations](/api/#tag/search) may be implemented to support querying with SQL.
 
@@ -25,12 +25,12 @@ Checkout the following examples for some inspiration.
 ---
 [Full API Specifications](/api)
 
-[Placeholder for custodian examples](https://github.com/ga4gh-discovery/ga4gh-search)
+[Example Use Cases](/docs/use-exisitng-data/)
 {{%/content-textbox%}}
 {{</code/float-window>}}
 {row-divider}
 #### Tables-in-a-bucket example
-The specification allows for a no-code implementation as a collection of files served statically. This is the easiest way to start experimenting with the GA4GH Search API. As long as your storage bucket conforms to the correct file structure and it has the correct sharing permissions, it is a valid Search implementation.
+The specification allows for a no-code implementation as a collection of files served statically. This is the easiest way to start experimenting with GA4GH Search. As long as your storage bucket conforms to the correct file structure and it has the correct sharing permissions, it is a valid GA4GH Search implementation.
 
 A concrete example implementation is [available here](https://storage.googleapis.com/ga4gh-tables-example/tables) and [try browsing this implementation](/docs/getting-started/consume-data/#browsing) with these commands.
 
@@ -47,11 +47,11 @@ Here's how you'll need to organize your folders
 {{</code/float-window>}}
 
 {row-divider}
-#### Try out a reference implementation
+#### Try a Reference Implementation
 
-This example was shown as a demo during the 2020 GA4GH Plenary. This app will run a reference Search implementation on docker and use a Presto instance hosted by DNAstack as the data source.
+This example was shown as a demo during the 2020 GA4GH Plenary. This app will run a reference GA4GH Search implementation on docker and use a Presto instance hosted by DNAstack as the data source.
 
-You’ll need docker set up on your system to run the Spring app, and you’ll need to have one of the client libraries installed from the [Introduction Section](/docs/getting-started/).
+You’ll need docker set up on your system to run the Spring app, and you’ll need to have one of the client libraries installed from the [Installing Clients Section](/docs/getting-started/clients/).
 
 Further information about this example can be found [here](/docs/use-exisitng-data/using-preso/doc/).
 {divider}

@@ -1,3 +1,5 @@
-[submodule "hugo/themes/clyde"]
+[submodule "clyde"]
 	path = hugo/themes/clyde
-	url = https://github.com/gewenyu99/clyde.git
+	url = https://github.com/DNAstack/clyde.git
+	branch = v1.1.1
+
