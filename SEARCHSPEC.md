@@ -46,13 +46,13 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ## Table Discovery and Browsing
 
-The Table Discovery and Browsing part of the GA4GH Search API allows the following REST operations to obtain information about the tables available.  Machine actionable descriptions of their schema and semantics are provided.
+The Table Discovery and Browsing part of the GA4GH Search API consists of these HTTP resources, which provide information about the tables available.  Machine actionable descriptions of their schema and semantics are provided.
 
 | Request                    | Description                                                                 |
 | -------------------------- | --------------------------------------------------------------------------- |
 | GET /tables                | Retrieve a paginated list of tables available from this GA4GH Search API instance |
-| `GET /table/{id}/info\[^1\]` | Retrieve the data model (JSON Schema) associated with the given table |
-| `GET /table/{id}/data`       | Retrieve the data rows (paginated) from the given table and the data model of the retrieved data. |
+| `GET /table/{id}/info`     | Retrieve the data model (JSON Schema) associated with the given table |
+| `GET /table/{id}/data`     | Retrieve the data rows (paginated) from the given table and the data model of the retrieved data. |
 
 More information on the table structure is provided in [TABLE.md](TABLE.md).
 
@@ -153,7 +153,7 @@ GET /table/`search_postgres_pgpc`.ontology.axiom/data
 
 ## Query
 
-The Query part of the Search API consists of the following REST operation:
+The Query part of the Search API consists of the following HTTP endpoint:
 
 | Request                    | Description                                                                 |
 | -------------------------- | --------------------------------------------------------------------------- |

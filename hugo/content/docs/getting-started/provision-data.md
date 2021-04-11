@@ -15,7 +15,7 @@ The GA4GH API requires [table operations](/api/#tag/tables) to be implemented to
 
 Optional but not required, [query operations](/api/#tag/search) may be implemented to support querying with SQL.
 
-The Search API is backend agnostic, which means any solution that implements the [API specification](/api) is valid. You can use your favorite REST application frameworks to implement GA4GH Search Endpoints or a hosted blob store for a tables-in-a-bucket implementation requiring no code.
+The Search API is backend agnostic, which means any solution that implements the [API specification](/api) is valid. You can use your favorite backend web application framework to implement GA4GH Search Endpoints or any HTTPS file server (a cloud blob store, for example) for a tables-in-a-bucket implementation requiring no code.
 
 Checkout the following examples for some inspiration.
 {divider}
