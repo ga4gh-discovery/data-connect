@@ -195,9 +195,15 @@ Cross-origin resource sharing (CORS) is an essential technique used to overcome 
 
 GA4GH published a [CORS best practices document](https://docs.google.com/document/d/1Ifiik9afTO-CEpWGKEZ5TlixQ6tiKcvug4XLd9GNcqo/edit?usp=sharing), which implementers should refer to for guidance when enabling CORS on public API instances.
 
-## Testing
+## Testing and Building
 
 Use [Swagger Validator Badge](https://github.com/swagger-api/validator-badge) to validate the YAML file, or its [OAS Validator](https://github.com/mcupak/oas-validator) wrapper.
+
+The Github Pages content is sourced from the `hugo/` directory. Building the docs requires the [Hugo framework](https://gohugo.io/documentation/) with the [Clyde theme](https://github.com/DNAstack/clyde). Edit the markdown files under `hugo/content/` for content changes.
+
+Run the docs locally using `make run`, which is served at `http://localhost:1313/ga4gh-search/`. Clean up before commiting using `make clean`. 
+
+To manually inspect the build artifacts, use `make build`. Clean up before commiting using `make clean`.
 
 ## Contributing
 
