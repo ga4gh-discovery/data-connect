@@ -4,7 +4,7 @@ This document describes the overall structure of the Data Connect API and specif
 
 ## Table of Contents
 
-- [Data Connect Specification](#ga4gh-search-specification)
+- [Data Connect Specification](#data-connect-specification)
   - [Overview](#overview)
   - [Conventions](#conventions)
   - [Table Discovery and Browsing](#table-discovery-and-browsing)
@@ -33,7 +33,7 @@ This document describes the overall structure of the Data Connect API and specif
 
 ## Overview
 
-The primary container for data in the Data Connect API is the **Table**. Tables contain rows of data, where each row is a JSON object with key/value pairs. The table describes the structure of its row objects using [JSON Schema](https://json-schema.org/). Row attributes can take on any legal JSON value, eg. numbers, strings, booleans, nulls, arrays, and nested JSON objects.
+The primary container for data in the Data Connect API is the **Table**. Tables contain rows of data, where each row is a JSON object with key/value pairs. The table describes the structure of its row objects using [JSON Schema](https://json-schema.org/). Row attributes can take on any legal JSON value, e.g. numbers, strings, booleans, nulls, arrays, and nested JSON objects.
 
 The API supports browsing and discovery of data models and table metadata, listing table data, and optionally searching table data using arbitrarily complex expressions including joins and aggregations. The query language is SQL with domain-specific functions to facilitate informative typing of the result fields. 
 
@@ -41,7 +41,7 @@ All discovery, browsing and search operations are specified formally in the [Ope
 
 ## Conventions
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://tools.ietf.org/html/rfc2119).
+The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://tools.ietf.org/html/rfc2119).
 
 
 ## Table Discovery and Browsing
@@ -157,7 +157,7 @@ The Search part of the Data Connect API consists of the following HTTP endpoint:
 
 | Request                    | Description                                                                 |
 | -------------------------- | --------------------------------------------------------------------------- |
-| POST /search               | Executes the given SQL query and returns the results as a Table             |
+| `POST /search`               | Executes the given SQL query and returns the results as a Table             |
 
 
 ### Search Example
@@ -209,7 +209,7 @@ appear in the text of the SQL query.
 
 ##### Correspondence Between SQL and JSON Data Types in Data Connect Request
 
-The SQL type of a `?` placeholder in the query is determined by its corresponding entry in the
+The SQL type of `?` placeholder in the query is determined by its corresponding entry in the
 `parameters` array, according to the following table.
 
 | JSON Parameter Type                            | SQL Type  | Example Values                                |
@@ -280,17 +280,17 @@ Data is manipulated in the query using the following types. Each SQL type is exp
 
 ## Semantic Data Types
 
-To enable discovery of tables based on the kind of information contained within them, and to enable query tools to offer to filter and join data from different sources in a sensible way, tables need to declare not only the physical type of their rows (eg. how data is represented as JSON) but also the semantic type (what the data means). This means that any datasource which can conform to this requirement, may be exposed as a Table.
+To enable discovery of tables based on the kind of information contained within them, and to enable query tools to offer to filter and join data from different sources in a sensible way, tables need to declare not only the physical type of their rows (e.g. how data is represented as JSON) but also the semantic type (what the data means). This means that any datasource which can conform to this requirement, may be exposed as a Table.
 
 Data Connect API describes the _meaning_ of data through JSON Schema references ($ref). Clients can discover that attributes in different tables refer to the same concept as each other by examining the target of each attribute’s JSON Schema reference. If the $ref URLs are the same, then the client knows that the attributes have the same meaning.
 
 Clients can use the attribute meanings to:
 
-*   Recommend joining to tables that contain similar types of information
+*   Recommend joining tables that contain similar types of information
 *   Display table attributes in a meaningful way
 *   Construct queries across tables in an informed way which retains the underlying meaning of the data, or create new meaning
 
-This system of identifying types through reference URLs is amenable to building up cross-references. With a rich set of cross references, a Data Connect API client can help join up data from sources that use different nomenclatures.
+This system of identifying types through reference URLs is amenable to building up cross-references. With a rich set of cross-references, a Data Connect API client can help join up data from sources that use different nomenclatures.
 
 
 ### Example: Semantic Data Types on a Table 
@@ -350,14 +350,14 @@ Many columns in datasets will contain identifiers of related objects. The descri
 
 #### DRS Identifiers
 
-A common use case will be to provide GA4GH [Data Repository Service](https://github.com/ga4gh/data-repository-service-schemas) (DRS) identifiers which can be used to retrieve specific digital files for analysis. Where a column of a table contains DRS ids the column description should indicate this. DRS ids maybe host based URIs, or a CURIE as above.
+A common use case will be to provide GA4GH [Data Repository Service](https://github.com/ga4gh/data-repository-service-schemas) (DRS) identifiers which can be used to retrieve specific digital files for analysis. Where a column of a table contains DRS ids, the column description should indicate this. DRS ids maybe host based URIs, or a CURIE as above.
 
 
 ### Attaching Semantic Data Types To Search Results
 
 Since search results are also Tables, there are many scenarios where users would benefit from semantic schema references being embedded in Search results as well as static views of tables.
 
-When submitting a SQL query to the /search endpoint, the tool generating the query can wrap each selected column in the function `ga4gh_type()`, which directs the Data Connect implementation to generate a corresponding JSON Schema `$ref` for that column in the result table.
+When submitting an SQL query to the /search endpoint, the tool generating the query can wrap each selected column in the function `ga4gh_type()`, which directs the Data Connect implementation to generate a corresponding JSON Schema `$ref` for that column in the result table.
 
 ```
 SELECT ga4gh_type(
@@ -371,7 +371,7 @@ Any selected columns that are not wrapped in the ga4gh_type() function will only
 
 ### Example: Semantic Data Types in Search Results
 
-When a user issues the following query to the /search endpoint
+When a user issues the following query to the `/search` endpoint:
 
 ```
 select
@@ -430,7 +430,7 @@ Then the Data Connect service would respond with:
 
 Data Connect specification is implementation-agnostic and does not prescribe use of a relational database or a particular database technology. However, for convenience, its SQL dialect has been selected for compatibility with current major open source database platforms including PrestoSQL, PostgreSQL, MySQL, and well as BigQuery. There are occasional name or signature differences, but a Data Connect API implementation atop any of the major database platforms should be able to pass through queries that use the functions listed below with only minor tweaks.
 
-With PrestoSQL being a popular database choice in Data Connect implementations, we've chosen its grammar as the basis for the grammar supported by Data Connect. Functions below are a subset of those available in PrestoSQL 341, and must behave according to the PrestoSQL documentation in a conformant Data Connect implementation. To assist with implementations directly on other database platforms, the [PrestoSQL Functions Support Matrix](https://docs.google.com/document/d/1y51qNuoe2ELX9kCOyQbFB4jihiKt2N8Qcd6-zzadIvk) captures the differences between platforms in granular detail. 
+With PrestoSQL being a popular database choice in Data Connect implementations, we've chosen its grammar as the basis for the grammar supported by Data Connect. Functions below are a subset of those available in PrestoSQL 341, and must behave according to the PrestoSQL documentation in a conforming Data Connect implementation. To assist with implementations directly on other database platforms, the [PrestoSQL Functions Support Matrix](https://docs.google.com/document/d/1y51qNuoe2ELX9kCOyQbFB4jihiKt2N8Qcd6-zzadIvk) captures the differences between platforms in granular detail. 
 
 *   **Logical Operators**
     *   `AND`, `OR`, `NOT`
@@ -746,14 +746,14 @@ This section demonstrates how to expose data stored in commonly used formats usi
 
 ### Phenopackets 
 
-Phenopacket is a GA4GH approved standard file format for sharing phenotypic information. A phenopacket file contains a set of mandatory and optional fields to share information about a patient or participant’s phenotype, such as clinical diagnosis, age of onset, results from lab tests, and disease severity.
+Phenopacket is a GA4GH approved standard file format for sharing phenotypic information. A Phenopacket file contains a set of mandatory and optional fields to share information about a patient or participant’s phenotype, such as clinical diagnosis, age of onset, results from lab tests, and disease severity.
 
 
 #### Concrete Example 
 
 Here is a detailed example of a directory full of Phenopacket files exposed as a single table via the Data Connect API. Each row corresponds to one Phenopacket. The table has two columns: 
 
-*   **id**, the ID of that row’s phenopacket
+*   **id**, the ID of that row’s Phenopacket
 *   **phenopacket**, the entire contents of the Phenopacket as a JSON object
 
 ```
@@ -891,13 +891,13 @@ BY_SUBJECT hierarchy - one table per subject ID
 
 *   [https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/tables](https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/tables)
 *   [https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/table/PMID:27435956_longitudinal/info](https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/table/PMID:27435956_longitudinal/info)
-*   [https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/table/PMID:27435956_longitudinal/data](https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/table/PMID:27435956_longitudinal/data) (has 1 phenopacket)
-*   [https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/table/PMID:27040691_longitudinal/data](https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/table/PMID:27040691_longitudinal/data) (has multiple phenopackets)
+*   [https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/table/PMID:27435956_longitudinal/data](https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/table/PMID:27435956_longitudinal/data) (has 1 Phenopacket)
+*   [https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/table/PMID:27040691_longitudinal/data](https://storage.googleapis.com/ga4gh-phenopackets-example/by_subject/table/PMID:27040691_longitudinal/data) (has multiple Phenopackets)
 
-The difference between the two formats is the way in which the phenopacket json data is structured in one table (flat) or multiple tables (by_subject) as shown in the following diagram.
+The difference between the two formats is the way in which the Phenopacket JSON data is structured in one table (flat) or multiple tables (by_subject) as shown in the following diagram.
 
 
-![phenopacket tables in a bucket example](assets/phenopacket-tables-in-a-bucket-example.svg "phenopacket tables in a bucket example")
+![Phenopacket tables in a bucket example](assets/phenopacket-tables-in-a-bucket-example.svg "Phenopacket tables in a bucket example")
 
 ## How to Secure Implementations Based on Presto Connectors or PostgreSQL Foreign Data Wrappers
 
