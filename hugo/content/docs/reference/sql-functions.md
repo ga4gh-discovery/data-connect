@@ -6,7 +6,7 @@ lastmod: 2020-12-3
 type: docs
 layout: single-col
 ---
-Data Connect's SQL dialect has been selected for compatibility with current major open source database platforms including Presto SQL, PostgreSQL, and MySQL, and BigQuery. There are occasional name or signature differences, but a Data Connect implementation atop any of the major database platforms should be able to pass through queries that use the functions listed below with only minor tweaks.
+Data Connect's SQL dialect has been selected for compatibility with current major open source database platforms including Trino (formerly Presto SQL), PostgreSQL, and MySQL, and BigQuery. There are occasional name or signature differences, but a Data Connect implementation atop any of the major database platforms should be able to pass through queries that use the functions listed below with only minor tweaks.
 
 The functions below are a subset of those available in PrestoSQL 341. In a conformant Data Connect implementation, these functions must behave according to the Presto documentation. To assist with implementations directly on other database platforms, the [PrestoSQL Functions Support Matrix](https://docs.google.com/document/d/1y51qNuoe2ELX9kCOyQbFB4jihiKt2N8Qcd6-zzadIvk) captures the differences between platforms in granular detail. 
 
@@ -187,4 +187,4 @@ Note: Arrays are mostly absent in MySQL
     *   Array Concatenation Operator: `||`
     *   `concat(array1, array2, ..., arrayN)` → `array`
     *   `cardinality(x)` → `bigint`*
-*   `ga4gh_type` (described above)
+*   `ga4gh_type` [described in the Data Connect specification](https://github.com/ga4gh-discovery/ga4gh-search/blob/rebranding/SEARCHSPEC.md#attaching-semantic-data-types-to-search-results)

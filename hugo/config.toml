@@ -65,7 +65,7 @@ canonifyURLs = true
     identifier = "specs"
     pre = "<i class='icon-file-text'></i>"
     name = "Specification"
-    url = "https://github.com/gewenyu99/ga4gh-search/blob/release-1.0.0/SEARCHSPEC.md"
+    url = "https://github.com/ga4gh-discovery/ga4gh-search/blob/develop/SEARCHSPEC.md"
     weight = -130
   [[menu.main]]
     identifier = "github"

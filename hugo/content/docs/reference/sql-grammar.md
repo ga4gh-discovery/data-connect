@@ -9,8 +9,8 @@ layout: single-col
 This is the ANTLR grammar from Presto SQL version 323 (ASL 2.0 license), with the DML and DDL parts removed.
 
 
-```SQL
-grammar Search;
+```antlrv4
+grammar DataConnect;
 
 tokens {
     DELIMITER
