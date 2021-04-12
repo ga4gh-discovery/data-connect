@@ -1,5 +1,5 @@
 ---
-title: "Installing Clients"
+title: "Install Clients"
 weight: 2
 draft: false
 lastmod: 2020-11-5
