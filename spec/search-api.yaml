@@ -1,16 +1,16 @@
 openapi: "3.0.2"
 info:
-  title: GA4GH Search API
+  title: Data Connect API
   version: 1.0.0
   description: |
-    GA4GH Search is an API for searching biomedical data.
+    Data Connect is an API for searching biomedical data.
 
     More information on [GitHub](https://github.com/ga4gh-discovery/ga4gh-search).
   license:
     name: 'Apache 2.0'
     url: 'https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-search/develop/LICENSE'
   contact:
-    name: 'GA4GH Search Team'
+    name: 'Data Connect Team'
     email: 'ga4gh-discovery-search@ga4gh.org'
 security:
   - bearerAuth: [ ]
@@ -130,14 +130,14 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
   /service-info:
     get:
-      summary: 'Show information about the Search service'
+      summary: 'Show information about the Data Connect service'
       operationId: getServiceInfo
       tags:
         - service-info
       responses:
         '200':
           description: |
-            Show information about this Search service.
+            Show information about this Data Connect service.
 
             Use `"type": {"group": "org.ga4gh", "artifact": "search", "version": "0.1.0"}` when implementing this specification directly.
           content:
@@ -180,7 +180,7 @@ components:
         errors:
           $ref: "#/components/schemas/ErrorList"
       description: |
-        Describes a Table hosted by this search node.
+        Describes a Table hosted by this Data Connect node.
     TableData:
       required:
         - data_model
@@ -218,7 +218,7 @@ components:
         source:
           type: string
           description: >
-            The "source" field should only be present when the error originated in an attached data source backing the Search
+            The "source" field should only be present when the error originated in an attached data source backing the Data Connect
             API. The value of source can be any of the following:
 
             1. A fully qualified table `name`
@@ -226,7 +226,7 @@ components:
             if there is a table called `foo.bar.baz`, valid prefixes would be `foo` and `foo.bar`. Partial prefixes
             which do not end just before a `.`, are not valid. For example: `foo.b` and `fo` are not allowed.
 
-            If the error originated inside the Search API implementation and is not associated with any particular table
+            If the error originated inside the Data Connect API implementation and is not associated with any particular table
             or group of tables, then the source must be absent. An example of this would be an error occurring from a bug
             in the implementation. Additionally, if the error is due to a bad request from the client, the source must
             also be absent.

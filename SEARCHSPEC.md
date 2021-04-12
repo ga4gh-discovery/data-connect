@@ -1,25 +1,25 @@
-# GA4GH Search Specification
+# Data Connect Specification
 
-This document describes the overall structure of the GA4GH Search and specifies how a GA4GH Search implementation should parse, execute, and respond to a query expressed in the SQL language. Independently developed implementations that conform to this specification can be used interchangeably by a client, or networked together into a tree-structured federation of search nodes.
+This document describes the overall structure of the Data Connect API and specifies how an implementation should parse, execute, and respond to a search expressed as an SQL query. Independently developed implementations that conform to this specification can be used interchangeably by a client, or networked together into a tree-structured federation of Data Connect nodes.
 
 ## Table of Contents
 
-- [GA4GH Search Specification](#ga4gh-search-specification)
+- [Data Connect Specification](#ga4gh-search-specification)
   - [Overview](#overview)
   - [Conventions](#conventions)
   - [Table Discovery and Browsing](#table-discovery-and-browsing)
       - [Table Discovery and Browsing Examples](#table-discovery-and-browsing-examples)
-  - [Query](#query)
-    - [Query Example](#query-example)
-      - [Query Request](#query-request)
+  - [Search](#search)
+    - [Search Example](#search-example)
+      - [Search Request](#search-request)
         - [Positional Query Parameters](#positional-query-parameters)
         - [Correspondence Between SQL and JSON Data Types in Search Request](#correspondence-between-sql-and-json-data-types-in-search-request)
-      - [Query Result](#query-result)
-        - [Correspondence Between SQL and JSON Data Types in the Query Result](#correspondence-between-sql-and-json-data-types-in-the-query-result)
+      - [Search Result](#search-result)
+        - [Correspondence Between SQL and JSON Data Types in the Search Result](#correspondence-between-sql-and-json-data-types-in-the-search-result)
   - [Semantic Data Types](#semantic-data-types)
     - [Example: Semantic Data Types on a Table](#example-semantic-data-types-on-a-table)
-    - [Attaching Semantic Data Types To Query Results](#attaching-semantic-data-types-to-query-results)
-    - [Example: Semantic Data Types in Query Results](#example-semantic-data-types-in-query-results)
+    - [Attaching Semantic Data Types To Search Results](#attaching-semantic-data-types-to-search-results)
+    - [Example: Semantic Data Types in Search Results](#example-semantic-data-types-in-search-results)
   - [SQL Functions](#sql-functions)
   - [Pagination and Long Running Queries](#pagination-and-long-running-queries)
 - [Supplementary Information](#supplementary-information)
@@ -33,11 +33,11 @@ This document describes the overall structure of the GA4GH Search and specifies 
 
 ## Overview
 
-The primary container for data in the GA4GH Search API is the **Table**. Tables contain rows of data, where each row is a JSON object with key/value pairs. The table describes the structure of its row objects using [JSON Schema](https://json-schema.org/). Row attributes can take on any legal JSON value, eg. numbers, strings, booleans, nulls, arrays, and nested JSON objects.
+The primary container for data in the Data Connect API is the **Table**. Tables contain rows of data, where each row is a JSON object with key/value pairs. The table describes the structure of its row objects using [JSON Schema](https://json-schema.org/). Row attributes can take on any legal JSON value, eg. numbers, strings, booleans, nulls, arrays, and nested JSON objects.
 
-The API supports browsing and discovery of data models and table metadata, listing table data, and optionally querying table data using arbitrarily complex expressions including joins and aggregations. The query language is SQL with domain-specific functions to facilitate informative typing of the result fields. 
+The API supports browsing and discovery of data models and table metadata, listing table data, and optionally searching table data using arbitrarily complex expressions including joins and aggregations. The query language is SQL with domain-specific functions to facilitate informative typing of the result fields. 
 
-All discovery, browsing and query operations are specified formally in the [OpenAPI specification](https://github.com/ga4gh-discovery/ga4gh-discovery-search/blob/develop/spec/search-api.yaml) document.
+All discovery, browsing and search operations are specified formally in the [OpenAPI specification](https://github.com/ga4gh-discovery/ga4gh-discovery-search/blob/develop/spec/search-api.yaml) document.
 
 ## Conventions
 
@@ -46,11 +46,11 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ## Table Discovery and Browsing
 
-The Table Discovery and Browsing part of the GA4GH Search API consists of these HTTP resources, which provide information about the tables available.  Machine actionable descriptions of their schema and semantics are provided.
+The Table Discovery and Browsing part of the Data Connect API consists of these HTTP resources, which provide information about the tables available.  Machine actionable descriptions of their schema and semantics are provided.
 
 | Request                    | Description                                                                 |
 | -------------------------- | --------------------------------------------------------------------------- |
-| GET /tables                | Retrieve a paginated list of tables available from this GA4GH Search API instance |
+| `GET /tables`                | Retrieve a paginated list of tables available from this Data Connect API instance |
 | `GET /table/{id}/info`     | Retrieve the data model (JSON Schema) associated with the given table |
 | `GET /table/{id}/data`     | Retrieve the data rows (paginated) from the given table and the data model of the retrieved data. |
 
@@ -151,21 +151,21 @@ GET /table/`search_postgres_pgpc`.ontology.axiom/data
 }
 ```
 
-## Query
+## Search
 
-The Query part of the Search API consists of the following HTTP endpoint:
+The Search part of the Data Connect API consists of the following HTTP endpoint:
 
 | Request                    | Description                                                                 |
 | -------------------------- | --------------------------------------------------------------------------- |
 | POST /search               | Executes the given SQL query and returns the results as a Table             |
 
 
-### Query Example
+### Search Example
 
 
-#### Query Request
+#### Search Request
 
-Here is a concrete example of a search query against a search implementation.
+Here is a concrete example of a search request against a Data Connect implementation.
 
 ```
 POST Request:
@@ -207,7 +207,7 @@ which is a JSON array whose element count matches the number of `?` placeholders
 will be substituted from the array into the query on the server side in the order the `?` placeholders
 appear in the text of the SQL query.
 
-##### Correspondence Between SQL and JSON Data Types in Search Request
+##### Correspondence Between SQL and JSON Data Types in Data Connect Request
 
 The SQL type of a `?` placeholder in the query is determined by its corresponding entry in the
 `parameters` array, according to the following table.
@@ -223,9 +223,9 @@ The SQL type of a `?` placeholder in the query is determined by its correspondin
 Queries that require parameters with SQL types not covered above should use the SQL CAST operation. For
 example, `CAST(? AS DATE)`.
 
-#### Query Result
+#### Search Result
 
-The result is returned in the same data structure as tables are returned by the discovery and browsing part of the GA4GH Search API: a **TableData** object.
+The result is returned in the same data structure as tables are returned by the discovery and browsing part of the Data Connect API: a **TableData** object.
 
 ```
 
@@ -255,7 +255,7 @@ The result is returned in the same data structure as tables are returned by the 
 }
 
 ```
-##### Correspondence Between SQL and JSON Data Types in the Query Result
+##### Correspondence Between SQL and JSON Data Types in the Search Result
 
 Data is manipulated in the query using the following types. Each SQL type is expressed as a physical JSON value in the response table. Semantic types (defined by JSON Schema reference URLs) are covered in the next section.
 
@@ -282,7 +282,7 @@ Data is manipulated in the query using the following types. Each SQL type is exp
 
 To enable discovery of tables based on the kind of information contained within them, and to enable query tools to offer to filter and join data from different sources in a sensible way, tables need to declare not only the physical type of their rows (eg. how data is represented as JSON) but also the semantic type (what the data means). This means that any datasource which can conform to this requirement, may be exposed as a Table.
 
-GA4GH Search API describes the _meaning_ of data through JSON Schema references ($ref). Clients can discover that attributes in different tables refer to the same concept as each other by examining the target of each attribute’s JSON Schema reference. If the $ref URLs are the same, then the client knows that the attributes have the same meaning.
+Data Connect API describes the _meaning_ of data through JSON Schema references ($ref). Clients can discover that attributes in different tables refer to the same concept as each other by examining the target of each attribute’s JSON Schema reference. If the $ref URLs are the same, then the client knows that the attributes have the same meaning.
 
 Clients can use the attribute meanings to:
 
@@ -290,7 +290,7 @@ Clients can use the attribute meanings to:
 *   Display table attributes in a meaningful way
 *   Construct queries across tables in an informed way which retains the underlying meaning of the data, or create new meaning
 
-This system of identifying types through reference URLs is amenable to building up cross-references. With a rich set of cross references, a GA4GH Search API client can help join up data from sources that use different nomenclatures.
+This system of identifying types through reference URLs is amenable to building up cross-references. With a rich set of cross references, a Data Connect API client can help join up data from sources that use different nomenclatures.
 
 
 ### Example: Semantic Data Types on a Table 
@@ -338,7 +338,7 @@ Assume the following JSON Schema is published at https://schemablocks.org/schema
 
 
 
-Then data exposed through GA4GH Search API could refer to the concept of “ABO Blood Group” as: 
+Then data exposed through Data Connect API could refer to the concept of “ABO Blood Group” as: 
 
 "$ref": "[https://schemablocks.org/schemas/example/blood-group/v1.0.0/BloodGroup.json](https://schemablocks.org/schemas/example/blood-group/v1.0.0/BloodGroup.json)".
 
@@ -353,11 +353,11 @@ Many columns in datasets will contain identifiers of related objects. The descri
 A common use case will be to provide GA4GH [Data Repository Service](https://github.com/ga4gh/data-repository-service-schemas) (DRS) identifiers which can be used to retrieve specific digital files for analysis. Where a column of a table contains DRS ids the column description should indicate this. DRS ids maybe host based URIs, or a CURIE as above.
 
 
-### Attaching Semantic Data Types To Query Results
+### Attaching Semantic Data Types To Search Results
 
-Since query results are also Tables, there are many scenarios where users would benefit from semantic schema references being embedded in query results as well as static views of tables.
+Since search results are also Tables, there are many scenarios where users would benefit from semantic schema references being embedded in Search results as well as static views of tables.
 
-When submitting a SQL query to the /search endpoint, the tool generating the query can wrap each selected column in the function `ga4gh_type()`, which directs the Search implementation to generate a corresponding JSON Schema `$ref` for that column in the result table.
+When submitting a SQL query to the /search endpoint, the tool generating the query can wrap each selected column in the function `ga4gh_type()`, which directs the Data Connect implementation to generate a corresponding JSON Schema `$ref` for that column in the result table.
 
 ```
 SELECT ga4gh_type(
@@ -369,7 +369,7 @@ WHERE t.age > 18
 Any selected columns that are not wrapped in the ga4gh_type() function will only have their physical characteristics described in the result table’s schema. This is perfectly acceptable for some client applications, but greatly limits the value of result tables that are archived or forwarded to another tool for further processing.
 
 
-### Example: Semantic Data Types in Query Results
+### Example: Semantic Data Types in Search Results
 
 When a user issues the following query to the /search endpoint
 
@@ -396,7 +396,7 @@ select
 '$ref:https://schemablocks.org/schemas/example/blood-group/v1.0.0/BloodGroup.json') as blood_group
 `from search_postgres_pgpc.public.participant
 ```
-Then the Search service would respond with:
+Then the Data Connect service would respond with:
 
 ```
 {
@@ -428,9 +428,9 @@ Then the Search service would respond with:
 
 ## SQL Functions
 
-GA4GH Search specification is implementation-agnostic and does not prescribe use of a relational database or a particular database technology. However, for convenience, its SQL dialect has been selected for compatibility with current major open source database platforms including PrestoSQL, PostgreSQL, MySQL, and well as BigQuery. There are occasional name or signature differences, but a GA4GH Search API implementation atop any of the major database platforms should be able to pass through queries that use the functions listed below with only minor tweaks.
+Data Connect specification is implementation-agnostic and does not prescribe use of a relational database or a particular database technology. However, for convenience, its SQL dialect has been selected for compatibility with current major open source database platforms including PrestoSQL, PostgreSQL, MySQL, and well as BigQuery. There are occasional name or signature differences, but a Data Connect API implementation atop any of the major database platforms should be able to pass through queries that use the functions listed below with only minor tweaks.
 
-With PrestoSQL being a popular database choice in GA4GH Search implementations, we've chosen its grammar as the basis for the grammar supported by GA4GH Search. Functions below are a subset of those available in PrestoSQL 341, and must behave according to the PrestoSQL documentation in a conformant GA4GH Search implementation. To assist with implementations directly on other database platforms, the [PrestoSQL Functions Support Matrix](https://docs.google.com/document/d/1y51qNuoe2ELX9kCOyQbFB4jihiKt2N8Qcd6-zzadIvk) captures the differences between platforms in granular detail. 
+With PrestoSQL being a popular database choice in Data Connect implementations, we've chosen its grammar as the basis for the grammar supported by Data Connect. Functions below are a subset of those available in PrestoSQL 341, and must behave according to the PrestoSQL documentation in a conformant Data Connect implementation. To assist with implementations directly on other database platforms, the [PrestoSQL Functions Support Matrix](https://docs.google.com/document/d/1y51qNuoe2ELX9kCOyQbFB4jihiKt2N8Qcd6-zzadIvk) captures the differences between platforms in granular detail. 
 
 *   **Logical Operators**
     *   `AND`, `OR`, `NOT`
@@ -741,7 +741,7 @@ This section provides advice to implementers. Nothing in this section is require
 
 ## Interop with other data storage and transmission standards 
 
-This section demonstrates how to expose data stored in commonly used formats using GA4GH Search Table structures and their embedded JSON schema specifications.
+This section demonstrates how to expose data stored in commonly used formats using Data Connect Table structures and their embedded JSON schema specifications.
 
 
 ### Phenopackets 
@@ -751,7 +751,7 @@ Phenopacket is a GA4GH approved standard file format for sharing phenotypic info
 
 #### Concrete Example 
 
-Here is a detailed example of a directory full of Phenopacket files exposed as a single table via the GA4GH Search API. Each row corresponds to one Phenopacket. The table has two columns: 
+Here is a detailed example of a directory full of Phenopacket files exposed as a single table via the Data Connect API. Each row corresponds to one Phenopacket. The table has two columns: 
 
 *   **id**, the ID of that row’s phenopacket
 *   **phenopacket**, the entire contents of the Phenopacket as a JSON object
@@ -918,11 +918,11 @@ The difference between the two formats is the way in which the phenopacket json 
 
 # Appendix A: SQL Grammar
 
-ANTLR grammar for GA4GH Search (based on PrestoSQL v. 323, ASL 2.0 license), with the DML and DDL parts removed:
+ANTLR grammar for Data Connect (based on PrestoSQL v. 323, ASL 2.0 license), with the DML and DDL parts removed:
 
 
 ```
-grammar Ga4ghSearch;
+grammar Ga4ghData Connect;
 
 tokens {
     DELIMITER

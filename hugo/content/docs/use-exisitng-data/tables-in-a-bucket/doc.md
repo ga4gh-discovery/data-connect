@@ -18,7 +18,7 @@ Find [documentation for phenopackets-schema](https://phenopackets-schema.readthe
 
 An example of the JSON structure can be found [here](https://schemablocks.org/schemas/sb-phenopackets/current/Phenopacket.json).
 
-#### Preparing the Data for a GA4GH Search Application
+#### Preparing the Data for a Data Connect Application
 If you need some phenopackets data to follow this example, consider the following:
 - Human Phenotype Ontology phenopackets downloaded from a publicly available metadata source: https://zenodo.org/record/3905420#.X3Sd2pNKj6h.
 - Gecco Biosample phenopackets.

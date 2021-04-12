@@ -19,4 +19,4 @@ build_api_docs:
 	redoc-cli bundle spec/search-api.yaml
 	mv ./redoc-static.html ./hugo/content/api/index.html
 clean:
-	rm -r docs/
+	rm -rf docs/ built_docs/

@@ -9,7 +9,7 @@ layout: two-col
 ---
 {row-divider}
 #### Installing Client Libraries
-GA4GH Search has client libraries for R and Python, as well as a command-line interface. We’ll be using these client libraries in the following examples.
+Data Connect has client libraries for R and Python, as well as a command-line interface. We’ll be using these client libraries in the following examples.
 {divider}
 {{<code/float-window>}}
 {{< tabs tabTotal="3" tabID="1" tabName1="Python" tabName2="R" tabName3="CLI">}}
@@ -39,7 +39,7 @@ devtools::install_github("DNAstack/ga4gh-search-client-r")
 ``` bash
 curl https://storage.googleapis.com/ga4gh-search-cli/tables-cli-2.1-55-gc484f8b-executable.jar > search-cli
 chmod +x search-cli
-mv search-cli /usr/local/bin # (somewhere on your search path)
+mv search-cli /usr/local/bin # (somewhere on your path)
 search-cli --version
 ```
 You should see:

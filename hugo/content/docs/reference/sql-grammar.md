@@ -10,7 +10,7 @@ This is the ANTLR grammar from Presto SQL version 323 (ASL 2.0 license), with th
 
 
 ```SQL
-grammar DiscoverySearch;
+grammar Search;
 
 tokens {
     DELIMITER

@@ -19,11 +19,11 @@ In the [provision data section](/docs/getting-started/provision-data/), we've sh
 
 [Open API 3 Reference](/api)
 
-[Full GA4GH Search Specification](https://github.com/ga4gh-discovery/ga4gh-search/blob/develop/SEARCHSPEC.md)
+[Full Data Connect Specification](https://github.com/ga4gh-discovery/ga4gh-search/blob/develop/SEARCHSPEC.md)
 
 [Table Object Specification](https://github.com/ga4gh-discovery/ga4gh-search/blob/develop/TABLE.md)
 
-[Search API’s SQL dialect](https://github.com/ga4gh-discovery/ga4gh-search/blob/develop/SEARCHSPEC.md#sql-functions)
+[Data Connect API’s SQL dialect](https://github.com/ga4gh-discovery/ga4gh-search/blob/develop/SEARCHSPEC.md#sql-functions)
 
 {{%/content-textbox%}}
 {{</code/float-window>}}
@@ -51,7 +51,7 @@ mvn clean package
 
 For a minimal configuration, we need to provide two parameters, `PRESTO_DATASOURCE_URL` and `SPRING_PROFILES_ACTIVE`.
 
-`PRESTO_DATASOURCE_URL` points to the Presto server you wish to expose with a Search API.
+`PRESTO_DATASOURCE_URL` points to the Presto server you wish to expose with a Data Connect API.
 {{%content-textbox%}}
 Clone the repository:
 ``` bash

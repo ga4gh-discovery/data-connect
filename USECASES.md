@@ -1,5 +1,5 @@
 ﻿# Introduction
-This document attempts to summarize search use cases collected from key driver
+This document attempts to summarize Data Connect use cases collected from key driver
 projects and other interested parties. The information was collected from
 three primary sources:
 
@@ -32,7 +32,7 @@ See the section on data types below for more information.
 Most responses indicate some kind of requirement for controlled access,
 including tiers of access ranging from public to tightly controlled by per
 sample consent terms. Although configuration of access control is outside the
-scope of the GA4GH Search API, considerations may need to be made for expressing
+scope of the Data Connect API, considerations may need to be made for expressing
 these concepts in queries and responses.
 
 ## Complex Matching
@@ -69,7 +69,7 @@ Sorting, or the related concept of ranking, was rated as either "not needed"
 (2) or "must have" (2) by respondents.
 
 ## Data types
-The GA4GH Search API is not expected to define data types, but it will be important
+The Data Connect API is not expected to define data types, but it will be important
 that some shared vocabulary are available to facilitate federated queries.
 
 All responses in the feature matrix indicated that the availability of a

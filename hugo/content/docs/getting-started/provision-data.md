@@ -11,11 +11,11 @@ layout: two-col
 {row-divider}
 #### Implementation
 
-GA4GH Search requires [table operations](/api/#tag/tables) to be implemented to specification for basic discovery and browsing. 
+Data Connect requires [table operations](/api/#tag/tables) to be implemented to specification for basic discovery and browsing. 
 
 Optional but not required, [query operations](/api/#tag/search) may be implemented to support querying with SQL.
 
-The Search API is backend agnostic, which means any solution that implements the [API specification](/api) is valid. You can use your favorite backend web application framework to implement GA4GH Search Endpoints or any HTTPS file server (a cloud blob store, for example) for a tables-in-a-bucket implementation requiring no code.
+The Data Connect API is backend agnostic, which means any solution that implements the [API specification](/api) is valid. You can use your favorite backend web application framework to implement Data Connect Endpoints or any HTTPS file server (a cloud blob store, for example) for a tables-in-a-bucket implementation requiring no code.
 
 Checkout the following examples for some inspiration.
 {divider}
@@ -30,7 +30,7 @@ Checkout the following examples for some inspiration.
 {{</code/float-window>}}
 {row-divider}
 #### Tables-in-a-bucket example
-The specification allows for a no-code implementation as a collection of files served statically. This is the easiest way to start experimenting with GA4GH Search. As long as your storage bucket conforms to the correct file structure and it has the correct sharing permissions, it is a valid GA4GH Search implementation.
+The specification allows for a no-code implementation as a collection of files served statically. This is the easiest way to start experimenting with Data Connect. As long as your storage bucket conforms to the correct file structure and it has the correct sharing permissions, it is a valid Data Connect implementation.
 
 A concrete example implementation is [available here](https://storage.googleapis.com/ga4gh-tables-example/tables) and [try browsing this implementation](/docs/getting-started/consume-data/#browsing) with these commands.
 
@@ -49,7 +49,7 @@ Here's how you'll need to organize your folders
 {row-divider}
 #### Try a Reference Implementation
 
-This example was shown as a demo during the 2020 GA4GH Plenary. This app will run a reference GA4GH Search implementation on docker and use a Presto instance hosted by DNAstack as the data source.
+This example was shown as a demo during the 2020 GA4GH Plenary. This app will run a reference Data Connect implementation on docker and use a Presto instance hosted by DNAstack as the data source.
 
 You’ll need docker set up on your system to run the Spring app, and you’ll need to have one of the client libraries installed from the [Installing Clients Section](/docs/getting-started/clients/).
 

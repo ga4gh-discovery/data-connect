@@ -1,6 +1,6 @@
 baseURL = "http://example.org/ga4gh-search/"
 languageCode = "en-us"
-title = "GA4GH Search"
+title = "Data Connect"
 theme = "clyde"
 pygmentsUseClasses=true
 publishDir = "docs"
