@@ -37,7 +37,7 @@ The primary container for data in the Data Connect API is the **Table**. Tables 
 
 The API supports browsing and discovery of data models and table metadata, listing table data, and optionally searching table data using arbitrarily complex expressions including joins and aggregations. The query language is SQL with domain-specific functions to facilitate informative typing of the result fields. 
 
-All discovery, browsing and search operations are specified formally in the [OpenAPI specification](https://github.com/ga4gh-discovery/ga4gh-discovery-search/blob/develop/spec/search-api.yaml) document.
+All discovery, browsing and search operations are specified formally in the [OpenAPI specification](https://github.com/ga4gh-discovery/ga4gh-discovery-search/blob/develop/spec/api.yaml) document.
 
 ## Conventions
 

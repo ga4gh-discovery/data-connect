@@ -1,6 +1,6 @@
 ![](https://www.ga4gh.org/wp-content/themes/ga4gh-theme/gfx/GA-logo-horizontal-tag-RGB.svg)
 
-# Data Connect API <a href="https://github.com/ga4gh-discovery/ga4gh-search/blob/develop/spec/search-api.yaml"><img src="http://validator.swagger.io/validator?url=https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-search/develop/spec/search-api.yaml" alt="Swagger Validator" height="20em" width="72em"></a> [![](https://travis-ci.com/ga4gh-discovery/ga4gh-search.svg?branch=develop)](https://travis-ci.com/ga4gh-discovery/ga4gh-search) [![](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-search/develop/LICENSE)
+# Data Connect API <a href="https://github.com/ga4gh-discovery/ga4gh-search/blob/develop/spec/api.yaml"><img src="http://validator.swagger.io/validator?url=https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-search/develop/spec/api.yaml" alt="Swagger Validator" height="20em" width="72em"></a> [![](https://travis-ci.com/ga4gh-discovery/ga4gh-search.svg?branch=develop)](https://travis-ci.com/ga4gh-discovery/ga4gh-search) [![](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-search/develop/LICENSE)
 
 Data Connect is an API specification for a simple, uniform mechanism to publish, discover, query and retrieve the biomedical data that is a companion to the data objects available through other GA4GH APIs. The data expected to be made available through Data Connect are those typically used to filter subjects, sample and files, and by which data scientists make meaningful comparisons across genomic data files. The data that can be handled in Data Connect are what are frequently termed 'metadata'. Data Connect leaves the specific definition of those data to the appropriate scientific specializations, and accomodates the standards, such as SchemaBlocks and FHIR, in which those definitions are expressed. 
 
@@ -63,7 +63,7 @@ The intended audience of this standard includes:
 
 ## Specification
 
-The specification is described in [SEARCHSPEC.md](SEARCHSPEC.md). The API is further specified in OpenAPI format in [search-api.yaml](./spec/search-api.yaml), which [can be viewed with Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-search/develop/spec/search-api.yaml).
+The specification is described in [SEARCHSPEC.md](SEARCHSPEC.md). The API is further specified in OpenAPI format in [api.yaml](spec/api.yaml), which [can be viewed with Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-search/develop/spec/api.yaml).
 
 
 ## Documentation
