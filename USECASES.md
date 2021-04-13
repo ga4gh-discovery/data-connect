@@ -1,5 +1,5 @@
 ﻿# Introduction
-This document attempts to summarize Data Connect use cases collected from key driver
+This document attempts to summarize a variety of use cases collected from key driver
 projects and other interested parties. The information was collected from
 three primary sources:
 
