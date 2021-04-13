@@ -71,9 +71,9 @@ GET /tables
       }
     },
     {
-      "name": "search_postgres_pgpc.ontology.axiom",
+      "name": "pgpc.ontology.axiom",
       "data_model": {
-        "$ref":     "https://example.com/table/search_postgres_pgpc.ontology.axiom/info"
+        "$ref": "https://example.com/table/pgpc.ontology.axiom/info"
         }
     },
     ...
@@ -86,13 +86,13 @@ GET /tables
 ```
 
 ```
-GET `/table/search_postgres_pgpc.ontology.axiom/info`
+GET `/table/pgpc.ontology.axiom/info`
 ```
 ```
 {
-  "name": "search_postgres_pgpc.ontology.axiom",
+  "name": "pgpc.ontology.axiom",
   "data_model": {
-    "$id": "https://example.com/table/search_postgres_pgpc.ontology.axiom/info",
+    "$id": "https://example.com/table/pgpc.ontology.axiom/info",
     "description": "Automatically generated schema",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "properties": {
@@ -123,7 +123,7 @@ GET `/table/search_postgres_pgpc.ontology.axiom/info`
 
 
 ```
-GET /table/`search_postgres_pgpc`.ontology.axiom/data
+GET /table/pgpc.ontology.axiom/data
 ```
 ```
 {
@@ -175,7 +175,7 @@ Header:
 content-type: application/json
 
 Request body:
-{ "query": "SELECT * from search_postgres_pgpc.ontology.axiom WHERE to_term='UBERON_0000464'"}
+{ "query": "SELECT * from pgpc.ontology.axiom WHERE to_term='UBERON_0000464'"}
 ```
 
 ##### Positional Query Parameters
@@ -191,7 +191,7 @@ content-type: application/json
 
 Request body:
 {
-  "query": "SELECT * from search_postgres_pgpc.ontology.axiom WHERE to_term=?"
+  "query": "SELECT * from pgpc.ontology.axiom WHERE to_term=?"
   "parameters": [ "UBERON_0000464" ]
 }
 ```
@@ -275,12 +275,12 @@ Data is manipulated in the query using the following types. Each SQL type is exp
 | interval day to month         | String in ISO 8601 period format                             | "P3Y2M"                                                      |
 | interval day to second        | String in ISO 8601 duration format                           | "P3DT4H3M2S" "PT3M2S" "PT4H3M"                               |
 | array                         | array                                                        | [ 1, 3, 5, "seven", [ 1 ] ]                                  |
-| map                           | object                                                       | { "key": "value” }                                           |
-| row                           | object                                                       | { "colname": "colvalue” }                                    |
+| map                           | object                                                       | { "key": "value" }                                           |
+| row                           | object                                                       | { "colname": "colvalue" }                                    |
 
 ## Semantic Data Types
 
-To enable discovery of tables based on the kind of information contained within them, and to enable query tools to offer to filter and join data from different sources in a sensible way, tables need to declare not only the physical type of their rows (e.g. how data is represented as JSON) but also the semantic type (what the data means). This means that any datasource which can conform to this requirement, may be exposed as a Table.
+To enable discovery of tables based on the kind of information contained within them, and to enable query tools to offer to filter and join data from different sources in a sensible way, tables need to declare not only the physical type of their rows (e.g. how data is represented as JSON) but also the semantic type (what the data means).
 
 Data Connect API describes the _meaning_ of data through JSON Schema references ($ref). Clients can discover that attributes in different tables refer to the same concept as each other by examining the target of each attribute’s JSON Schema reference. If the $ref URLs are the same, then the client knows that the attributes have the same meaning.
 
@@ -290,20 +290,22 @@ Clients can use the attribute meanings to:
 *   Display table attributes in a meaningful way
 *   Construct queries across tables in an informed way which retains the underlying meaning of the data, or create new meaning
 
-This system of identifying types through reference URLs is amenable to building up cross-references. With a rich set of cross-references, a Data Connect API client can help join up data from sources that use different nomenclatures.
+This system of identifying types through reference URLs is amenable to building up cross-references. With a rich set of cross-references, a Data Connect API client can help join up data from sources that use different nomenclatures, and link concepts to external ontologies.
 
 
 ### Example: Semantic Data Types on a Table 
 
-Assume the following JSON Schema is published at https://schemablocks.org/schemas/example/blood-group/v1.0.0/BloodGroup.json:
+Assume the following JSON Schema is published at https://schemablocks.org/schemas/playground/current/BloodGroup.json:
 
 ```
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://schemablocks.org/schemas/example/blood-group/v1.0.0",
-  "properties": {
-    "abo_blood_group": {
-      "$ref": "https://schemablocks.org/schemas/sb-phenopackets/v1.0.0/OntologyClass.json",
+  "$id": "https://schemablocks.org/schemas/playground/current/BloodGroup.json",
+  "allOf": [
+    {
+      "$ref": "https://schemablocks.org/schemas/sb-phenopackets/v1.0.0/OntologyClass.json#/properties"
+    },
+    {
       "properties": {
         "id": {
           "description": "Subtype of HP:0032224 (ABO Blood Group)",
@@ -328,11 +330,7 @@ Assume the following JSON Schema is published at https://schemablocks.org/schema
         }
       }
     }
-  },
-  "required": [
-    "blood_type"
-  ],
-  "type": "object"
+  ]
 }
 ```
 
@@ -340,7 +338,9 @@ Assume the following JSON Schema is published at https://schemablocks.org/schema
 
 Then data exposed through Data Connect API could refer to the concept of “ABO Blood Group” as: 
 
-"$ref": "[https://schemablocks.org/schemas/example/blood-group/v1.0.0/BloodGroup.json](https://schemablocks.org/schemas/example/blood-group/v1.0.0/BloodGroup.json)".
+```
+"$ref": "https://schemablocks.org/schemas/playground/current/BloodGroup.json"
+```
 
 SchemaBlocks is the recommended repository for centrally defined types, but any URL that points to a valid JSON Schema definition is acceptable. In many cases, the quickest route to publishing data will be to translate existing data dictionaries into JSON Schema and publish those alongside the dataset. However, the dataset will provide greater utility to its consumers if concepts are mapped to SchemaBlocks definitions where possible.
 
@@ -371,37 +371,46 @@ Any selected columns that are not wrapped in the ga4gh_type() function will only
 
 ### Example: Semantic Data Types in Search Results
 
-When a user issues the following query to the `/search` endpoint:
+Assume a Data Connect implementation has the table `pgpc.public.participant` contains the following data:
+
+| id                 | blood_type   |
+| ------------------ | ------------ |
+| PGPC-44            | 0            |
+| PGPC-46            | AB           |
+
+The following query to the `/search` endpoint will lift this raw, unharmonized data into a semantically typed table
+with data errors corrected, and types mapped to externally defined schema concepts:
 
 ```
 select
     ga4gh_type(id, '$ref:https://schemablocks.org/schemas/sb-phenopackets/current/Person.json#properties/individualId') as id,
-    ga4gh_type(case
-        when blood_type = '' then null
+    ga4gh_type(
+        case when blood_type = '' then null
         else cast(row(
             case regexp_extract(blood_type, '(\w+)([+-])', 1)
-            when '0' then 'HP:0032442'
-            when 'A' then 'HP:0032370'
-            when 'B' then 'HP:0032440'
-            when 'AB' then 'HP:0032441'
-            else 'error'
+                when '0' then 'HP:0032442' -- source data has '0' where it should have 'O'
+                when 'O' then 'HP:0032442'
+                when 'A' then 'HP:0032370'
+                when 'B' then 'HP:0032440'
+                when 'AB' then 'HP:0032441'
+                else 'error'
             end,
             case regexp_extract(blood_type, '(\w+)([+-])', 1)
-            when '0' then 'O'
-            else regexp_extract(blood_type, '(\w+)([+-])', 1)
+                when '0' then 'O'
+                else regexp_extract(blood_type, '(\w+)([+-])', 1)
             end
         )
         as row(id varchar, label varchar))
     end, 
-'$ref:https://schemablocks.org/schemas/example/blood-group/v1.0.0/BloodGroup.json') as blood_group
-`from search_postgres_pgpc.public.participant
+    '$ref:https://schemablocks.org/schemas/playground/current/BloodGroup.json') as blood_group
+from pgpc.public.participant
 ```
-Then the Data Connect service would respond with:
+
+The Data Connect service responds with the following table:
 
 ```
 {
   "data_model": {
-    "$id": null,
     "description": "Schema specified by query",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "properties": {
@@ -409,20 +418,20 @@ Then the Data Connect service would respond with:
         "$ref": "https://schemablocks.org/schemas/sb-phenopackets/current/Person.json#properties/individualId"
       },
       "blood_group": {
-        "$ref": "https://schemablocks.org/schemas/example/blood-group/v1.0.0/BloodGroup.json"
+        "$ref": "https://schemablocks.org/schemas/playground/current/BloodGroup.json"
       }
     }
   },
   "data": [
     {
-    {
       "id": "PGPC-44",
       "blood_group": {"id": "HP:0032442", "label": "O"}
+    },
+    {
+      "id": "PGPC-46",
+      "blood_group": {"id": "HP:0032441", "label": "AB"}
     }
-  ],
-  "pagination": {
-    "next_page_url": "http://search-api.example.com/search/v1/statement/executing/20200630_221357_00006_4ufsz/ya41766923be262f6ddd468d212c0a1fc9f4797b2/1"
-  }
+  ]
 }
 ```
 
