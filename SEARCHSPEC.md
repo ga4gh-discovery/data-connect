@@ -922,7 +922,7 @@ ANTLR grammar for Data Connect (based on PrestoSQL v. 323, ASL 2.0 license), wit
 
 
 ```
-grammar Ga4ghData Connect;
+grammar DataConnect;
 
 tokens {
     DELIMITER
