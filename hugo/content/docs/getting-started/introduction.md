@@ -47,8 +47,6 @@ Data Connect, formerly known as _GA4GH Search_, is this general-purpose middlewa
 
 Data Connect is an intentionally general-purpose middleware meant to enable development of a diverse ecosystem of applications.
 
-<img src="assets/data-connect.png"/>
-
 The community has built the following applications on top of Data Connect:
 
 - Data Explorers
