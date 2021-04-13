@@ -26,7 +26,7 @@ If you need some phenopackets data to follow this example, consider the followin
 1. Clone this repository: `https://github.com/DNAstack/tables-loader`
 2. All phenopacket JSON files should be added under <repo_root>/resources/phenopackets
 3. Create a Google storage bucket with public access. [Creating Storage Buckets](https://cloud.google.com/storage/docs/creating-buckets)
-4. Create a service account and grant "Storage Admin" access to your storage bucket. You should automatically begin downloading the access key. ***Store this access key somewhere safe, you'll need it later**
+4. Create a service account and grant "Storage Admin" access to your storage bucket. You should automatically begin downloading the access key. **Store this access key somewhere safe. You'll need it later.**
 
 #### Running the Spring Application
 1. Export this environment variable: `GOOGLE_APPLICATION_CREDENTIALS=<service_account_json_file_path>`
@@ -35,7 +35,7 @@ If you need some phenopackets data to follow this example, consider the followin
 
 
 #### Available API Endpoints
-`/create-tables-files/{tableStructure}`:
+`/create-tables-files/{tableStructure}`
 Creates tables, info and data files for all phenopackets JSON present in <repo_root>/resources/phenopackets directory
 
 `/upload-files/{tableStructure}`
