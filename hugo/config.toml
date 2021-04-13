@@ -1,4 +1,4 @@
-baseURL = "http://example.org/ga4gh-search/"
+baseURL = "http://example.org/data-connect/"
 languageCode = "en-us"
 title = "Data Connect"
 theme = "clyde"
@@ -65,11 +65,11 @@ canonifyURLs = true
     identifier = "specs"
     pre = "<i class='icon-file-text'></i>"
     name = "Specification"
-    url = "https://github.com/ga4gh-discovery/ga4gh-search/blob/develop/SEARCHSPEC.md"
+    url = "https://github.com/ga4gh-discovery/data-connect/blob/develop/SEARCHSPEC.md"
     weight = -130
   [[menu.main]]
     identifier = "github"
     pre = "<i class='icon-github'></i>"
     name = "Github"
-    url = "https://github.com/ga4gh-discovery/ga4gh-search/"
+    url = "https://github.com/ga4gh-discovery/data-connect/"
     weight = -120

@@ -25,7 +25,7 @@ function renderSearchResults(results){
         
             // create result item
             var article = document.createElement('article')
-            var uri = "/ga4gh-search" + result.ref.replace("/index.json","")
+            var uri = "/data-connect" + result.ref.replace("/index.json","")
             article.innerHTML = `
             <a href="${uri}" class="search-result-item"><p class="search-result-title">${documents[result.ref].title}</p> <i class="icon-external-link"></i></a>
             `
@@ -76,7 +76,7 @@ window.onload = function() {
     searchResults = document.getElementById('search-results')
 
     // request and index documents
-    fetch('/ga4gh-search/index.json', {
+    fetch('/data-connect/index.json', {
         method: 'get'
     }).then(
         res => res.json()
