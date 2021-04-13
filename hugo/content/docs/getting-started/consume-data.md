@@ -6,13 +6,13 @@ lastmod: 2020-11-5
 # search related keywords
 type: docs
 layout: two-col
-description: This section provides information about setting up GA4GH Search to expose data.
+description: This section provides information about setting up Data Connect to expose data.
 ---
 {row-divider}
 #### Browsing
-The minimum GA4GH Search implementations will support browsing by table. This means [these operations](https://gewenyu99.github.io/ga4gh-search-docs/api/#tag/tables) from the API specs are supported for table by table browsing.
+At minimum, Data Connect implementations support browsing by table. This means [these operations](/api/#tag/tables) from the API specs are supported for table by table browsing.
 
-On the right is example code to browse [the tables-in-a-bucket](/docs/getting-started/provision-data/#tables-in-a-bucket-example) implementation of Search.
+On the right is example code to browse [the tables-in-a-bucket](/docs/getting-started/provision-data/#tables-in-a-bucket-example) implementation of Data Connect.
 {divider}
 {{< tabs tabTotal="3" tabID="2" tabName1="Python" tabName2="R" tabName3="CLI">}}
 {{% tab tabNum="1" %}}
@@ -69,9 +69,9 @@ search-cli data subjects --api-url https://storage.googleapis.com/ga4gh-tables-e
 {row-divider}
 #### Queries
 
-GA4GH Search supports query operation through SQL statements.
+Data Connect supports query operation through SQL statements.
 
-GA4GH Search's SQL dialect has a familiar interface inspired by current major open source database platforms, including Presto SQL, PostgreSQL, MySQL, and BigQuery. If you have prior experience with these database platforms, you'll feel right at home with only minor adjustments.
+Data Connect's SQL dialect has a familiar interface inspired by current major open source database platforms, including Presto SQL, PostgreSQL, MySQL, and BigQuery. If you have prior experience with these database platforms, you'll feel right at home with only minor adjustments.
 
 [Supported SQL functions](https://github.com/ga4gh-discovery/ga4gh-search/blob/develop/SEARCHSPEC.md#sql-functions)
 
@@ -112,15 +112,15 @@ LIMIT  5;
 
 {row-divider}
 
-#### Issuing Queries Using GA4GH Search
+#### Issuing Queries Using Data Connect
 
-Search can be accessed through the straightforward HTTP calls described in its OpenAPI specification.
+Data Connect can be accessed through the straightforward HTTP calls described in its OpenAPI specification.
 
-While Search API can be navigated using programs like cURL or Postman, it is best accessed programmatically. The results could be split into multiple pages, which is easier to navigate with programmatic access.
+While Data Connect API can be navigated using programs like cURL or Postman, it is best accessed programmatically. The results could be split into multiple pages, which is easier to navigate with programmatic access.
 
-Fetch each page only once. Search servers are allowed to "forget" page URLs after you fetch them. This allows the server implementations to be more efficient.
+Fetch each page only once. Data Connect servers are allowed to "forget" page URLs after you fetch them. This allows the server implementations to be more efficient.
 
-On the right, we provide examples to consume data from GA4GH Search using the GA4GH Commandline Interface, the R client, Python, and cURL.
+On the right, we provide examples to consume data from Data Connect using the GA4GH Commandline Interface, the R client, Python, and cURL.
 
 > [Need help installing client libraries?](/docs/getting-started/clients/)
 
@@ -238,7 +238,7 @@ curl --request POST \
 {row-divider}
 #### More Examples
 ##### dbGaP GECCO Example
-This is a public implementation of Search. Feel free to follow along with the examples and explore this endpoint with your own script.
+This is a public implementation of Data Connect. Feel free to follow along with the examples and explore this endpoint with your own script.
 {{< tabs tabTotal="3" tabID="3" tabName1="Python" tabName2="R" tabName3="CLI">}}
 {{% tab tabNum="1" %}}
 [Follow along in Colab](https://colab.research.google.com/drive/1f_BZibUx3nWdaJXkgcoW5WqwxnLDgzzY?usp=sharing)
@@ -334,7 +334,7 @@ search-cli query -q "SELECT * FROM dbgap_demo.scr_gecco_susceptibility.subject_p
 ---
 
 ##### COVID Cloud Example
-This is a public implementation of Search for COVID Cloud. Find more about COVID Cloud [here](https://international.covidcloud.ca/).
+This is a public implementation of Data Connect for COVID Cloud. Find more about COVID Cloud [here](https://international.covidcloud.ca/).
 {{< tabs tabTotal="3" tabID="4" tabName1="Python" tabName2="R" tabName3="CLI">}}
 {{% tab tabNum="1" %}}
 [Follow along in Colab](https://colab.research.google.com/drive/1hnHTqquYP2HjUF0dDHn8FKiO9f7t0yGO?usp=sharing)

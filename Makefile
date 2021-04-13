@@ -16,7 +16,8 @@ build_prod: build_api_docs
 	echo "end prod build"
 build_api_docs:
 	echo "start api docs build"
-	redoc-cli bundle spec/search-api.yaml
+	redoc-cli bundle spec/api.yaml
+	mkdir -p `dirname ./hugo/content/api/index.html`  
 	mv ./redoc-static.html ./hugo/content/api/index.html
 clean:
-	rm -r docs/
+	rm -rf hugo/docs/ docs/ built_docs/ hugo/built_docs/ hugo/content/api/index.html

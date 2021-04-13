@@ -10,7 +10,7 @@ jobs:
       language: java
       jdk: openjdk11
       env:
-        - GH_URL=https://raw.githubusercontent.com FILE_TO_VALIDATE=spec/search-api.yaml URL_TO_VALIDATE=$GH_URL/${TRAVIS_PULL_REQUEST_SLUG:-$TRAVIS_REPO_SLUG}/${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}/$FILE_TO_VALIDATE
+        - GH_URL=https://raw.githubusercontent.com FILE_TO_VALIDATE=spec/api.yaml URL_TO_VALIDATE=$GH_URL/${TRAVIS_PULL_REQUEST_SLUG:-$TRAVIS_REPO_SLUG}/${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}/$FILE_TO_VALIDATE
       before_install:
         - git clone --branch=v1.1.0 https://github.com/mcupak/oas-validator.git
       script:
