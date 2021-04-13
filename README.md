@@ -1,6 +1,6 @@
 ![](https://www.ga4gh.org/wp-content/themes/ga4gh-theme/gfx/GA-logo-horizontal-tag-RGB.svg)
 
-# Data Connect API [![](https://img.shields.io/badge/specification-Full%20Text-green)](https://github.com/ga4gh-discovery/ga4gh-search/blob/develop/SEARCHSPEC.md) <a href="https://github.com/ga4gh-discovery/ga4gh-search/blob/develop/spec/api.yaml"><img src="http://validator.swagger.io/validator?url=https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-search/develop/spec/api.yaml" alt="Swagger Validator" height="20em" width="72em"></a> [![](https://img.shields.io/badge/-Documentation-blue)](https://ga4gh-discovery.github.io/ga4gh-search/)  [![](https://travis-ci.com/ga4gh-discovery/ga4gh-search.svg?branch=develop)](https://travis-ci.com/ga4gh-discovery/ga4gh-search) [![](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-search/develop/LICENSE)
+# Data Connect API [![](https://img.shields.io/badge/specification-Full%20Text-green)](https://github.com/ga4gh-discovery/data-connect/blob/develop/SEARCHSPEC.md) <a href="https://github.com/ga4gh-discovery/data-connect/blob/develop/spec/api.yaml"><img src="" alt="Swagger Validator" height="20em" width="72em"></a> [![](https://img.shields.io/badge/-Documentation-blue)](https://ga4gh-discovery.github.io/data-connect/)  [![](https://travis-ci.com/ga4gh-discovery/data-connect.svg?branch=develop)](https://travis-ci.com/ga4gh-discovery/data-connect) [![](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/ga4gh-discovery/data-connect/develop/LICENSE)
 
 Data Connect is a standard for discovery and search of biomedical data, developed by the [Discovery Work Stream](https://github.com/ga4gh-discovery/ga4gh-discovery.github.io) of the [Global Alliance for Genomics & Health](http://ga4gh.org). 
 
@@ -19,8 +19,8 @@ It is **not** in the scope of the standard to:
 For more information:
 
 - Read the [full specification](SEARCHSPEC.md).
-- Explore the [API](spec/api.yaml) (view in [Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-search/develop/spec/api.yaml)).
-- See [documentation for adopters](https://ga4gh-discovery.github.io/ga4gh-search/).
+- Explore the [API](spec/api.yaml) (view in [Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/ga4gh-discovery/data-connect/develop/spec/api.yaml)).
+- See [documentation for adopters](https://ga4gh-discovery.github.io/data-connect/).
 
 
 ## Background
@@ -128,7 +128,7 @@ DNAstack has provided an [implementation of Data Connect](https://github.com/dna
 
 ### Client implementations
 
-[Several open-source implementations](https://ga4gh-discovery.github.io/ga4gh-search/docs/getting-started/consume-data/) based on different technology stacks are available:
+[Several open-source implementations](https://ga4gh-discovery.github.io/data-connect/docs/getting-started/consume-data/) based on different technology stacks are available:
 - Python 
 - R
 - CLI

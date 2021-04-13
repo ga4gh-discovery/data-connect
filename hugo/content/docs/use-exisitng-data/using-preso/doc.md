@@ -19,11 +19,11 @@ In the [provision data section](/docs/getting-started/provision-data/), we've sh
 
 [Open API 3 Reference](/api)
 
-[Full Data Connect Specification](https://github.com/ga4gh-discovery/ga4gh-search/blob/develop/SEARCHSPEC.md)
+[Full Data Connect Specification](https://github.com/ga4gh-discovery/data-connect/blob/develop/SEARCHSPEC.md)
 
-[Table Object Specification](https://github.com/ga4gh-discovery/ga4gh-search/blob/develop/TABLE.md)
+[Table Object Specification](https://github.com/ga4gh-discovery/data-connect/blob/develop/TABLE.md)
 
-[Data Connect API’s SQL dialect](https://github.com/ga4gh-discovery/ga4gh-search/blob/develop/SEARCHSPEC.md#sql-functions)
+[Data Connect API’s SQL dialect](https://github.com/ga4gh-discovery/data-connect/blob/develop/SEARCHSPEC.md#sql-functions)
 
 {{%/content-textbox%}}
 {{</code/float-window>}}
