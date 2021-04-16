@@ -6,9 +6,9 @@ lastmod: 2020-12-3
 type: docs
 layout: single-col
 ---
-Data Connect's SQL dialect has been selected for compatibility with current major open source database platforms including Trino (formerly Presto SQL), PostgreSQL, and MySQL, and BigQuery. There are occasional name or signature differences, but a Data Connect implementation atop any of the major database platforms should be able to pass through queries that use the functions listed below with only minor tweaks.
+Data Connect's SQL dialect has been selected for compatibility with current major open source database platforms including Trino, PostgreSQL, and MySQL, and BigQuery. There are occasional name or signature differences, but a Data Connect implementation atop any of the major database platforms should be able to pass through queries that use the functions listed below with only minor tweaks.
 
-The functions below are a subset of those available in PrestoSQL 341. In a conformant Data Connect implementation, these functions must behave according to the Presto documentation. To assist with implementations directly on other database platforms, the [PrestoSQL Functions Support Matrix](https://docs.google.com/document/d/1y51qNuoe2ELX9kCOyQbFB4jihiKt2N8Qcd6-zzadIvk) captures the differences between platforms in granular detail. 
+The functions below are a subset of those available in Trino 341. In a conformant Data Connect implementation, these functions must behave according to the Trino documentation. To assist with implementations directly on other database platforms, the [Trino Functions Support Matrix](https://docs.google.com/document/d/1y51qNuoe2ELX9kCOyQbFB4jihiKt2N8Qcd6-zzadIvk) captures the differences between platforms in granular detail. 
 
 *   **Logical Operators**
     *   `AND`, `OR`, `NOT`
@@ -134,7 +134,7 @@ The functions below are a subset of those available in PrestoSQL 341. In a confo
     *   `date_format(timestamp, format)` → `varchar`*
     *   `date_parse(string, format)` → `timestamp(3)`*
 *   **Aggregate functions** 
-**Note that Presto provides a much larger superset of functions. Bitwise, map, and approximate aggregations are mostly absent. Only BigQuery has a few native approximate aggregation functions.
+**Note that Trino provides a much larger superset of functions. Bitwise, map, and approximate aggregations are mostly absent. Only BigQuery has a few native approximate aggregation functions.
     *   `array_agg(x)` → `array&lt;`[same as input]>*
     *   `avg(x)` → `double`
     *   `bool_and(boolean)` → `boolean`*

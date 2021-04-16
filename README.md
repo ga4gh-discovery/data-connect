@@ -101,7 +101,7 @@ Several open-source implementations are available:
 
 - [Tables-in-a-bucket (no-code implementation)](#tables-in-a-bucket-no-code-implementation)
 - [Google Sheets implementation](#google-sheets-implementation)
-- [Implementation based on PrestoSQL](#implementation-based-on-prestosql)
+- [Implementation based on Trino](#implementation-based-on-trino)
 
 #### Tables-in-a-bucket (no-code implementation)
 The specification allows for a no-code implementation as a collection of files served statically (e.g. in a cloud bucket or a Git repository). To do this, you need the following JSON files:
@@ -122,9 +122,9 @@ A concrete, example test implementation is available [here](https://storage.goog
 #### Google Sheets implementation
 A Google Sheets spreadsheet can also be exposed via the Tables API using the sheets adapter, located [here](https://github.com/DNAstack/ga4gh-search-adapter-google-sheets).
 
-#### Implementation based on PrestoSQL
+#### Implementation based on Trino
 
-DNAstack has provided an [implementation of Data Connect](https://github.com/dnastack/ga4gh-search-adapter-presto) on top of [PrestoSQL](https://prestosql.io/). This implementation includes examples of data stored in the FHIR and Phenopackets formats.
+DNAstack has provided an [implementation of Data Connect](https://github.com/dnastack/ga4gh-search-adapter-presto) on top of [Trino](https://trino.io/). This implementation includes examples of data stored in the FHIR and Phenopackets formats.
 
 ### Client implementations
 

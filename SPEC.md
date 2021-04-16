@@ -27,7 +27,7 @@ This document describes the overall structure of the Data Connect API and specif
     - [Phenopackets](#phenopackets)
       - [Concrete Example](#concrete-example)
       - [Organizing Into Tables](#organizing-into-tables)
-  - [How to Secure Implementations Based on PrestoSQL Connectors or PostgreSQL Foreign Data Wrappers](#how-to-secure-implementations-based-on-prestosql-connectors-or-postgresql-foreign-data-wrappers)
+  - [How to Secure Implementations Based on Trino Connectors or PostgreSQL Foreign Data Wrappers](#how-to-secure-implementations-based-on-trino-connectors-or-postgresql-foreign-data-wrappers)
   - [Implementing a Federation of SQL Query Nodes](#implementing-a-federation-of-sql-query-nodes)
 - [Appendix A: SQL Grammar](#appendix-a-sql-grammar)
 
@@ -42,7 +42,6 @@ All discovery, browsing and search operations are specified formally in the [Ope
 ## Conventions
 
 The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://tools.ietf.org/html/rfc2119).
-
 
 ## Table Discovery and Browsing
 
@@ -437,9 +436,9 @@ The Data Connect service responds with the following table:
 
 ## SQL Functions
 
-Data Connect specification is implementation-agnostic and does not prescribe use of a relational database or a particular database technology. However, for convenience, its SQL dialect has been selected for compatibility with current major open source database platforms including PrestoSQL, PostgreSQL, MySQL, and well as BigQuery. There are occasional name or signature differences, but a Data Connect API implementation atop any of the major database platforms should be able to pass through queries that use the functions listed below with only minor tweaks.
+Data Connect specification is implementation-agnostic and does not prescribe use of a relational database or a particular database technology. However, for convenience, its SQL dialect has been selected for compatibility with current major open source database platforms including Trino, PostgreSQL, MySQL, and well as BigQuery. There are occasional name or signature differences, but a Data Connect API implementation atop any of the major database platforms should be able to pass through queries that use the functions listed below with only minor tweaks.
 
-With PrestoSQL being a popular database choice in Data Connect implementations, we've chosen its grammar as the basis for the grammar supported by Data Connect. Functions below are a subset of those available in PrestoSQL 341, and must behave according to the PrestoSQL documentation in a conforming Data Connect implementation. To assist with implementations directly on other database platforms, the [PrestoSQL Functions Support Matrix](https://docs.google.com/document/d/1y51qNuoe2ELX9kCOyQbFB4jihiKt2N8Qcd6-zzadIvk) captures the differences between platforms in granular detail. 
+With Trino (formerly PrestoSQL) being a popular database choice in Data Connect implementations, we've chosen its grammar as the basis for the grammar supported by Data Connect. Functions below are a subset of those available in Trino 341, and must behave according to the Trino documentation in a conforming Data Connect implementation. To assist with implementations directly on other database platforms, the [Trino Functions Support Matrix](https://docs.google.com/document/d/1y51qNuoe2ELX9kCOyQbFB4jihiKt2N8Qcd6-zzadIvk) captures the differences between platforms in granular detail. 
 
 *   **Logical Operators**
     *   `AND`, `OR`, `NOT`
@@ -564,7 +563,7 @@ With PrestoSQL being a popular database choice in Data Connect implementations, 
         *   `date_format(timestamp, format)` → `varchar`*
         *   `date_parse(string, format)` → `timestamp(3)`*
 *   **Aggregate functions** 
-**Note that Presto provides a much larger superset of functions. Bitwise, map, and approximate aggregations are mostly absent. Only BigQuery has a few native approximate aggregation functions.
+**Note that Trino provides a much larger superset of functions. Bitwise, map, and approximate aggregations are mostly absent. Only BigQuery has a few native approximate aggregation functions.
     *   `array_agg(x)` → `array&lt;`[same as input]>*
     *   `avg(x)` → `double`
     *   `bool_and(boolean)` → `boolean`*
@@ -908,7 +907,7 @@ The difference between the two formats is the way in which the Phenopacket JSON 
 
 ![Phenopacket tables in a bucket example](assets/phenopacket-tables-in-a-bucket-example.svg "Phenopacket tables in a bucket example")
 
-## How to Secure Implementations Based on PrestoSQL Connectors or PostgreSQL Foreign Data Wrappers
+## How to Secure Implementations Based on Trino Connectors or PostgreSQL Foreign Data Wrappers
 
 *   Filter data at the connector level
 *   Use simple OAuth scopes to decide what data can be returned
@@ -927,7 +926,7 @@ The difference between the two formats is the way in which the Phenopacket JSON 
 
 # Appendix A: SQL Grammar
 
-ANTLR grammar for Data Connect (based on PrestoSQL v. 323, ASL 2.0 license), with the DML and DDL parts removed:
+ANTLR grammar for Data Connect (based on Trino (formerly Trino v. 323, ASL 2.0 license), with the DML and DDL parts removed:
 
 
 ```
