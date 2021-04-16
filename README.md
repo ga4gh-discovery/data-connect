@@ -1,6 +1,6 @@
 ![](https://www.ga4gh.org/wp-content/themes/ga4gh-theme/gfx/GA-logo-horizontal-tag-RGB.svg)
 
-# Data Connect API [![](https://img.shields.io/badge/specification-Full%20Text-green)](https://github.com/ga4gh-discovery/data-connect/blob/develop/SEARCHSPEC.md) <a href="https://github.com/ga4gh-discovery/data-connect/blob/develop/spec/api.yaml"><img src="http://validator.swagger.io/validator?url=https://raw.githubusercontent.com/ga4gh-discovery/data-connect/develop/spec/api.yaml" alt="Swagger Validator" height="20em" width="72em"></a> [![](https://img.shields.io/badge/-Documentation-blue)](https://ga4gh-discovery.github.io/data-connect/)  [![](https://travis-ci.com/ga4gh-discovery/data-connect.svg?branch=develop)](https://travis-ci.com/ga4gh-discovery/data-connect) [![](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/ga4gh-discovery/data-connect/develop/LICENSE)
+# Data Connect API [![](https://img.shields.io/badge/specification-Full%20Text-green)](https://github.com/ga4gh-discovery/data-connect/blob/develop/SPEC.md) <a href="https://github.com/ga4gh-discovery/data-connect/blob/develop/spec/api.yaml"><img src="http://validator.swagger.io/validator?url=https://raw.githubusercontent.com/ga4gh-discovery/data-connect/develop/spec/api.yaml" alt="Swagger Validator" height="20em" width="72em"></a> [![](https://img.shields.io/badge/-Documentation-blue)](https://ga4gh-discovery.github.io/data-connect/)  [![](https://travis-ci.com/ga4gh-discovery/data-connect.svg?branch=develop)](https://travis-ci.com/ga4gh-discovery/data-connect) [![](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/ga4gh-discovery/data-connect/develop/LICENSE)
 
 Data Connect is a standard for discovery and search of biomedical data, developed by the [Discovery Work Stream](https://github.com/ga4gh-discovery/ga4gh-discovery.github.io) of the [Global Alliance for Genomics & Health](http://ga4gh.org). 
 
@@ -18,7 +18,7 @@ It is **not** in the scope of the standard to:
 
 For more information:
 
-- Read the [full specification](SEARCHSPEC.md).
+- Read the [full specification](SPEC.md).
 - Explore the [API](spec/api.yaml) (view in [Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/ga4gh-discovery/data-connect/develop/spec/api.yaml)).
 - See [documentation for adopters](https://ga4gh-discovery.github.io/data-connect/).
 
@@ -112,7 +112,7 @@ The specification allows for a no-code implementation as a collection of files s
 - ```table/{table_name}/data_{pageNumber}```, which will be linked in the `next_page_url` of the first table  (e.g. ```mytable```).
   - The above is just an illustrative example. Data Connect clients are capable of following any absolute or relative URL.
   - The first page has to be called `/table/{table_name}/data`, then you can use any naming scheme you like for subsequent pages.
-  - All the nitty-gritty details of pagination are detailed in [the specification](SEARCHSPEC.md#pagination-and-long-running-queries).
+  - All the nitty-gritty details of pagination are detailed in [the specification](SPEC.md#pagination-and-long-running-queries).
 - ```table/{table_name}/data_models/{schemaFile}```
   - Though not required, data models may be linked via [$ref](https://json-schema.org/latest/json-schema-core.html#rfc.section.8.3).
   - Data models can also be stored anywhere as static JSON documents, and like data pages, can be referred to by relative or absolute URLs.
@@ -163,7 +163,7 @@ The API is specified in OpenAPI 3. Use [Swagger Validator Badge](https://github.
 ### Documentation
 Documentation is sourced from the `hugo/` directory. Building the docs requires the [Hugo framework](https://gohugo.io/documentation/) with the [Clyde theme](https://github.com/DNAstack/clyde). Edit the markdown files under `hugo/content/` for content changes.
 
-Run the docs locally using `make run`, which is served at `http://localhost:1313/ga4gh-search/`. Clean up before commiting using `make clean`. 
+Run the docs locally using `make run`, which is served at `http://localhost:1313/data-connect/`. Clean up before commiting using `make clean`. 
 
 To manually inspect the build artifacts, use `make build`. Clean up before commiting using `make clean`.
 

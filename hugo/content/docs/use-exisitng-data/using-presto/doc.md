@@ -19,11 +19,11 @@ In the [provision data section](/docs/getting-started/provision-data/), we've sh
 
 [Open API 3 Reference](/api)
 
-[Full Data Connect Specification](https://github.com/ga4gh-discovery/data-connect/blob/develop/SEARCHSPEC.md)
+[Full Data Connect Specification](https://github.com/ga4gh-discovery/data-connect/blob/develop/SPEC.md)
 
 [Table Object Specification](https://github.com/ga4gh-discovery/data-connect/blob/develop/TABLE.md)
 
-[Data Connect API’s SQL dialect](https://github.com/ga4gh-discovery/data-connect/blob/develop/SEARCHSPEC.md#sql-functions)
+[Data Connect API’s SQL dialect](https://github.com/ga4gh-discovery/data-connect/blob/develop/SPEC.md#sql-functions)
 
 {{%/content-textbox%}}
 {{</code/float-window>}}
@@ -76,7 +76,4 @@ To test the app out, follow the [consuming data](/docs/getting-started/consume-d
 {{%/content-textbox%}}
 
 #### Further Configuration
-Further configuration can be found at: [https://github.com/DNAstack/ga4gh-search-adapter-presto](https://github.com/DNAstack/ga4gh-search-adapter-presto)
-
-
-
+Further configuration can be found at: [https://github.com/DNAstack/ga4gh-search-adapter-presto](https://github.com/DNAstack/ga4gh-search-adapter-presto).

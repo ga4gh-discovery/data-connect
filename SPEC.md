@@ -27,7 +27,7 @@ This document describes the overall structure of the Data Connect API and specif
     - [Phenopackets](#phenopackets)
       - [Concrete Example](#concrete-example)
       - [Organizing Into Tables](#organizing-into-tables)
-  - [How to Secure Implementations Based on Presto Connectors or PostgreSQL Foreign Data Wrappers](#how-to-secure-implementations-based-on-presto-connectors-or-postgresql-foreign-data-wrappers)
+  - [How to Secure Implementations Based on PrestoSQL Connectors or PostgreSQL Foreign Data Wrappers](#how-to-secure-implementations-based-on-prestosql-connectors-or-postgresql-foreign-data-wrappers)
   - [Implementing a Federation of SQL Query Nodes](#implementing-a-federation-of-sql-query-nodes)
 - [Appendix A: SQL Grammar](#appendix-a-sql-grammar)
 
@@ -908,7 +908,7 @@ The difference between the two formats is the way in which the Phenopacket JSON 
 
 ![Phenopacket tables in a bucket example](assets/phenopacket-tables-in-a-bucket-example.svg "Phenopacket tables in a bucket example")
 
-## How to Secure Implementations Based on Presto Connectors or PostgreSQL Foreign Data Wrappers
+## How to Secure Implementations Based on PrestoSQL Connectors or PostgreSQL Foreign Data Wrappers
 
 *   Filter data at the connector level
 *   Use simple OAuth scopes to decide what data can be returned

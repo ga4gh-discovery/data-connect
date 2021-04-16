@@ -187,4 +187,4 @@ Note: Arrays are mostly absent in MySQL
     *   Array Concatenation Operator: `||`
     *   `concat(array1, array2, ..., arrayN)` → `array`
     *   `cardinality(x)` → `bigint`*
-*   `ga4gh_type` [described in the Data Connect specification](https://github.com/ga4gh-discovery/data-connect/blob/develop/SEARCHSPEC.md#attaching-semantic-data-types-to-search-results)
+*   `ga4gh_type` [described in the Data Connect specification](https://github.com/ga4gh-discovery/data-connect/blob/develop/SPEC.md#attaching-semantic-data-types-to-search-results)

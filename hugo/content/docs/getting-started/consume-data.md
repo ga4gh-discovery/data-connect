@@ -73,9 +73,9 @@ Data Connect supports query operation through SQL statements.
 
 Data Connect's SQL dialect has a familiar interface inspired by current major open source database platforms, including Presto SQL, PostgreSQL, MySQL, and BigQuery. If you have prior experience with these database platforms, you'll feel right at home with only minor adjustments.
 
-[Supported SQL functions](https://github.com/ga4gh-discovery/data-connect/blob/develop/SEARCHSPEC.md#sql-functions)
+[Supported SQL functions](https://github.com/ga4gh-discovery/data-connect/blob/develop/SPEC.md#sql-functions)
 
-[Supported SQL grammar](https://github.com/ga4gh-discovery/data-connect/blob/develop/SEARCHSPEC.md#appendix-a-sql-grammar)
+[Supported SQL grammar](https://github.com/ga4gh-discovery/data-connect/blob/develop/SPEC.md#appendix-a-sql-grammar)
 
 {divider}
 {{<code/float-window>}}
