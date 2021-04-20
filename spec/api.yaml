@@ -45,7 +45,7 @@ paths:
       parameters:
         - name: table_name
           in: path
-          description: Unique Table name, unique to this implementation
+          description: A table name
           required: true
           schema:
             type: string
@@ -67,14 +67,14 @@ paths:
   /table/{table_name}/data:
     get:
       summary: Fetch data from a Table
-      description: Optional operation that returns data from a Table
+      description: Returns the data of a Table
       operationId: getData
       tags:
         - Table API
       parameters:
         - name: table_name
           in: path
-          description: Unique Table name, unique to this implementation
+          description: A table name
           required: true
           schema:
             type: string
@@ -115,7 +115,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/TableData"
         '400':
-          description: The query is invalid
+          description: Error in request headers or body, for example if the query is invalid. Details are provided in the ErrorResponse body.
           content:
             application/json:
               schema:
@@ -139,7 +139,7 @@ paths:
           description: |
             Show information about this Data Connect service.
 
-            Use `"type": {"group": "org.ga4gh", "artifact": "data-connect", "version": "0.1.0"}` when implementing this specification directly.
+            Use `"type": {"group": "org.ga4gh", "artifact": "data-connect", "version": "1.0.0"}` when implementing this specification directly.
           content:
             application/json:
               schema:
@@ -171,7 +171,12 @@ components:
       properties:
         name:
           type: string
-          description: Table name
+          description: |
+            Uniquely identifies a table within this Data Connect service.
+
+            Table names should be human-readable and will typically (but not necessarily)
+            be split into two or three parts separated by a dot (`.`).
+          example: my_catalog.some_schema.a_table
         description:
           type: string
           description: Optional description of the Table
@@ -183,7 +188,6 @@ components:
         Describes a Table hosted by this Data Connect node.
     TableData:
       required:
-        - data_model
         - data
       type: object
       properties:
@@ -200,7 +204,11 @@ components:
           $ref: "#/components/schemas/Pagination"
         errors:
           $ref: "#/components/schemas/ErrorList"
-      description: A paginated collection of tabular data
+      description: |
+        A paginated collection of tabular data.
+
+        Note that the `data_model` property is required unless `data` is also absent.
+        See [the pagination rules](https://github.com/ga4gh-discovery/data-connect/blob/develop/SPEC.md#pagination-and-long-running-queries) for details.
     ErrorResponse:
       type: object
       properties:
@@ -247,7 +255,10 @@ components:
       properties:
         next_page_url:
           type: string
-          description: URL pointing to the next page of the same Table. Null or absent on last page.
+          description: |
+            URL pointing to the next page of data. Null or absent on last page.
+            
+            See [the pagination rules](https://github.com/ga4gh-discovery/data-connect/blob/develop/SPEC.md#pagination-and-long-running-queries) for full details.
           format: uri
     SearchRequest:
       description:
