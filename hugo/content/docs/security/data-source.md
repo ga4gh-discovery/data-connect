@@ -61,7 +61,7 @@ Since there will typically be many more users with access to the coarser-grained
 
 #### In Front of Many Databases
 
-If you are exposing many databases under a single Data Connect API instance, you are probably using a Trino (formerly PrestoSQL) based implementation.
+If you are exposing many databases under a single Data Connect API instance, you are probably using a Trino based implementation.
 
 Trino provides the [SystemAccessControl interface](https://github.com/trinodb/trino/blob/master/core/trino-spi/src/main/java/io/trino/spi/security/SystemAccessControl.java) which you can implement yourself to secure your data source.
 

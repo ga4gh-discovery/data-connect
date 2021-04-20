@@ -49,7 +49,7 @@ Here's how you'll need to organize your folders
 {row-divider}
 #### Try a Reference Implementation
 
-This example was shown as a demo during the 2020 GA4GH Plenary. This app will run a reference Data Connect implementation on docker and use a Presto instance hosted by DNAstack as the data source.
+This example was shown as a demo during the 2020 GA4GH Plenary. This app will run a reference Data Connect implementation on docker and use a Trino instance hosted by DNAstack as the data source.
 
 You’ll need docker set up on your system to run the Spring app, and you’ll need to have one of the client libraries installed from the [Installing Clients Section](/docs/getting-started/clients/).
 

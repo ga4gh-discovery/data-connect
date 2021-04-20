@@ -6,7 +6,7 @@ lastmod: 2020-12-3
 type: docs
 layout: single-col
 ---
-This is the ANTLR grammar from Presto SQL version 323 (ASL 2.0 license), with the DML and DDL parts removed.
+This is the ANTLR grammar from Trino version 323 (ASL 2.0 license), with the DML and DDL parts removed.
 
 
 ```antlrv4

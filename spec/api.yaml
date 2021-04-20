@@ -3,7 +3,7 @@ info:
   title: Data Connect API
   version: 1.0.0
   description: |
-    Data Connect is an API for searching biomedical data.
+    Data Connect is a standard for discovery and search of biomedical data.
 
     More information on [GitHub](https://github.com/ga4gh-discovery/data-connect).
   license:
@@ -21,7 +21,7 @@ paths:
       description: Returns a list of Tables.
       operationId: listTables
       tags:
-        - tables
+        - Table API
       responses:
         '200':
           description: A list of Tables
@@ -41,7 +41,7 @@ paths:
       description: Returns the information about the Table identified by name.
       operationId: getTable
       tags:
-        - tables
+        - Table API
       parameters:
         - name: table_name
           in: path
@@ -70,7 +70,7 @@ paths:
       description: Optional operation that returns data from a Table
       operationId: getData
       tags:
-        - tables
+        - Table API
       parameters:
         - name: table_name
           in: path
@@ -106,7 +106,7 @@ paths:
             schema:
               $ref: "#/components/schemas/SearchRequest"
       tags:
-        - search
+        - Search API
       responses:
         '200':
           description: Query results returned as TableData
@@ -133,13 +133,13 @@ paths:
       summary: 'Show information about the Data Connect service'
       operationId: getServiceInfo
       tags:
-        - service-info
+        - Service Info API
       responses:
         '200':
           description: |
             Show information about this Data Connect service.
 
-            Use `"type": {"group": "org.ga4gh", "artifact": "search", "version": "0.1.0"}` when implementing this specification directly.
+            Use `"type": {"group": "org.ga4gh", "artifact": "data-connect", "version": "0.1.0"}` when implementing this specification directly.
           content:
             application/json:
               schema:
@@ -258,7 +258,7 @@ components:
       properties:
         query:
           type: string
-          description: Query in SQL. Supported SQL grammar, data types, and functions are described in [the specification](https://github.com/ga4gh-discovery/data-connect/blob/develop/SEARCHSPEC.md#query).
+          description: Query in SQL. Supported SQL grammar, data types, and functions are described in [the specification](https://github.com/ga4gh-discovery/data-connect/blob/develop/SPEC.md#query).
           example: SELECT some_string, some_num FROM a_table WHERE some_string=? AND some_num=?
         parameters:
           type: array

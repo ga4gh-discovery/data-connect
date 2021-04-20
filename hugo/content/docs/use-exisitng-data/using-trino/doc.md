@@ -1,5 +1,5 @@
 ---
-title: "Using Presto"
+title: "Using Trino"
 weight: 1
 draft: false
 lastmod: 2020-11-5
@@ -9,7 +9,7 @@ layout: single-col
 ---
 ### The dbGaP GECCO Example
 
-In the [provision data section](/docs/getting-started/provision-data/), we've shown a quick start recipe with the [ga4gh-search-adapter-presto](https://github.com/DNAstack/ga4gh-search-adapter-presto) docker container connected to a Presto instance hosted at `https://presto-public.prod.dnastack.com`. This section provides more information on how this was accomplished.
+In the [provision data section](/docs/getting-started/provision-data/), we've shown a quick start recipe with the [ga4gh-search-adapter-presto](https://github.com/DNAstack/ga4gh-search-adapter-presto) docker container connected to a Trino instance hosted at `https://presto-public.prod.dnastack.com`. This section provides more information on how this was accomplished.
 
 {{<code/float-window>}}
 {{%content-textbox%}}
@@ -19,11 +19,11 @@ In the [provision data section](/docs/getting-started/provision-data/), we've sh
 
 [Open API 3 Reference](/api)
 
-[Full Data Connect Specification](https://github.com/ga4gh-discovery/data-connect/blob/develop/SEARCHSPEC.md)
+[Full Data Connect Specification](https://github.com/ga4gh-discovery/data-connect/blob/develop/SPEC.md)
 
 [Table Object Specification](https://github.com/ga4gh-discovery/data-connect/blob/develop/TABLE.md)
 
-[Data Connect API’s SQL dialect](https://github.com/ga4gh-discovery/data-connect/blob/develop/SEARCHSPEC.md#sql-functions)
+[Data Connect API’s SQL dialect](https://github.com/ga4gh-discovery/data-connect/blob/develop/SPEC.md#sql-functions)
 
 {{%/content-textbox%}}
 {{</code/float-window>}}
@@ -31,11 +31,11 @@ In the [provision data section](/docs/getting-started/provision-data/), we've sh
 #### Prerequisites 
 The following is required before we start.
 1. Java 11+
-1. A Presto server you can access anonymously over HTTP(S).
+1. A Trino server you can access anonymously over HTTP(S).
 1. Git
-> If you don't have a Presto server to work against and you wish to try the app, try using `https://presto-public.prod.dnastack.com` as the data source.
+> If you don't have a Trino server to work against and you wish to try the app, try using `https://presto-public.prod.dnastack.com` as the data source.
 
-**1. Building the Presto Adapter App**
+**1. Building the Trino Adapter App**
 
 Clone the repository
 ``` bash
@@ -51,7 +51,7 @@ mvn clean package
 
 For a minimal configuration, we need to provide two parameters, `PRESTO_DATASOURCE_URL` and `SPRING_PROFILES_ACTIVE`.
 
-`PRESTO_DATASOURCE_URL` points to the Presto server you wish to expose with a Data Connect API.
+`PRESTO_DATASOURCE_URL` points to the Trino server you wish to expose with a Data Connect API.
 {{%content-textbox%}}
 Clone the repository:
 ``` bash
@@ -76,7 +76,4 @@ To test the app out, follow the [consuming data](/docs/getting-started/consume-d
 {{%/content-textbox%}}
 
 #### Further Configuration
-Further configuration can be found at: [https://github.com/DNAstack/ga4gh-search-adapter-presto](https://github.com/DNAstack/ga4gh-search-adapter-presto)
-
-
-
+Further configuration can be found at: [https://github.com/DNAstack/ga4gh-search-adapter-presto](https://github.com/DNAstack/ga4gh-search-adapter-presto).
