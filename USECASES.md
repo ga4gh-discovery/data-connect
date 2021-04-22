@@ -76,7 +76,7 @@ All responses in the feature matrix indicated that the availability of a
 standard set of fields is "nice to have" or "must have", while the ability to
 have arbitrary non-standard fields is a "must have".
 
-Data type mentioned in the responses include:
+Data types mentioned in the responses include:
 
 * Variant
 * Age
