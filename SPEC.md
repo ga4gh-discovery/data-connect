@@ -669,7 +669,7 @@ HTTP/1.1 200 OK
 content-type: application/json
 retry-after: 1000
 
-{"data":[],"pagination":{"next_page_url":"/search/v1/statement/abc123/queued/1"}}
+{"data":[],"pagination":{"next_page_url":"/search/v1/abc123?token=ZXhhbXBsZTEK"}}
 ```
 
 
@@ -677,13 +677,13 @@ retry-after: 1000
 
 
 ```
-GET /search/v1/statement/abc123/queued/1
+GET /search/v1/abc123?token=ZXhhbXBsZTEK
 
 HTTP/1.1 200 OK
 content-type: application/json
 retry-after: 1000
 
-{"data":[],"pagination":{"next_page_url":"/search/v1/statement/abc123/queued/2"}}
+{"data":[],"pagination":{"next_page_url":"/search/v1/abc123?token=ZXhhbXBsZTIK"}}
 ```
 
 
@@ -691,13 +691,13 @@ retry-after: 1000
 
 
 ```
-GET /search/v1/statement/abc123/queued/2
+GET /search/v1/abc123?token=ZXhhbXBsZTIK
 
 HTTP/1.1 200 OK
 content-type: application/json
 retry-after: 1000
 
-{"data":[],"pagination":{"next_page_url":"/search/v1/statement/abc123/executing/1"}}
+{"data":[],"pagination":{"next_page_url":"/search/v1/abc123?token=ZXhhbXBsZTMK"}}
 ```
 
 
@@ -705,12 +705,12 @@ retry-after: 1000
 
 
 ```
-GET /search/v1/statement/abc123/executing/1
+GET /search/v1/abc123?token=ZXhhbXBsZTMK
 
 HTTP/1.1 200 OK
 content-type: application/json
 
-{"data_model":{"description":"Automatically generated schema","$schema":"http://json-schema.org/draft-07/schema#","properties":{"gene_symbol":{"format":"varchar","type":"string"}}},"data":[{"gene_symbol":"BRCA2"},{"gene_symbol":"BRCA1"}],"pagination":{"next_page_url":"/search/v1/statement/abc123/executing/2"}}
+{"data_model":{"description":"Automatically generated schema","$schema":"http://json-schema.org/draft-07/schema#","properties":{"gene_symbol":{"format":"varchar","type":"string"}}},"data":[{"gene_symbol":"BRCA2"},{"gene_symbol":"BRCA1"}],"pagination":{"next_page_url":"/search/v1/abc123?token=ZXhhbXBsZTQK"}}
 ```
 
 
@@ -718,7 +718,7 @@ content-type: application/json
 
 
 ```
-GET /search/v1/statement/abc123/executing/2
+GET /search/v1/abc123?token=ZXhhbXBsZTQK
 
 HTTP/1.1 200 OK
 content-type: application/json
