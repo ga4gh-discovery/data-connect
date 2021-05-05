@@ -11,7 +11,7 @@ layout: single-col
 
 This page discusses different approaches to securing a Data Connect implementation depending on which implementation path you choose and how complex your access needs are.
 
-Data Connect can be implemented in many ways:
+Data Connect can be implemented in many ways.  For example:
 
 * as static files in a web server or cloud bucket ("tables in a bucket")
 * in front of a single database server (for example, PostgreSQL, MySQL, or ElasticSearch)
