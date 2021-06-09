@@ -444,15 +444,20 @@ The functions listed below SHOULD be supported by any implementation of Data Con
 *   **Logical Operators**
     *   `AND`, `OR`, `NOT`
 *   **Comparison Operators**
-    *   `&lt;`, `>`, `&lt;=`, `>=`, `=`, `&lt;>`, `!=`
+    *   `<`, `>`, `<=`, `>=`, `=`, `<>`, `!=`
     *   `IS NULL, IS NOT NULL`
     *   Pattern Comparison: `LIKE`
 *   **Conditional Expressions**
-    *   `IF`
+    *   `CASE`
 *   **String manipulation**
     *   `substring(string, start)` → `varchar`
+    *   `Concatenation (||)`
 *   **Date manipulation** 
     *   `extract(field FROM date)`
+    *   `current_date`
+    *   `current_time`
+    *   `current_timestamp`
+    *   `+`, `-` operators for dates
 *   **Aggregate functions** 
     *   `count(*)`
     *   `max(x)`
@@ -462,7 +467,7 @@ The functions listed below SHOULD be supported by any implementation of Data Con
     *   `json_extract(json, json_path)`
     *   `unnest(array)`
 
-An implementation of Data Connect MAY support any number of additional SQL functions.
+An implementation of Data Connect MAY support any number of additional SQL functions.  Wherever possible these additional functions SHOULD conform to the ANSI SQL standard.
 
 Trino (formerly PrestoSQL) has proven to be a popular choice in existing Data Connect implementations, owing to the highly configurable nature of the engine.  A simplified version of Trino's SQL grammar is presented in [Appendix A](#appendix-a-sql-grammar).
 
