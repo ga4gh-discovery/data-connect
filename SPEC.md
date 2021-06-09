@@ -446,7 +446,9 @@ The functions listed below SHOULD be supported by any implementation of Data Con
 *   **Comparison Operators**
     *   `<`, `>`, `<=`, `>=`, `=`, `<>`, `!=`
     *   `IS NULL, IS NOT NULL`
-    *   Pattern Comparison: `LIKE`
+    *   `LIKE`
+*   **Type conversion operators**
+    *   `CAST`
 *   **Conditional Expressions**
     *   `CASE`
 *   **String manipulation**
