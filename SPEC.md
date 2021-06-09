@@ -450,7 +450,9 @@ The functions listed below SHOULD be supported by any implementation of Data Con
 *   **Type conversion operators**
     *   `CAST`
 *   **Conditional Expressions**
+    *   `IF`
     *   `CASE`
+    *   `COALESCE`
 *   **String manipulation**
     *   `substring(string, start)` → `varchar`
     *   `Concatenation (||)`
