@@ -1,0 +1,5 @@
+[submodule "clyde"]
+	path = hugo/themes/clyde
+	url = https://github.com/DNAstack/clyde.git
+	branch = v1.1.1
+
