@@ -271,7 +271,7 @@ Data is manipulated in the query using the following types. Each SQL type is exp
 | time with time zone           | string in ISO 8601 format                                    | "12:22:27.000Z" "12:22:27.000-03:00"                         |
 | timestamp [without time zone] | string in ISO 8601 format                                    | "2020-05-27T12:22:27.000"                                    |
 | timestamp with time zone      | string in ISO 8601 format                                    | "2020-05-27T12:22:27.000Z" "2020-05-27T12:22:27.000-05:00"   |
-| interval day to month         | String in ISO 8601 period format                             | "P3Y2M"                                                      |
+| interval year to month        | String in ISO 8601 period format                             | "P3Y2M"                                                      |
 | interval day to second        | String in ISO 8601 duration format                           | "P3DT4H3M2S" "PT3M2S" "PT4H3M"                               |
 | array                         | array                                                        | [ 1, 3, 5, "seven", [ 1 ] ]                                  |
 | map                           | object                                                       | { "key": "value" }                                           |
