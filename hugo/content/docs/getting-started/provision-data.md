@@ -2,7 +2,7 @@
 title: "Provision Data"
 weight: 3
 draft: false
-lastmod: 2020-11-5
+lastmod: 2021-11-29
 # search related keywords
 type: docs
 layout: two-col
@@ -49,27 +49,43 @@ Here's how you'll need to organize your folders
 {row-divider}
 #### Try a Reference Implementation
 
-This example was shown as a demo during the 2020 GA4GH Plenary. This app will run a reference Data Connect implementation on docker and use a Trino instance hosted by DNAstack as the data source.
+Use the following instructions to run a reference [Data Connect implementation]() backed by a publicly accessible Trino instance hosted by DNAstack as the data source.
 
-You’ll need docker set up on your system to run the Spring app, and you’ll need to have one of the client libraries installed from the [Installing Clients Section](/docs/getting-started/clients/).
-
-Further information about this example can be found [here](/docs/use-exisitng-data/using-preso/doc/).
+You’ll need Docker set up on your system to run the Spring app and the PostgreSQL database where it stores information about running queries.
 {divider}
 {{<code/float-window>}}
-{{< tabs tabTotal="1" tabID="2" tabName1="30 second quick start">}}
+{{< tabs tabTotal="2" tabID="2" tabName1="MacOS and Windows" tabName2="Linux">}}
 {{% tab tabNum="1" %}}
 ``` bash
 docker pull postgres:latest
-docker run -d --rm --network="host" --name dnastack-ga4gh-search-db -e POSTGRES_USER=ga4ghsearchadapterpresto -e POSTGRES_PASSWORD=ga4ghsearchadapterpresto postgres
-docker pull dnastack/ga4gh-search-adapter-presto:latest
-docker run --rm --name dnastack-ga4gh-search -p 8089:8089 -e PRESTO_DATASOURCE_URL=https://presto-public.prod.dnastack.com -e SPRING_PROFILES_ACTIVE=no-auth dnastack/ga4gh-search-adapter-presto:latest
+docker run -d --rm --name dnastack-data-connect-db -e POSTGRES_USER=dataconnecttrino -e POSTGRES_PASSWORD=dataconnecttrino -p 15432:5432 postgres
+docker pull dnastack/data-connect-trino:latest
+docker run --rm --name dnastack-data-connect -p 8089:8089 -e TRINO_DATASOURCE_URL=https://trino-public.prod.dnastack.com -e SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:15432/dataconnecttrino -e SPRING_PROFILES_ACTIVE=no-auth dnastack/data-connect-trino
+```
+{{% /tab %}}
+{{% tab tabNum="2" %}}
+``` bash
+docker pull postgres:latest
+docker run -d --rm --name dnastack-data-connect-db -e POSTGRES_USER=dataconnecttrino -e POSTGRES_PASSWORD=dataconnecttrino -p 15432:5432 postgres
+docker pull dnastack/data-connect-trino:latest
+docker run --rm --name dnastack-data-connect -p 8089:8089 -e TRINO_DATASOURCE_URL=https://trino-public.prod.dnastack.com -e SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:15432/dataconnecttrino -e SPRING_PROFILES_ACTIVE=no-auth dnastack/data-connect-trino
 ```
 {{% /tab %}}
 {{< /tabs >}}
 {{</code/float-window>}}
 
+{row-divider}
+
+Once you have the Data Connect implementation running, the Data Connect API will be accessible at [http://localhost:8089](http://localhost:8089). Here are a few things to try:
+
+1. Open [http://localhost:8089/tables](http://localhost:8089/tables) in your web browser to see the table list API response. It helps if you have a browser plugin that pretty-prints JSON.
+2. Try the Python, R, and CLI examples at right. These examples access Data Connect at http://localhost:8089. See the [Installing Clients](/docs/getting-started/clients/) section if you haven't set up the clients yet.
+3. Set up your own Trino instance, then re-run the dnastack-data-connect container with the `TRINO_DATASOURCE_URL` pointed to your own Trino instance.
+
+Further information about this example can be found [here](/docs/use-exisitng-data/using-trino/doc/).
+{divider}
 {{<code/float-window>}}
-{{< tabs tabTotal="3" tabID="2" tabName1="Python" tabName2="R" tabName3="CLI">}}
+{{< tabs tabTotal="3" tabID="3" tabName1="Python" tabName2="R" tabName3="CLI">}}
 {{% tab tabNum="1" %}}
 ``` Python
 # init search client
