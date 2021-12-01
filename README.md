@@ -124,7 +124,7 @@ A Google Sheets spreadsheet can also be exposed via the Tables API using the she
 
 #### Implementation based on Trino
 
-DNAstack has provided an [implementation of Data Connect](https://github.com/dnastack/ga4gh-search-adapter-presto) on top of [Trino](https://trino.io/). This implementation includes examples of data stored in the FHIR and Phenopackets formats.
+DNAstack has provided an [implementation of Data Connect](https://github.com/DNAstack/data-connect-trino) on top of [Trino](https://trino.io/). This implementation includes examples of data stored in the FHIR and Phenopackets formats.
 
 ### Client implementations
 
