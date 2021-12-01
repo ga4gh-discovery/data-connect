@@ -9,13 +9,13 @@ layout: single-col
 ---
 ### The dbGaP GECCO Example
 
-In the [provision data section](/docs/getting-started/provision-data/), we've shown a quick start recipe with the [ga4gh-search-adapter-presto](https://github.com/DNAstack/ga4gh-search-adapter-presto) docker container connected to a Trino instance hosted at `https://presto-public.prod.dnastack.com`. This section provides more information on how this was accomplished.
+In the [provision data section](/docs/getting-started/provision-data/), we've shown a quick start recipe with the [data-connect-trino](https://github.com/DNAstack/data-connect-trino) docker container connected to a Trino instance hosted at `https://trino-public.prod.dnastack.com`. This section provides more information on how this was accomplished.
 
 {{<code/float-window>}}
 {{%content-textbox%}}
 ##### Quick Links
 ---
-[ga4gh-search-adapter-presto](https://github.com/DNAstack/ga4gh-search-adapter-presto)
+[data-connect-trino](https://github.com/DNAstack/data-connect-trino)
 
 [Open API 3 Reference](/api)
 
@@ -78,4 +78,4 @@ To test the app out, follow the [consuming data](/docs/getting-started/consume-d
 {{%/content-textbox%}}
 
 #### Further Configuration
-Further configuration can be found at: [https://github.com/DNAstack/ga4gh-search-adapter-presto](https://github.com/DNAstack/ga4gh-search-adapter-presto).
+Further configuration can be found at: [data-connect-trino](https://github.com/DNAstack/data-connect-trino).

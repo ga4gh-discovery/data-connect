@@ -25,7 +25,7 @@ Checkout the following examples for some inspiration.
 ---
 [Full API Specifications](/api)
 
-[Example Use Cases](/docs/use-exisitng-data/)
+[Example Use Cases](/docs/use-existing-data/)
 {{%/content-textbox%}}
 {{</code/float-window>}}
 {row-divider}
@@ -49,7 +49,7 @@ Here's how you'll need to organize your folders
 {row-divider}
 #### Try a Reference Implementation
 
-Use the following instructions to run a reference [Data Connect implementation]() backed by a publicly accessible Trino instance hosted by DNAstack as the data source.
+Use the following instructions to run a reference [Data Connect implementation](https://github.com/DNAstack/data-connect-trino) backed by a publicly accessible Trino instance hosted by DNAstack as the data source.
 
 You’ll need Docker set up on your system to run the Spring app and the PostgreSQL database where it stores information about running queries.
 {divider}
@@ -82,7 +82,7 @@ Once you have the Data Connect implementation running, the Data Connect API will
 2. Try the Python, R, and CLI examples at right. These examples access Data Connect at http://localhost:8089. See the [Installing Clients](/docs/getting-started/clients/) section if you haven't set up the clients yet.
 3. Set up your own Trino instance, then re-run the dnastack-data-connect container with the `TRINO_DATASOURCE_URL` pointed to your own Trino instance.
 
-Further information about this example can be found [here](/docs/use-exisitng-data/using-trino/doc/).
+Further information about this example can be found [here](/docs/use-existing-data/using-trino/doc/).
 {divider}
 {{<code/float-window>}}
 {{< tabs tabTotal="3" tabID="3" tabName1="Python" tabName2="R" tabName3="CLI">}}
