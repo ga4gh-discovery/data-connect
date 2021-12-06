@@ -1,0 +1,25 @@
+{{ $paragraphs := split .Content "{row-divider}" }}
+<div class="text-area">
+<h2>{{- .Title -}}</h2>
+{{ range $index, $pp := $paragraphs }}
+{{ $p := trim $pp " \n  " }}
+{{ $blocks := split $p "{divider}" }}
+{{ $content := trim (index $blocks 0) " \n  "}}
+{{ $example := trim (index $blocks 1) " \n  "}}
+    {{if not (eq $index 0)}}
+    <div class="row">
+        <div class="content-area">
+            <p class="boxtext">
+                {{- $content | safeHTML -}}
+            </p>
+        </div>
+        <div class="example-area">
+            {{if $example}}
+                {{- $example | safeHTML -}}
+            {{end}}
+        </div>
+    </div>
+    {{end}}
+{{end}}
+{{- partial "page-layouts/content-footer.html" . -}}
+</div>

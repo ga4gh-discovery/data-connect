@@ -1,0 +1,33 @@
+language: java
+dist: bionic
+sudo: false
+jdk:
+  - openjdk11
+
+jobs:
+  include:
+    - name: validation
+      language: java
+      jdk: openjdk11
+      env:
+        - GH_URL=https://raw.githubusercontent.com FILE_TO_VALIDATE=spec/api.yaml URL_TO_VALIDATE=$GH_URL/${TRAVIS_PULL_REQUEST_SLUG:-$TRAVIS_REPO_SLUG}/${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}/$FILE_TO_VALIDATE
+      before_install:
+        - git clone --branch=v1.1.0 https://github.com/mcupak/oas-validator.git
+      script:
+        - ./oas-validator/validate.sh "$URL_TO_VALIDATE"
+    - name: docs
+      language: node_js
+      node_js: 14
+      before_install:
+        - npm install -g @redocly/openapi-cli && npm install -g redoc-cli
+        - wget "https://github.com/gohugoio/hugo/releases/download/v0.79.0/hugo_extended_0.79.0_Linux-64bit.deb" && sudo dpkg -i hugo*.deb
+      script:
+        - git submodule update --remote --merge
+        - make build_prod
+      deploy:
+        provider: pages
+        skip-cleanup: true
+        keep_history: false
+        github-token: $GITHUB_TOKEN
+        on:
+          branch: develop

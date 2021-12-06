@@ -1,0 +1,28 @@
+<div class="footer-root">
+    <div class="footer-prev">
+        {{ with .NextInSection }}
+            <a class="content-header-nav-link" href="{{ .RelPermalink }}">
+                <i class='icon-arrow-left'></i>
+            </a>
+        {{end}}
+    </div>
+    <div class="footer-nav">
+        {{ range .Site.Menus.main }}
+        <a class="content-header-nav-link" href="{{ .URL }}">
+            {{if .Pre}}
+                {{.Pre}}
+            {{else}}
+                {{.Name}}
+            {{end}} 
+        </a>
+        {{ end }}
+    </div>
+    <div class="footer-next">
+        {{ with .PrevInSection }}
+            <a class="content-header-nav-link" href="{{ .RelPermalink  }}">
+                <i class='icon-arrow-right'></i>
+            </a>
+        {{end}}
+    </div>
+
+</div>

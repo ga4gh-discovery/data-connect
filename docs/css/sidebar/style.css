@@ -1,0 +1,258 @@
+.sidebar-h1:hover {
+    color: inherit;
+}
+
+.sidebar-h1 { 
+    padding: 0 24px 0 0px !important;
+    font-family: var(--heading-font);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px; 
+    line-height: 140%;
+    margin: 0px;
+    color: inherit;
+}
+.sidebar-h2 {  
+    color: inherit;
+}
+.sidebar-h2 {
+    font-family: var(--heading-font);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 140%;
+    padding: 8px 24px 8px 17px !important;
+    margin-left: 14px !important;
+    margin: 0px;
+    color: inherit;
+}
+
+.sidebar {
+    width: 225px;
+    margin: 0;
+    background-color: var(--sidebar-bg);
+    color: var(--sidebar-primary);
+    order: -1; /* default is 0 */
+    overflow-y: hidden;
+    flex-direction: column;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;    
+    flex-shrink: 0;
+    height: 100%;
+}
+
+.site-title {
+    margin-top: 14px;
+    margin-right: 20px;
+    margin-bottom: 34px;
+    margin-left: 16px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-button {
+    margin: 0;
+    padding: 8px 0px 8px 0px !important;
+}
+
+.sidebar-card {
+    background-color: var(--sidebar-bg) !important;
+    border: 0px !important;
+    overflow: auto;
+    width: inherit;
+    height: inherit;
+}
+
+#sidebar-btn {
+    display: none;
+}
+
+.navicon {
+    font-size: 22px;
+    margin-right: 16px;
+    padding-left: 24px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}  
+
+.nav-list{
+    padding-left: 20px; 
+}
+.nav-link{
+    margin-left: 0px; 
+    padding: 0px 0px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: start;
+    color: var(--grey600);
+}
+
+.nav-link:hover{
+    color: var(--sidebar-primary);
+}
+
+.nav-collapse{
+    display: none;
+}
+.nav-collapse.show{
+    display: block;
+}
+
+.nav-highlight{
+    color: var(--sidebar-primary);
+}   
+
+#logo{
+    margin-top: 24px;
+    margin-left: 20px;
+    width: 32px;
+    margin-bottom: 44px;
+}
+
+.nav-highlight{
+    color: var(--sidebar-primary) !important;
+    
+}
+
+.nav-highlight.mainitem{
+    color: var(--sidebar-primary) !important;
+}
+
+
+.sidebar-h2.nav-highlight.subitem{
+    border-left: 2px solid var(--accent);
+}
+
+.sidebar-h2.subitem{
+    border-left: 2px solid var(--sidebar-primary);
+}
+
+#logo-collapse-btn {
+    background-color: transparent;
+    padding: 0px;
+    margin: 0px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;  
+    flex-direction: row;
+    justify-content: start;
+    border: none;
+}
+
+#logo-collapse-btn:focus {
+    outline: none;
+}
+
+#logo-collapse-btn:hover {
+    cursor: default;
+}
+
+.footer-container{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;  
+    flex-direction: column;
+    padding: 16px 16px;
+}
+.footer-link{
+    color: var(--grey600);
+    font-size: 12px;
+}
+
+@media (max-width: 1400px) {
+
+    /* CSS that should be displayed if width is equal to or less than 1000px goes here */
+    .sidebar .sidebar-h1{
+        display: none;
+    }
+    .sidebar .collapse{
+        display: none;
+    }
+    .sidebar .footer-container{
+        display: none;
+    }
+    .sidebar{
+        width: 72px;
+    }
+
+    @media(hover: hover) and (pointer: fine) {
+        .sidebar:hover .sidebar-h1{
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;  
+        }
+        .sidebar:hover .collapse.show{
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;  
+        }
+        .sidebar:hover{
+            width: 225px;
+        }
+    }
+
+    #logo-collapse-btn:hover {
+        cursor: pointer;
+    }
+
+    .sidebar.show .sidebar-h1{
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;  
+    }
+    .sidebar.show .collapse.show{
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;  
+    }
+    .sidebar.show{
+        width: 225px;
+    }
+}
+
+@media (max-width: 900px) {
+    .sidebar{
+        display: none;
+    }
+    .sidebar.show{
+        display: flex;
+        width: 100vw;
+    }
+    .content-header{
+        width: 100vw;
+    }
+
+    .icon-menu.mobile{
+        font-size: 32px;
+        color: var(--grey600);
+    }
+
+    #logo-collapse-btn{
+        visibility: hidden;
+    }
+    #sidebar-btn {
+        display: unset;
+        position: fixed;
+        z-index: 2;
+        top: 16px;
+        left: 12px;
+        width: 32px;
+        height: 32px;
+        border: 0px;
+        border-radius: 16px;
+        background-color: transparent;
+    }
+    #sidebar-btn:focus {
+        outline: none;
+    }
+}

@@ -1,0 +1,24 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel=stylesheet type=text/css href=../css/style.css><link rel=stylesheet type=text/css href=../css/page-layouts/content-header.css><link rel=stylesheet type=text/css href=../css/sidebar/style.css><link rel=stylesheet type=text/css href=../css/page-layouts/style.css><link rel=stylesheet type=text/css href=../css/page-layouts/syntax.css><link rel=stylesheet type=text/css href=../css/tabs/style.css><link rel=stylesheet type=text/css href=../css/bootstrap.min.css><link rel=stylesheet type=text/css href=../override/style.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Roboto"><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Poppins"><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Source%20Code%20Pro"><link rel=stylesheet href=../feather-icons/css/iconfont.css><link rel=icon href=../images/favicon.ico type=image/x-icon><style>:root{--white: #ffffff;--primary: #fff;--secondary: #1E1F21;--sidebar-bg: #f6f6f8;--sidebar-primary: #1E1F21;--accent: #e34a3a;--grey100: ;--grey200: #F9F9FA;--grey300: ;--grey400: ;--grey500: ;--grey600: #1E1F21;--grey700: ;--grey800: ;--grey900: ;--grey-head: #EFEFF3;--nav-highlight: ;--body-font: Roboto;--heading-font: Poppins;--code-font: Source Code Pro}</style><title>Data Connect | Tags</title></head><body><script src=../js/jquery-3.5.1.min.js></script><script src=../js/bootstrap.min.js></script><script src=https://unpkg.com/lunr/lunr.js></script><script>document.getElementById("scrollto").scrollIntoView(true);</script><script type=text/javascript>var idx,searchInput,searchResults=null
+var documents=[]
+function renderSearchResults(results){if(results.length>0){if(results.length>9){results=results.slice(0,10)}
+searchResults.innerHTML=''
+results.forEach(result=>{var article=document.createElement('article')
+var uri="/data-connect"+result.ref.replace("/index.json","")
+article.innerHTML=`
+            <a href="${uri}" class="search-result-item"><p class="search-result-title">${documents[result.ref].title}</p> <i class="icon-external-link"></i></a>
+            `
+searchResults.appendChild(article)})}else{searchResults.innerHTML='<p>No results found.</p>'}}
+function registerSearchHandler(){searchInput.oninput=function(event){if(searchInput.value==''){searchResults.innerHTML=''}else{var query=event.target.value
+var results=idx.search(query+'*')
+renderSearchResults(results)}}
+searchInput.focus()
+searchInput.placeholder=''}
+$('#search-input-modal').on('shown.bs.modal',function(){$('#search-input').trigger('focus')})
+window.onload=function(){searchInput=document.getElementById('search-input')
+searchResults=document.getElementById('search-results')
+fetch('/data-connect/index.json',{method:'get'}).then(res=>res.json()).then(res=>{idx=lunr(function(){this.ref('url')
+this.field('title')
+this.field('content')
+res.forEach(function(doc){this.add(doc)
+documents[doc.url]={'title':doc.title,'content':doc.content,}},this)})
+registerSearchHandler()}).catch(err=>{searchResults.innerHTML=`<p>${err}</p>`})}</script></body></html>

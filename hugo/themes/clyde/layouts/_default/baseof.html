@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+    {{- partial "head.html" . -}}
+    <body>
+        {{- block "main" . }}
+        {{- end }}
+        {{- partial "script.html" . -}}
+        {{- partial "search.html" . -}}
+    </body>
+</html>

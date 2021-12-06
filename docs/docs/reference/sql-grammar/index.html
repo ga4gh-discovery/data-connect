@@ -1,0 +1,688 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel=stylesheet type=text/css href=../../../css/style.css><link rel=stylesheet type=text/css href=../../../css/page-layouts/content-header.css><link rel=stylesheet type=text/css href=../../../css/sidebar/style.css><link rel=stylesheet type=text/css href=../../../css/page-layouts/style.css><link rel=stylesheet type=text/css href=../../../css/page-layouts/syntax.css><link rel=stylesheet type=text/css href=../../../css/tabs/style.css><link rel=stylesheet type=text/css href=../../../css/bootstrap.min.css><link rel=stylesheet type=text/css href=../../../override/style.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Roboto"><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Poppins"><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Source%20Code%20Pro"><link rel=stylesheet href=../../../feather-icons/css/iconfont.css><link rel=icon href=../../../images/favicon.ico type=image/x-icon><style>:root{--white: #ffffff;--primary: #fff;--secondary: #1E1F21;--sidebar-bg: #f6f6f8;--sidebar-primary: #1E1F21;--accent: #e34a3a;--grey100: ;--grey200: #F9F9FA;--grey300: ;--grey400: ;--grey500: ;--grey600: #1E1F21;--grey700: ;--grey800: ;--grey900: ;--grey-head: #EFEFF3;--nav-highlight: ;--body-font: Roboto;--heading-font: Poppins;--code-font: Source Code Pro}</style><title>Data Connect | SQL Grammar</title></head><body><div class=sidebar id=sidebar-nav><button id=logo-collapse-btn onclick="(function(){document.getElementById('sidebar-nav').classList.toggle('show');document.getElementById('content').classList.toggle('showing-nav')})()">
+<img id=logo src=../../../images/logo.png alt="Data Connect"><div class=site-title><h3 class=sidebar-h1>Data Connect</h3></div></button><div class="card sidebar-card"><div class=collapse-header><a class=nav-link href=../../../docs/getting-started/><i class="icon-layers navicon"></i><h3 class="sidebar-h1 mainitem">Quick Start</h3></a></div><div class=collapse><div class=nav-list><a class=nav-link href=../../../docs/getting-started/introduction/><h3 class="sidebar-h2 subitem">Introduction</h3></a><a class=nav-link href=../../../docs/getting-started/clients/><h3 class="sidebar-h2 subitem">Install Clients</h3></a><a class=nav-link href=../../../docs/getting-started/provision-data/><h3 class="sidebar-h2 subitem">Provision Data</h3></a><a class=nav-link href=../../../docs/getting-started/consume-data/><h3 class="sidebar-h2 subitem">Consume Data</h3></a></div></div><div class=collapse-header><a class=nav-link href=../../../docs/use-existing-data/><i class="icon-database navicon"></i><h3 class="sidebar-h1 mainitem">Use Existing Data</h3></a></div><div class=collapse><div class=nav-list><a class=nav-link href=../../../docs/use-existing-data/using-trino/doc/><h3 class="sidebar-h2 subitem">Using Trino</h3></a></div></div><div class=collapse-header><a class=nav-link href=../../../docs/security/><i class="icon-shield navicon"></i><h3 class="sidebar-h1 mainitem">Security</h3></a></div><div class=collapse><div class=nav-list><a class=nav-link href=../../../docs/security/data-source/><h3 class="sidebar-h2 subitem">At Data Sources</h3></a><a class=nav-link href=../../../docs/security/search-endpoint/><h3 class="sidebar-h2 subitem">At Endpoints</h3></a></div></div><div class=collapse-header><a class=nav-link href=../../../docs/reference/><i class="icon-book navicon"></i><h3 class="sidebar-h1 mainitem">Implementation</h3></a></div><div class="collapse show"><div class=nav-list><a class=nav-link href=../../../docs/reference/pagination-long-queries/><h3 class="sidebar-h2 subitem">Pagination and Long Running Queries</h3></a><a class=nav-link href=../../../docs/reference/sql-functions/><h3 class="sidebar-h2 subitem">SQL Functions</h3></a><a class=nav-link href=../../../docs/reference/sql-grammar/><h3 class="sidebar-h2 nav-highlight subitem" id=scrollto>SQL Grammar</h3></a></div></div></div><div class=footer-container></div></div><button id=sidebar-btn onclick="(function(){document.getElementById('sidebar-nav').classList.toggle('show');document.getElementById('content').classList.toggle('showing-nav')})()">
+<i class="icon-menu mobile"></i></button><div class=content id=content><div class=content-header><div id=search-input-div><button class=search-button id=search-button data-toggle=modal data-target=#search-input-modal><h3 class=search-button-text><i class="icon-search search-icon"></i>Find anything</h3></button><div class="modal search" id=search-input-modal><div id=search-input-modal class=modal-dialog><div id=search-input-div class=modal-content><input id=search-input type=text placeholder name=search autocomplete=off>
+<span class=focus-border></span><section id=search-results class=search></section></div></div></div></div><div class=content-header-nav><a class=content-header-nav-link href=../../../api><i class=icon-code></i><span class=top-nav-text>API</span></a>
+<a class=content-header-nav-link href=https://github.com/ga4gh-discovery/data-connect/blob/develop/SPEC.md><i class=icon-file-text></i><span class=top-nav-text>Specification</span></a>
+<a class=content-header-nav-link href=https://github.com/ga4gh-discovery/data-connect/><i class=icon-github></i><span class=top-nav-text>Github</span></a></div></div><div class=text-area><h2>SQL Grammar</h2><p>This is the ANTLR grammar from Trino version 323 (ASL 2.0 license), with the DML and DDL parts removed.</p><pre><code class=language-antlrv4 data-lang=antlrv4>grammar DataConnect;
+
+tokens {
+    DELIMITER
+}
+
+singleStatement
+    : statement EOF
+    ;
+
+standaloneExpression
+    : expression EOF
+    ;
+
+standaloneType
+    : type EOF
+    ;
+
+statement
+    : query                                                            #statementDefault
+    | USE schema=identifier                                            #use
+    | USE catalog=identifier '.' schema=identifier                     #use
+    | EXPLAIN ANALYZE? VERBOSE?
+        ('(' explainOption (',' explainOption)* ')')? statement        #explain
+    | SHOW TABLES ((FROM | IN) qualifiedName)?
+        (LIKE pattern=string (ESCAPE escape=string)?)?                 #showTables
+    | SHOW SCHEMAS ((FROM | IN) identifier)?
+        (LIKE pattern=string (ESCAPE escape=string)?)?                 #showSchemas
+    | SHOW CATALOGS (LIKE pattern=string)?                             #showCatalogs
+    | SHOW COLUMNS (FROM | IN) qualifiedName                           #showColumns
+    | DESCRIBE qualifiedName                                           #showColumns
+    | DESC qualifiedName                                               #showColumns
+    | SHOW FUNCTIONS                                                   #showFunctions
+    ;
+
+query
+    :  with? queryNoWith
+    ;
+
+with
+    : WITH RECURSIVE? namedQuery (',' namedQuery)*
+    ;
+
+queryNoWith:
+      queryTerm
+      (ORDER BY sortItem (',' sortItem)*)?
+      (OFFSET offset=INTEGER_VALUE (ROW | ROWS)?)?
+      ((LIMIT limit=(INTEGER_VALUE | ALL)) | (FETCH (FIRST | NEXT) (fetchFirst=INTEGER_VALUE)? (ROW | ROWS) (ONLY | WITH TIES)))?
+    ;
+
+queryTerm
+    : queryPrimary                                                             #queryTermDefault
+    | left=queryTerm operator=INTERSECT setQuantifier? right=queryTerm         #setOperation
+    | left=queryTerm operator=(UNION | EXCEPT) setQuantifier? right=queryTerm  #setOperation
+    ;
+
+queryPrimary
+    : querySpecification                   #queryPrimaryDefault
+    | TABLE qualifiedName                  #table
+    | VALUES expression (',' expression)*  #inlineTable
+    | '(' queryNoWith  ')'                 #subquery
+    ;
+
+sortItem
+    : expression ordering=(ASC | DESC)? (NULLS nullOrdering=(FIRST | LAST))?
+    ;
+
+querySpecification
+    : SELECT setQuantifier? selectItem (',' selectItem)*
+      (FROM relation (',' relation)*)?
+      (WHERE where=booleanExpression)?
+      (GROUP BY groupBy)?
+      (HAVING having=booleanExpression)?
+    ;
+
+groupBy
+    : setQuantifier? groupingElement (',' groupingElement)*
+    ;
+
+groupingElement
+    : groupingSet                                            #singleGroupingSet
+    | ROLLUP '(' (expression (',' expression)*)? ')'         #rollup
+    | CUBE '(' (expression (',' expression)*)? ')'           #cube
+    | GROUPING SETS '(' groupingSet (',' groupingSet)* ')'   #multipleGroupingSets
+    ;
+
+groupingSet
+    : '(' (expression (',' expression)*)? ')'
+    | expression
+    ;
+
+namedQuery
+    : name=identifier (columnAliases)? AS '(' query ')'
+    ;
+
+setQuantifier
+    : DISTINCT
+    | ALL
+    ;
+
+selectItem
+    : expression (AS? identifier)?                          #selectSingle
+    | primaryExpression '.' ASTERISK (AS columnAliases)?    #selectAll
+    | ASTERISK                                              #selectAll
+    ;
+
+relation
+    : left=relation
+      ( CROSS JOIN right=sampledRelation
+      | joinType JOIN rightRelation=relation joinCriteria
+      | NATURAL joinType JOIN right=sampledRelation
+      )                                           #joinRelation
+    | sampledRelation                             #relationDefault
+    ;
+
+joinType
+    : INNER?
+    | LEFT OUTER?
+    | RIGHT OUTER?
+    | FULL OUTER?
+    ;
+
+joinCriteria
+    : ON booleanExpression
+    | USING '(' identifier (',' identifier)* ')'
+    ;
+
+sampledRelation
+    : aliasedRelation (
+        TABLESAMPLE sampleType '(' percentage=expression ')'
+      )?
+    ;
+
+sampleType
+    : BERNOULLI
+    | SYSTEM
+    ;
+
+aliasedRelation
+    : relationPrimary (AS? identifier columnAliases?)?
+    ;
+
+columnAliases
+    : '(' identifier (',' identifier)* ')'
+    ;
+
+relationPrimary
+    : qualifiedName                                                   #tableName
+    | '(' query ')'                                                   #subqueryRelation
+    | UNNEST '(' expression (',' expression)* ')' (WITH ORDINALITY)?  #unnest
+    | LATERAL '(' query ')'                                           #lateral
+    | '(' relation ')'                                                #parenthesizedRelation
+    ;
+
+expression
+    : booleanExpression
+    ;
+
+booleanExpression
+    : valueExpression predicate[$valueExpression.ctx]?             #predicated
+    | NOT booleanExpression                                        #logicalNot
+    | left=booleanExpression operator=AND right=booleanExpression  #logicalBinary
+    | left=booleanExpression operator=OR right=booleanExpression   #logicalBinary
+    ;
+
+// workaround for https://github.com/antlr/antlr4/issues/780
+predicate[ParserRuleContext value]
+    : comparisonOperator right=valueExpression                            #comparison
+    | comparisonOperator comparisonQuantifier '(' query ')'               #quantifiedComparison
+    | NOT? BETWEEN lower=valueExpression AND upper=valueExpression        #between
+    | NOT? IN '(' expression (',' expression)* ')'                        #inList
+    | NOT? IN '(' query ')'                                               #inSubquery
+    | NOT? LIKE pattern=valueExpression (ESCAPE escape=valueExpression)?  #like
+    | IS NOT? NULL                                                        #nullPredicate
+    | IS NOT? DISTINCT FROM right=valueExpression                         #distinctFrom
+    ;
+
+valueExpression
+    : primaryExpression                                                                 #valueExpressionDefault
+    | valueExpression AT timeZoneSpecifier                                              #atTimeZone
+    | operator=(MINUS | PLUS) valueExpression                                           #arithmeticUnary
+    | left=valueExpression operator=(ASTERISK | SLASH | PERCENT) right=valueExpression  #arithmeticBinary
+    | left=valueExpression operator=(PLUS | MINUS) right=valueExpression                #arithmeticBinary
+    | left=valueExpression CONCAT right=valueExpression                                 #concatenation
+    ;
+
+primaryExpression
+    : NULL                                                                                #nullLiteral
+    | interval                                                                            #intervalLiteral
+    | identifier string                                                                   #typeConstructor
+    | DOUBLE PRECISION string                                                             #typeConstructor
+    | number                                                                              #numericLiteral
+    | booleanValue                                                                        #booleanLiteral
+    | string                                                                              #stringLiteral
+    | BINARY_LITERAL                                                                      #binaryLiteral
+    | '?'                                                                                 #parameter
+    | POSITION '(' valueExpression IN valueExpression ')'                                 #position
+    | '(' expression (',' expression)+ ')'                                                #rowConstructor
+    | ROW '(' expression (',' expression)* ')'                                            #rowConstructor
+    | qualifiedName '(' ASTERISK ')' filter? over?                                        #functionCall
+    | qualifiedName '(' (setQuantifier? expression (',' expression)*)?
+        (ORDER BY sortItem (',' sortItem)*)? ')' filter? (nullTreatment? over)?           #functionCall
+    | identifier '-&gt;' expression                                                          #lambda
+    | '(' (identifier (',' identifier)*)? ')' '-&gt;' expression                             #lambda
+    | '(' query ')'                                                                       #subqueryExpression
+    // This is an extension to ANSI SQL, which considers EXISTS to be a &lt;boolean expression&gt;
+    | EXISTS '(' query ')'                                                                #exists
+    | CASE operand=expression whenClause+ (ELSE elseExpression=expression)? END           #simpleCase
+    | CASE whenClause+ (ELSE elseExpression=expression)? END                              #searchedCase
+    | CAST '(' expression AS type ')'                                                     #cast
+    | TRY_CAST '(' expression AS type ')'                                                 #cast
+    | ARRAY '[' (expression (',' expression)*)? ']'                                       #arrayConstructor
+    | value=primaryExpression '[' index=valueExpression ']'                               #subscript
+    | identifier                                                                          #columnReference
+    | base=primaryExpression '.' fieldName=identifier                                     #dereference
+    | name=CURRENT_DATE                                                                   #specialDateTimeFunction
+    | name=CURRENT_TIME ('(' precision=INTEGER_VALUE ')')?                                #specialDateTimeFunction
+    | name=CURRENT_TIMESTAMP ('(' precision=INTEGER_VALUE ')')?                           #specialDateTimeFunction
+    | name=LOCALTIME ('(' precision=INTEGER_VALUE ')')?                                   #specialDateTimeFunction
+    | name=LOCALTIMESTAMP ('(' precision=INTEGER_VALUE ')')?                              #specialDateTimeFunction
+    | name=CURRENT_USER                                                                   #currentUser
+    | name=CURRENT_PATH                                                                   #currentPath
+    | SUBSTRING '(' valueExpression FROM valueExpression (FOR valueExpression)? ')'       #substring
+    | NORMALIZE '(' valueExpression (',' normalForm)? ')'                                 #normalize
+    | EXTRACT '(' identifier FROM valueExpression ')'                                     #extract
+    | '(' expression ')'                                                                  #parenthesizedExpression
+    | GROUPING '(' (qualifiedName (',' qualifiedName)*)? ')'                              #groupingOperation
+    ;
+
+nullTreatment
+    : IGNORE NULLS
+    | RESPECT NULLS
+    ;
+
+string
+    : STRING                                #basicStringLiteral
+    | UNICODE_STRING (UESCAPE STRING)?      #unicodeStringLiteral
+    ;
+
+timeZoneSpecifier
+    : TIME ZONE interval  #timeZoneInterval
+    | TIME ZONE string    #timeZoneString
+    ;
+
+comparisonOperator
+    : EQ | NEQ | LT | LTE | GT | GTE
+    ;
+
+comparisonQuantifier
+    : ALL | SOME | ANY
+    ;
+
+booleanValue
+    : TRUE | FALSE
+    ;
+
+interval
+    : INTERVAL sign=(PLUS | MINUS)? string from=intervalField (TO to=intervalField)?
+    ;
+
+intervalField
+    : YEAR | MONTH | DAY | HOUR | MINUTE | SECOND
+    ;
+
+normalForm
+    : NFD | NFC | NFKD | NFKC
+    ;
+
+type
+    : ROW '(' rowField (',' rowField)* ')'                                         #rowType
+    | INTERVAL from=intervalField (TO to=intervalField)?                           #intervalType
+    | base=TIMESTAMP ('(' precision = INTEGER_VALUE ')')? (WITHOUT TIME ZONE)?     #dateTimeType
+    | base=TIMESTAMP ('(' precision = INTEGER_VALUE ')')? WITH TIME ZONE           #dateTimeType
+    | base=TIME ('(' precision = INTEGER_VALUE ')')? (WITHOUT TIME ZONE)?          #dateTimeType
+    | base=TIME ('(' precision = INTEGER_VALUE ')')? WITH TIME ZONE                #dateTimeType
+    | DOUBLE PRECISION                                                             #doublePrecisionType
+    | ARRAY '&lt;' type '&gt;'                                                           #legacyArrayType
+    | MAP '&lt;' keyType=type ',' valueType=type '&gt;'                                  #legacyMapType
+    | type ARRAY ('[' INTEGER_VALUE ']')?                                          #arrayType
+    | identifier ('(' typeParameter (',' typeParameter)* ')')?                     #genericType
+    ;
+
+rowField
+    : identifier? type;
+
+typeParameter
+    : INTEGER_VALUE | type
+    ;
+
+whenClause
+    : WHEN condition=expression THEN result=expression
+    ;
+
+filter
+    : FILTER '(' WHERE booleanExpression ')'
+    ;
+
+over
+    : OVER '('
+        (PARTITION BY partition+=expression (',' partition+=expression)*)?
+        (ORDER BY sortItem (',' sortItem)*)?
+        windowFrame?
+      ')'
+    ;
+
+windowFrame
+    : frameType=RANGE start=frameBound
+    | frameType=ROWS start=frameBound
+    | frameType=RANGE BETWEEN start=frameBound AND end=frameBound
+    | frameType=ROWS BETWEEN start=frameBound AND end=frameBound
+    ;
+
+frameBound
+    : UNBOUNDED boundType=PRECEDING                 #unboundedFrame
+    | UNBOUNDED boundType=FOLLOWING                 #unboundedFrame
+    | CURRENT ROW                                   #currentRowBound
+    | expression boundType=(PRECEDING | FOLLOWING)  #boundedFrame
+    ;
+
+explainOption
+    : FORMAT value=(TEXT | GRAPHVIZ | JSON)                 #explainFormat
+    | TYPE value=(LOGICAL | DISTRIBUTED | VALIDATE | IO)    #explainType
+    ;
+
+qualifiedName
+    : identifier ('.' identifier)*
+    ;
+
+identifier
+    : IDENTIFIER             #unquotedIdentifier
+    | QUOTED_IDENTIFIER      #quotedIdentifier
+    | nonReserved            #unquotedIdentifier
+    | BACKQUOTED_IDENTIFIER  #backQuotedIdentifier
+    | DIGIT_IDENTIFIER       #digitIdentifier
+    ;
+
+number
+    : MINUS? DECIMAL_VALUE  #decimalLiteral
+    | MINUS? DOUBLE_VALUE   #doubleLiteral
+    | MINUS? INTEGER_VALUE  #integerLiteral
+    ;
+
+nonReserved
+    // IMPORTANT: this rule must only contain tokens. Nested rules are not supported. See SqlParser.exitNonReserved
+    : ADD | ADMIN | ALL | ANALYZE | ANY | ARRAY | ASC | AT
+    | BERNOULLI
+    | CALL | CASCADE | CATALOGS | COLUMN | COLUMNS | COMMENT | COMMIT | COMMITTED | CURRENT
+    | DATA | DATE | DAY | DEFINER | DESC | DISTRIBUTED | DOUBLE
+    | EXCLUDING | EXPLAIN
+    | FETCH | FILTER | FIRST | FOLLOWING | FORMAT | FUNCTIONS
+    | GRANT | GRANTED | GRANTS | GRAPHVIZ
+    | HOUR
+    | IF | IGNORE | INCLUDING | INPUT | INTERVAL | INVOKER | IO | ISOLATION
+    | JSON
+    | LAST | LATERAL | LEVEL | LIMIT | LOGICAL
+    | MAP | MINUTE | MONTH
+    | NEXT | NFC | NFD | NFKC | NFKD | NO | NONE | NULLIF | NULLS
+    | OFFSET | ONLY | OPTION | ORDINALITY | OUTPUT | OVER
+    | PARTITION | PARTITIONS | PATH | POSITION | PRECEDING | PRECISION | PRIVILEGES | PROPERTIES
+    | RANGE | READ | RENAME | REPEATABLE | REPLACE | RESET | RESPECT | RESTRICT | REVOKE | ROLE | ROLES | ROLLBACK | ROW | ROWS
+    | SCHEMA | SCHEMAS | SECOND | SECURITY | SERIALIZABLE | SESSION | SET | SETS
+    | SHOW | SOME | START | STATS | SUBSTRING | SYSTEM
+    | TABLES | TABLESAMPLE | TEXT | TIES | TIME | TIMESTAMP | TO | TRANSACTION | TRY_CAST | TYPE
+    | UNBOUNDED | UNCOMMITTED | USE | USER
+    | VALIDATE | VERBOSE | VIEW
+    | WITHOUT | WORK | WRITE
+    | YEAR
+    | ZONE
+    ;
+
+ADD: 'ADD';
+ADMIN: 'ADMIN';
+ALL: 'ALL';
+ALTER: 'ALTER';
+ANALYZE: 'ANALYZE';
+AND: 'AND';
+ANY: 'ANY';
+ARRAY: 'ARRAY';
+AS: 'AS';
+ASC: 'ASC';
+AT: 'AT';
+BERNOULLI: 'BERNOULLI';
+BETWEEN: 'BETWEEN';
+BY: 'BY';
+CALL: 'CALL';
+CASCADE: 'CASCADE';
+CASE: 'CASE';
+CAST: 'CAST';
+CATALOGS: 'CATALOGS';
+COLUMN: 'COLUMN';
+COLUMNS: 'COLUMNS';
+COMMENT: 'COMMENT';
+COMMIT: 'COMMIT';
+COMMITTED: 'COMMITTED';
+CONSTRAINT: 'CONSTRAINT';
+CREATE: 'CREATE';
+CROSS: 'CROSS';
+CUBE: 'CUBE';
+CURRENT: 'CURRENT';
+CURRENT_DATE: 'CURRENT_DATE';
+CURRENT_PATH: 'CURRENT_PATH';
+CURRENT_ROLE: 'CURRENT_ROLE';
+CURRENT_TIME: 'CURRENT_TIME';
+CURRENT_TIMESTAMP: 'CURRENT_TIMESTAMP';
+CURRENT_USER: 'CURRENT_USER';
+DATA: 'DATA';
+DATE: 'DATE';
+DAY: 'DAY';
+DEALLOCATE: 'DEALLOCATE';
+DEFINER: 'DEFINER';
+DELETE: 'DELETE';
+DESC: 'DESC';
+DESCRIBE: 'DESCRIBE';
+DISTINCT: 'DISTINCT';
+DISTRIBUTED: 'DISTRIBUTED';
+DOUBLE: 'DOUBLE';
+DROP: 'DROP';
+ELSE: 'ELSE';
+END: 'END';
+ESCAPE: 'ESCAPE';
+EXCEPT: 'EXCEPT';
+EXCLUDING: 'EXCLUDING';
+EXECUTE: 'EXECUTE';
+EXISTS: 'EXISTS';
+EXPLAIN: 'EXPLAIN';
+EXTRACT: 'EXTRACT';
+FALSE: 'FALSE';
+FETCH: 'FETCH';
+FILTER: 'FILTER';
+FIRST: 'FIRST';
+FOLLOWING: 'FOLLOWING';
+FOR: 'FOR';
+FORMAT: 'FORMAT';
+FROM: 'FROM';
+FULL: 'FULL';
+FUNCTIONS: 'FUNCTIONS';
+GRANT: 'GRANT';
+GRANTED: 'GRANTED';
+GRANTS: 'GRANTS';
+GRAPHVIZ: 'GRAPHVIZ';
+GROUP: 'GROUP';
+GROUPING: 'GROUPING';
+HAVING: 'HAVING';
+HOUR: 'HOUR';
+IF: 'IF';
+IGNORE: 'IGNORE';
+IN: 'IN';
+INCLUDING: 'INCLUDING';
+INNER: 'INNER';
+INPUT: 'INPUT';
+INSERT: 'INSERT';
+INTERSECT: 'INTERSECT';
+INTERVAL: 'INTERVAL';
+INTO: 'INTO';
+INVOKER: 'INVOKER';
+IO: 'IO';
+IS: 'IS';
+ISOLATION: 'ISOLATION';
+JSON: 'JSON';
+JOIN: 'JOIN';
+LAST: 'LAST';
+LATERAL: 'LATERAL';
+LEFT: 'LEFT';
+LEVEL: 'LEVEL';
+LIKE: 'LIKE';
+LIMIT: 'LIMIT';
+LOCALTIME: 'LOCALTIME';
+LOCALTIMESTAMP: 'LOCALTIMESTAMP';
+LOGICAL: 'LOGICAL';
+MAP: 'MAP';
+MINUTE: 'MINUTE';
+MONTH: 'MONTH';
+NATURAL: 'NATURAL';
+NEXT: 'NEXT';
+NFC : 'NFC';
+NFD : 'NFD';
+NFKC : 'NFKC';
+NFKD : 'NFKD';
+NO: 'NO';
+NONE: 'NONE';
+NORMALIZE: 'NORMALIZE';
+NOT: 'NOT';
+NULL: 'NULL';
+NULLIF: 'NULLIF';
+NULLS: 'NULLS';
+OFFSET: 'OFFSET';
+ON: 'ON';
+ONLY: 'ONLY';
+OPTION: 'OPTION';
+OR: 'OR';
+ORDER: 'ORDER';
+ORDINALITY: 'ORDINALITY';
+OUTER: 'OUTER';
+OUTPUT: 'OUTPUT';
+OVER: 'OVER';
+PARTITION: 'PARTITION';
+PARTITIONS: 'PARTITIONS';
+PATH: 'PATH';
+POSITION: 'POSITION';
+PRECEDING: 'PRECEDING';
+PREPARE: 'PREPARE';
+PRIVILEGES: 'PRIVILEGES';
+PRECISION: 'PRECISION';
+PROPERTIES: 'PROPERTIES';
+RANGE: 'RANGE';
+READ: 'READ';
+RECURSIVE: 'RECURSIVE';
+RENAME: 'RENAME';
+REPEATABLE: 'REPEATABLE';
+REPLACE: 'REPLACE';
+RESET: 'RESET';
+RESPECT: 'RESPECT';
+RESTRICT: 'RESTRICT';
+REVOKE: 'REVOKE';
+RIGHT: 'RIGHT';
+ROLE: 'ROLE';
+ROLES: 'ROLES';
+ROLLBACK: 'ROLLBACK';
+ROLLUP: 'ROLLUP';
+ROW: 'ROW';
+ROWS: 'ROWS';
+SCHEMA: 'SCHEMA';
+SCHEMAS: 'SCHEMAS';
+SECOND: 'SECOND';
+SECURITY: 'SECURITY';
+SELECT: 'SELECT';
+SERIALIZABLE: 'SERIALIZABLE';
+SESSION: 'SESSION';
+SET: 'SET';
+SETS: 'SETS';
+SHOW: 'SHOW';
+SOME: 'SOME';
+START: 'START';
+STATS: 'STATS';
+SUBSTRING: 'SUBSTRING';
+SYSTEM: 'SYSTEM';
+TABLE: 'TABLE';
+TABLES: 'TABLES';
+TABLESAMPLE: 'TABLESAMPLE';
+TEXT: 'TEXT';
+THEN: 'THEN';
+TIES: 'TIES';
+TIME: 'TIME';
+TIMESTAMP: 'TIMESTAMP';
+TO: 'TO';
+TRANSACTION: 'TRANSACTION';
+TRUE: 'TRUE';
+TRY_CAST: 'TRY_CAST';
+TYPE: 'TYPE';
+UESCAPE: 'UESCAPE';
+UNBOUNDED: 'UNBOUNDED';
+UNCOMMITTED: 'UNCOMMITTED';
+UNION: 'UNION';
+UNNEST: 'UNNEST';
+USE: 'USE';
+USER: 'USER';
+USING: 'USING';
+VALIDATE: 'VALIDATE';
+VALUES: 'VALUES';
+VERBOSE: 'VERBOSE';
+VIEW: 'VIEW';
+WHEN: 'WHEN';
+WHERE: 'WHERE';
+WITH: 'WITH';
+WITHOUT: 'WITHOUT';
+WORK: 'WORK';
+WRITE: 'WRITE';
+YEAR: 'YEAR';
+ZONE: 'ZONE';
+
+EQ  : '=';
+NEQ : '&lt;&gt;' | '!=';
+LT  : '&lt;';
+LTE : '&lt;=';
+GT  : '&gt;';
+GTE : '&gt;=';
+
+PLUS: '+';
+MINUS: '-';
+ASTERISK: '*';
+SLASH: '/';
+PERCENT: '%';
+CONCAT: '||';
+
+STRING
+    : '\'' ( ~'\'' | '\'\'' )* '\''
+    ;
+
+UNICODE_STRING
+    : 'U&amp;\'' ( ~'\'' | '\'\'' )* '\''
+    ;
+
+// Note: we allow any character inside the binary literal and validate
+// its a correct literal when the AST is being constructed. This
+// allows us to provide more meaningful error messages to the user
+BINARY_LITERAL
+    :  'X\'' (~'\'')* '\''
+    ;
+
+INTEGER_VALUE
+    : DIGIT+
+    ;
+
+DECIMAL_VALUE
+    : DIGIT+ '.' DIGIT*
+    | '.' DIGIT+
+    ;
+
+DOUBLE_VALUE
+    : DIGIT+ ('.' DIGIT*)? EXPONENT
+    | '.' DIGIT+ EXPONENT
+    ;
+
+IDENTIFIER
+    : (LETTER | '_') (LETTER | DIGIT | '_' | '@' | ':')*
+    ;
+
+DIGIT_IDENTIFIER
+    : DIGIT (LETTER | DIGIT | '_' | '@' | ':')+
+    ;
+
+QUOTED_IDENTIFIER
+    : '&quot;' ( ~'&quot;' | '&quot;&quot;' )* '&quot;'
+    ;
+
+BACKQUOTED_IDENTIFIER
+    : '`' ( ~'`' | '``' )* '`'
+    ;
+
+fragment EXPONENT
+    : 'E' [+-]? DIGIT+
+    ;
+
+fragment DIGIT
+    : [0-9]
+    ;
+
+fragment LETTER
+    : [A-Z]
+    ;
+
+SIMPLE_COMMENT
+    : '--' ~[\r\n]* '\r'? '\n'? -&gt; channel(HIDDEN)
+    ;
+
+BRACKETED_COMMENT
+    : '/*' .*? '*/' -&gt; channel(HIDDEN)
+    ;
+
+WS
+    : [ \r\n\t]+ -&gt; channel(HIDDEN)
+    ;
+
+// Catch-all for anything we can't recognize.
+// We use this to be able to ignore and recover all the text
+// when splitting statements with DelimiterLexer
+UNRECOGNIZED
+    : .
+    ;
+</code></pre><div class=footer-root><div class=footer-prev><a class=content-header-nav-link href=../../../docs/reference/sql-functions/><i class=icon-arrow-left></i></a></div><div class=footer-nav><a class=content-header-nav-link href=../../../api><i class=icon-code></i></a><a class=content-header-nav-link href=https://github.com/ga4gh-discovery/data-connect/blob/develop/SPEC.md><i class=icon-file-text></i></a><a class=content-header-nav-link href=https://github.com/ga4gh-discovery/data-connect/><i class=icon-github></i></a></div><div class=footer-next></div></div></div></div><script src=../../../js/jquery-3.5.1.min.js></script><script src=../../../js/bootstrap.min.js></script><script src=https://unpkg.com/lunr/lunr.js></script><script>document.getElementById("scrollto").scrollIntoView(true);</script><script type=text/javascript>var idx,searchInput,searchResults=null
+var documents=[]
+function renderSearchResults(results){if(results.length>0){if(results.length>9){results=results.slice(0,10)}
+searchResults.innerHTML=''
+results.forEach(result=>{var article=document.createElement('article')
+var uri="/data-connect"+result.ref.replace("/index.json","")
+article.innerHTML=`
+            <a href="${uri}" class="search-result-item"><p class="search-result-title">${documents[result.ref].title}</p> <i class="icon-external-link"></i></a>
+            `
+searchResults.appendChild(article)})}else{searchResults.innerHTML='<p>No results found.</p>'}}
+function registerSearchHandler(){searchInput.oninput=function(event){if(searchInput.value==''){searchResults.innerHTML=''}else{var query=event.target.value
+var results=idx.search(query+'*')
+renderSearchResults(results)}}
+searchInput.focus()
+searchInput.placeholder=''}
+$('#search-input-modal').on('shown.bs.modal',function(){$('#search-input').trigger('focus')})
+window.onload=function(){searchInput=document.getElementById('search-input')
+searchResults=document.getElementById('search-results')
+fetch('/data-connect/index.json',{method:'get'}).then(res=>res.json()).then(res=>{idx=lunr(function(){this.ref('url')
+this.field('title')
+this.field('content')
+res.forEach(function(doc){this.add(doc)
+documents[doc.url]={'title':doc.title,'content':doc.content,}},this)})
+registerSearchHandler()}).catch(err=>{searchResults.innerHTML=`<p>${err}</p>`})}</script></body></html>

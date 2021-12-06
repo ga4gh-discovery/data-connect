@@ -1,0 +1,6 @@
+{{ define "main" }}
+    {{ with .Site.GetPage .Site.Params.home}}
+        {{.Render}}
+    {{end}}
+{{ end }}
+

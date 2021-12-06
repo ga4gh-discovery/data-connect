@@ -1,0 +1,14 @@
+{{ define "main" }}
+
+{{- partial "header.html" . -}}
+<div class="content" id="content">
+{{- partial "page-layouts/content-header.html" (dict "root" . "ctx" $) -}}
+{{if eq .Params.layout "two-col"}}
+{{- partial "page-layouts/two-col.html" . -}}
+{{ else }}
+{{- partial "page-layouts/single-col.html" . -}}
+{{ end }}
+</div>
+{{ end }}
+
+

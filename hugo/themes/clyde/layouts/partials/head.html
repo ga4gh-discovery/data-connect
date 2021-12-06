@@ -1,0 +1,53 @@
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/page-layouts/content-header.css">
+    <link rel="stylesheet" type="text/css" href="/css/sidebar/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/page-layouts/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/page-layouts/syntax.css">
+    <link rel="stylesheet" type="text/css" href="/css/tabs/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <!-- user override for anything not included here -->
+    <link rel="stylesheet" type="text/css" href="/override/style.css">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family={{ .Site.Params.body_font }}">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family={{ .Site.Params.heading_font }}">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family={{ .Site.Params.code_font }}">
+
+    {{ "<!-- feather-icon -->" | safeHTML }}
+    <link rel="stylesheet" href="/feather-icons/css/iconfont.css">
+  
+    {{ "<!--Favicon-->" | safeHTML }}
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+
+    {{ $title := print .Site.Title " | " .Title }}
+    <style>
+        :root {
+            --white: #ffffff;
+            --primary: {{ .Site.Params.primary }};
+            --secondary: {{ .Site.Params.secondary }};
+            --sidebar-bg: {{ .Site.Params.sidebar_bg }};
+            --sidebar-primary: {{ .Site.Params.sidebar_primary }};
+            --accent: {{ .Site.Params.accent }};
+            --grey100: {{ .Site.Params.grey100 }};
+            --grey200: {{ .Site.Params.grey200 }};
+            --grey300: {{ .Site.Params.grey300 }};
+            --grey400: {{ .Site.Params.grey400 }};
+            --grey500: {{ .Site.Params.grey500 }};
+            --grey600: {{ .Site.Params.grey600 }};
+            --grey700: {{ .Site.Params.grey700 }};
+            --grey800: {{ .Site.Params.grey800 }};
+            --grey900: {{ .Site.Params.grey900 }};
+            --grey-head: {{ .Site.Params.grey_head }};
+            --nav-highlight: {{ .Site.Params.nav_highlight }};
+            --body-font: {{ .Site.Params.body_font }};
+            --heading-font: {{ .Site.Params.heading_font }};
+            --code-font: {{ .Site.Params.code_font }};
+        }
+    </style>
+    {{ if .IsHome }}{{ $title = .Site.Title }}{{ end }}
+    <title>{{ $title }}</title>
+</head>

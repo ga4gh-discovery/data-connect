@@ -1,0 +1,64 @@
+{{ $curSection := .Section}}
+{{if not (eq (len $curSection) 0)}}
+<div class="sidebar" id="sidebar-nav">
+    {{ $logo:= site.Params.logo }}
+    <button id="logo-collapse-btn" onclick="(function(){document.getElementById('sidebar-nav').classList.toggle('show');document.getElementById('content').classList.toggle('showing-nav')})()" >
+        <img id="logo" src="{{ $logo }}" alt="{{ site.Title }}"> 
+        {{if site.Params.show_title}}
+        <div class="site-title">
+            <h3 class="sidebar-h1 "> 
+                {{.Site.Title}}  
+            </h3>
+        </div>
+        {{end}}
+    </button>
+    <!-- renders nav items -->
+    {{ template "nav_item" .}} 
+    {{if site.Menus }}
+        {{- partial "footer.html" . -}}
+    {{end}}
+</div>
+<button id="sidebar-btn" onclick="(function(){document.getElementById('sidebar-nav').classList.toggle('show');document.getElementById('content').classList.toggle('showing-nav')})()" >
+    <i class="icon-menu mobile"></i>
+</button>
+{{ end }}
+
+
+{{ define "nav_item" }}
+{{ $curSection := .Section}}
+{{ $curUID := .File.UniqueID }}
+{{ $curPage := .}}
+<div class="card sidebar-card">
+{{ range (where .Site.Pages "Type" "category") }}
+    {{if eq $curSection .Section}}
+    <div class="collapse-header">
+        <a class="nav-link" href="{{.RelPermalink}}"> 
+            <i class="{{ .Params.Icon }} navicon"></i>
+            <h3 class="sidebar-h1 {{if eq $curUID .File.UniqueID}}nav-highlight{{end}} mainitem" 
+            id="{{if eq $curUID .File.UniqueID}}scrollto{{end}}">
+                {{ .Title }}
+            </h3>
+        </a>
+    </div>
+    
+    <div class="collapse {{if $curPage.IsDescendant . }}show{{end}}">
+        <div class="nav-list">
+            {{ range .Pages }}
+                {{$f_name := .File.LogicalName}}
+                <a class="nav-link" href="{{.RelPermalink}}"> 
+                    <h3 class="sidebar-h2 {{if eq $curUID .File.UniqueID}}nav-highlight{{end}} subitem" 
+                    id="{{if eq $curUID .File.UniqueID}}scrollto{{end}}">
+                        {{ if .Title}}
+                            {{ .Title }}
+                        {{ else }}
+                            {{$f_name }}
+                        {{end}}
+                    </h3>
+                </a>
+            {{ end }}                
+        </div>
+    </div>
+    {{ end }}
+{{ end }}
+</div>
+{{ end }}

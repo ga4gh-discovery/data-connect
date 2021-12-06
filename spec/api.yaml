@@ -1,0 +1,280 @@
+openapi: "3.0.2"
+info:
+  title: Data Connect API
+  version: 1.0.0
+  description: |
+    Data Connect is a standard for discovery and search of biomedical data.
+
+    More information on [GitHub](https://github.com/ga4gh-discovery/data-connect).
+  license:
+    name: 'Apache 2.0'
+    url: 'https://raw.githubusercontent.com/ga4gh-discovery/data-connect/develop/LICENSE'
+  contact:
+    name: 'Data Connect Team'
+    email: 'ga4gh-discovery-search@ga4gh.org'
+security:
+  - bearerAuth: [ ]
+paths:
+  /tables:
+    get:
+      summary: List Tables
+      description: Returns a list of Tables.
+      operationId: listTables
+      tags:
+        - Table API
+      responses:
+        '200':
+          description: A list of Tables
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListTablesResponse"
+        '500':
+          description: An unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /table/{table_name}/info:
+    get:
+      summary: Get a Table
+      description: Returns the information about the Table identified by name.
+      operationId: getTable
+      tags:
+        - Table API
+      parameters:
+        - name: table_name
+          in: path
+          description: A table name
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A Table
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Table"
+        '404':
+          description: The table doesn't exist
+        '500':
+          description: An unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /table/{table_name}/data:
+    get:
+      summary: Fetch data from a Table
+      description: Returns the data of a Table
+      operationId: getData
+      tags:
+        - Table API
+      parameters:
+        - name: table_name
+          in: path
+          description: A table name
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Data from the Table
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TableData"
+        '404':
+          description: The table doesn't exist
+        '500':
+          description: An unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /search:
+    post:
+      summary: Perform a search on Tables
+      description: Optional operation that accepts a SearchRequest and returns a TableData
+      operationId: search
+      requestBody:
+        description: Query to execute
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchRequest"
+      tags:
+        - Search API
+      responses:
+        '200':
+          description: Query results returned as TableData
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TableData"
+        '400':
+          description: Error in request headers or body, for example if the query is invalid. Details are provided in the ErrorResponse body.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '404':
+          description: This server does not implement the search operation
+        '500':
+          description: An unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /service-info:
+    get:
+      summary: 'Show information about the Data Connect service'
+      operationId: getServiceInfo
+      tags:
+        - Service Info API
+      responses:
+        '200':
+          description: |
+            Show information about this Data Connect service.
+
+            Use `"type": {"group": "org.ga4gh", "artifact": "data-connect", "version": "1.0.0"}` when implementing this specification directly.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    ListTablesResponse:
+      required:
+        - tables
+      type: object
+      properties:
+        tables:
+          type: array
+          items:
+            $ref: "#/components/schemas/Table"
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        errors:
+          $ref: "#/components/schemas/ErrorList"
+    Table:
+      required:
+        - name
+        - data_model
+      type: object
+      properties:
+        name:
+          type: string
+          description: |
+            Uniquely identifies a table within this Data Connect service.
+
+            Table names should be human-readable and will typically (but not necessarily)
+            be split into two or three parts separated by a dot (`.`).
+          example: my_catalog.some_schema.a_table
+        description:
+          type: string
+          description: Optional description of the Table
+        data_model:
+          $ref: "http://json-schema.org/draft-07/schema#"
+        errors:
+          $ref: "#/components/schemas/ErrorList"
+      description: |
+        Describes a Table hosted by this Data Connect node.
+    TableData:
+      required:
+        - data
+      type: object
+      properties:
+        data_model:
+          $ref: "http://json-schema.org/draft-07/schema#"
+        data:
+          type: array
+          description: Page of JSON values, each adhering to the schema given in the `data_model` property
+          items:
+            # Each item must conform to the schema provided in the "data_model" section of this Table.
+            # Not sure if this constraint can be expressed in OpenAPI 3.0.
+            type: object
+        pagination:
+          $ref: "#/components/schemas/Pagination"
+        errors:
+          $ref: "#/components/schemas/ErrorList"
+      description: |
+        A paginated collection of tabular data.
+
+        Note that the `data_model` property is required unless `data` is also absent.
+        See [the pagination rules](https://github.com/ga4gh-discovery/data-connect/blob/develop/SPEC.md#pagination-and-long-running-queries) for details.
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          $ref: "#/components/schemas/ErrorList"
+      description: The response body when no part of the request can be fulfilled
+    ErrorList:
+      type: array
+      description: List of errors encountered
+      items:
+        $ref: "#/components/schemas/Error"
+    Error:
+      type: object
+      properties:
+        source:
+          type: string
+          description: >
+            The "source" field should only be present when the error originated in an attached data source backing the Data Connect
+            API. The value of source can be any of the following:
+
+            1. A fully qualified table `name`
+            2. Any prefix of a table `name` that ends before a `.` character in the name. For example
+            if there is a table called `foo.bar.baz`, valid prefixes would be `foo` and `foo.bar`. Partial prefixes
+            which do not end just before a `.`, are not valid. For example: `foo.b` and `fo` are not allowed.
+
+            If the error originated inside the Data Connect API implementation and is not associated with any particular table
+            or group of tables, then the source must be absent. An example of this would be an error occurring from a bug
+            in the implementation. Additionally, if the error is due to a bad request from the client, the source must
+            also be absent.
+        title:
+          type: string
+          description: |
+            A short, human-readable description of the error.
+            The value should not change from occurrence to occurrence of an error, except for purposes of localization.
+          example: 'Internal server error'
+        detail:
+          type: string
+          description: 'A human-readable explanation specific to this occurrence of the error.'
+          example: 'Internal server error'
+      required:
+        - title
+    Pagination:
+      type: object
+      properties:
+        next_page_url:
+          type: string
+          description: |
+            URL pointing to the next page of data. Null or absent on last page.
+            
+            See [the pagination rules](https://github.com/ga4gh-discovery/data-connect/blob/develop/SPEC.md#pagination-and-long-running-queries) for full details.
+          format: uri
+    SearchRequest:
+      description:
+        Request body containing an SQL query with zero or more positional parameters.
+      type: object
+      required:
+        - query
+      properties:
+        query:
+          type: string
+          description: Query in SQL. Supported SQL grammar, data types, and functions are described in [the specification](https://github.com/ga4gh-discovery/data-connect/blob/develop/SPEC.md#query).
+          example: SELECT some_string, some_num FROM a_table WHERE some_string=? AND some_num=?
+        parameters:
+          type: array
+          items: {}
+          description: Positional parameters for the query in `query` property.
+          example: [ hello, 42 ]
+    Service:
+      $ref: 'https://raw.githubusercontent.com/ga4gh-discovery/ga4gh-service-info/v1.0.0/service-info.yaml#/components/schemas/Service'

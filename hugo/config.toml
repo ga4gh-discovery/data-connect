@@ -1,0 +1,75 @@
+baseURL = "http://example.org/data-connect/"
+languageCode = "en-us"
+title = "Data Connect"
+theme = "clyde"
+pygmentsUseClasses=true
+publishDir = "docs"
+relativeURLs = true
+canonifyURLs = true
+
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.extensions]
+      definitionList = true
+      footnote = true
+      linkify = true
+      strikethrough = true
+      table = true
+      taskList = true
+      typographer = true
+    [markup.goldmark.parser]
+      attribute = true
+      autoHeadingID = true
+      autoHeadingIDType = "github"
+    [markup.goldmark.renderer]
+      hardWraps = false
+      unsafe = false
+      xhtml = false
+      
+[params]
+    company = "GA4GH Discovery Workstream"
+    #colors
+    secondary = "#1E1F21"
+    sidebar_bg = "#f6f6f8"
+    sidebar_primary = "#1E1F21"
+    primary = "#fff"
+    accent = "#e34a3a"
+    grey200 = "#F9F9FA"
+    grey600 = "#1E1F21"
+    grey_head= "#EFEFF3"
+
+    logo = "/images/logo.png"
+
+    home = "/docs/getting-started/introduction"
+
+    show_title = true
+
+    heading_font = "Poppins"
+    body_font = "Roboto"
+    code_font = "Source Code Pro"
+
+
+[outputs]
+    section = ["JSON", "HTML"]
+    home = ["JSON", "HTML"]
+
+[menu]
+  [[menu.main]]
+    identifier = "api"
+    pre = "<i class='icon-code'></i>"
+    name = "API"
+    url = "/api"
+    weight = -999
+  [[menu.main]]
+    identifier = "specs"
+    pre = "<i class='icon-file-text'></i>"
+    name = "Specification"
+    url = "https://github.com/ga4gh-discovery/data-connect/blob/develop/SPEC.md"
+    weight = -130
+  [[menu.main]]
+    identifier = "github"
+    pre = "<i class='icon-github'></i>"
+    name = "Github"
+    url = "https://github.com/ga4gh-discovery/data-connect/"
+    weight = -120

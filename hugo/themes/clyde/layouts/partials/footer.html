@@ -1,0 +1,8 @@
+<div class="footer-container">
+    {{ range .Site.Menus.footer }}
+        <a class="footer-link" href="{{ .URL }}">
+            {{ .Pre }} 
+            <span>{{ .Name }}</span>
+        </a>
+    {{ end }}
+</div>

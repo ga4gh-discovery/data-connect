@@ -1,0 +1,133 @@
+body{
+    background-color: var(--white);
+    display: flex;
+    align-items:stretch;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+h1 {
+    font-family: var(--heading-font);
+    font-style: normal;
+    font-weight: bold;
+    font-size: 32px;
+    line-height: 140%;
+    margin: 0;
+    padding: 8px 0px;
+
+}
+
+h2 {
+    font-family: var(--heading-font);
+    font-style: normal;
+    font-weight: bold;
+    font-size: 32px;
+    line-height: 140%;
+    margin: 0;
+    padding: 8px 0px;
+
+    }
+
+h3 {
+    font-family: var(--heading-font) !important;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 140%;
+    margin: 0;
+    padding: 8px 0px;
+}
+
+h4 {
+    font-family: var(--heading-font);
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 140%;
+    margin: 0;
+    padding: 8px 0px;
+}
+
+p {
+    font-family: var(--body-font);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 140%;
+    color: var(--grey800);
+}
+
+li {
+    font-family: var(--body-font);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 140%;
+    color: var(--grey800);
+}
+
+pre {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    flex: none;
+}
+.img-fluid{
+    padding: 27px 8px !important;
+}
+
+.h-div{
+    height: -1px;
+    border: 1px solid var(--nav-highlight);
+    left: 8px;
+    right: 8px;
+    margin: 24px 0px;
+}
+
+/* .scroll-box {
+    padding: 0;
+    margin: 0;
+    overflow-y: scroll;
+    bottom: 0px;
+} */
+
+.img-fluid {
+    padding: 20px;
+}
+
+.footer {
+    padding: 0px;
+    margin: 0;
+    text-align: center;
+}
+
+#title{
+    padding: 15px;
+    color: var(--primary);
+}
+
+.img-fluid{
+    padding: 27px 8px !important;
+}
+
+.h-div{
+    height: -1px;
+    border: 1px solid var(--nav-highlight);
+    left: 8px;
+    right: 8px;
+    margin: 24px 0px;
+}
+
+.img-fluid {
+    padding: 20px;
+}
+
+.footer {
+    padding: 0px;
+    margin: 0;
+    text-align: center;
+}
