@@ -19,7 +19,8 @@ On the right is example code to browse [the tables-in-a-bucket](/docs/getting-st
 [Follow along in Colab](https://colab.research.google.com/drive/1NytWLzQFWwGc3pqTaL0HD81S5B3zznLj?usp=sharing)
 ``` python
 # init search client
-from search_python_client.search import DrsClient, SearchClient
+import pandas as pd
+from search_python_client.search import SearchClient
 base_url_tiab = 'https://storage.googleapis.com/ga4gh-tables-example/'
 search_client_tiab = SearchClient(base_url=base_url_tiab)
 ```
@@ -28,7 +29,7 @@ search_client_tiab = SearchClient(base_url=base_url_tiab)
 tables_iterator = search_client_tiab.get_table_list()
 tables = [next(tables_iterator, None) for i in range(10)]
 tables = list(filter(None, tables))
-print(tables)
+pd.DataFrame(tables)
 ```
 ``` python
 # get table info
@@ -42,7 +43,7 @@ table_name = tables[0]['name']
 table_data_iterator = search_client_tiab.get_table_data(table_name)
 table_data = [next(table_data_iterator, None) for i in range(10)]
 table_data = list(filter(None, table_data))
-print(table_data)
+pd.DataFrame(table_data)
 ```
 {{% /tab %}}
 {{% tab tabNum="2" %}}
@@ -85,7 +86,7 @@ This query returns all female patients from the `patient` table.
 ``` SQL
 /* you can scroll on this tab */
 SELECT *
-FROM   publisher_data.dbgap_kids_first.public_patient
+FROM   collections.public_datasets.public_patient
 WHERE  Json_extract_scalar(patient, '$.gender') = 'female'
 LIMIT  5;
 ```
@@ -98,14 +99,15 @@ This query returns all conditions observed in female patients from the `patient`
 /* you can scroll on this tab */
 SELECT Json_extract_scalar(ncpi_disease, '$.code.text')           AS disease,
        Json_extract_scalar(ncpi_disease, '$.identifier[0].value') AS identifier
-FROM   publisher_data.dbgap_kids_first.public_ncpi_disease disease
-       INNER JOIN publisher_data.dbgap_kids_first.public_patient patient
+FROM   collections.public_datasets.public_ncpi_disease disease
+       INNER JOIN collections.public_datasets.public_patient patient
                ON patient.id = REPLACE(Json_extract_scalar(ncpi_disease,
                                        '$.subject.reference'),
                                'Patient/')
 WHERE  Json_extract_scalar(patient, '$.gender') = 'female'
 LIMIT  5;
 ```
+<!-- FIXME Permission Issue -->
 {{% /tab %}}
 {{< /tabs >}}
 {{</code/float-window>}}
@@ -144,8 +146,8 @@ search_client = SearchClient(base_url=base_url)
 query = """
 SELECT Json_extract_scalar(ncpi_disease, '$.code.text')           AS disease,
        Json_extract_scalar(ncpi_disease, '$.identifier[0].value') AS identifier
-FROM   publisher_data.dbgap_kids_first.public_ncpi_disease disease
-       INNER JOIN publisher_data.dbgap_kids_first.public_patient patient
+FROM   collections.public_datasets.public_ncpi_disease disease
+       INNER JOIN collections.public_datasets.public_patient patient
                ON patient.id = REPLACE(Json_extract_scalar(ncpi_disease,
                                        '$.subject.reference'),
                                'Patient/')
@@ -183,7 +185,7 @@ devtools::install_github("DNAstack/ga4gh-search-client-r")
 ```R
 # Making the request
 library(httr)
-conditionsInFemalePatients <- ga4gh.search::ga4gh_search("https://data.publisher.dnastack.com", "select json_extract_scalar(ncpi_disease, '$.code.text') as disease, json_extract_scalar(ncpi_disease, '$.identifier[0].value') as identifier from publisher_data.dbgap_kids_first.public_ncpi_disease disease INNER JOIN publisher_data.dbgap_kids_first.public_patient patient ON patient.id=replace(json_extract_scalar(ncpi_disease, '$.subject.reference'), 'Patient/') WHERE json_extract_scalar(patient, '$.gender')='female' limit 5")
+conditionsInFemalePatients <- ga4gh.search::ga4gh_search("https://data.publisher.dnastack.com", "select json_extract_scalar(ncpi_disease, '$.code.text') as disease, json_extract_scalar(ncpi_disease, '$.identifier[0].value') as identifier from collections.public_datasets.public_ncpi_disease disease INNER JOIN collections.public_datasets.public_patient patient ON patient.id=replace(json_extract_scalar(ncpi_disease, '$.subject.reference'), 'Patient/') WHERE json_extract_scalar(patient, '$.gender')='female' limit 5")
 ```
 ```R
 # View the results
@@ -211,7 +213,7 @@ Output:
 {{% tab tabNum="3" %}}
 
 ``` bash
-search-cli query -q "select json_extract_scalar(ncpi_disease, '$.code.text') as disease, json_extract_scalar(ncpi_disease, '$.identifier[0].value') as identifier from publisher_data.dbgap_kids_first.public_ncpi_disease disease INNER JOIN publisher_data.dbgap_kids_first.public_patient patient ON patient.id=replace(json_extract_scalar(ncpi_disease, '$.subject.reference'), 'Patient/') WHERE json_extract_scalar(patient, '$.gender')='female' limit 5" --api-url https://data.publisher.dnastack.com
+search-cli query -q "select json_extract_scalar(ncpi_disease, '$.code.text') as disease, json_extract_scalar(ncpi_disease, '$.identifier[0].value') as identifier from collections.public_datasets.public_ncpi_disease disease INNER JOIN collections.public_datasets.public_patient patient ON patient.id=replace(json_extract_scalar(ncpi_disease, '$.subject.reference'), 'Patient/') WHERE json_extract_scalar(patient, '$.gender')='female' limit 5" --api-url https://data.publisher.dnastack.com
 ```
 {{% /tab %}}
 {{% tab tabNum="4" %}}
@@ -221,7 +223,7 @@ This query returns all female patients from the `patient` table.
 curl --request POST \
   --url https://data.publisher.dnastack.com/search \
   --header 'content-type: application/json' \
-  --data '{ "query": "select * from publisher_data.dbgap_kids_first.public_patient WHERE json_extract_scalar(patient, '\''$.gender'\'')='\''female'\'' limit 5"}'
+  --data '{ "query": "select * from collections.public_datasets.public_patient WHERE json_extract_scalar(patient, '\''$.gender'\'')='\''female'\'' limit 5"}'
 ```
 
 This query returns all conditions observed in female patients from the `patient` table.
@@ -229,7 +231,7 @@ This query returns all conditions observed in female patients from the `patient`
 curl --request POST \
   --url https://data.publisher.dnastack.com/search \
   --header 'content-type: application/json' \
-  --data '{ "query": "select json_extract_scalar(ncpi_disease, '\''$.code.text'\'') as disease, json_extract_scalar(ncpi_disease, '\''$.identifier[0].value'\'') as identifier from publisher_data.dbgap_kids_first.public_ncpi_disease disease INNER JOIN publisher_data.dbgap_kids_first.public_patient patient ON patient.id=replace(json_extract_scalar(ncpi_disease, '\''$.subject.reference'\''), '\''Patient/'\'') WHERE json_extract_scalar(patient, '\''$.gender'\'')='\''female'\'' limit 5"}'
+  --data '{ "query": "select json_extract_scalar(ncpi_disease, '\''$.code.text'\'') as disease, json_extract_scalar(ncpi_disease, '\''$.identifier[0].value'\'') as identifier from collections.public_datasets.public_ncpi_disease disease INNER JOIN collections.public_datasets.public_patient patient ON patient.id=replace(json_extract_scalar(ncpi_disease, '\''$.subject.reference'\''), '\''Patient/'\'') WHERE json_extract_scalar(patient, '\''$.gender'\'')='\''female'\'' limit 5"}'
 ```
 {{% /tab %}}
 {{< /tabs >}}
@@ -274,7 +276,7 @@ pprint.pprint(tables)
 # Select all items from the CPS-II study
 query = """
 SELECT *
-FROM   publisher_data.dbgap_scr_gecco_susceptibility.subject_phenotypes_multi
+FROM   collections.public_datasets.subject_phenotypes_multi
 WHERE  study = 'CPS-II'
 LIMIT  5
 """
@@ -419,7 +421,3 @@ search-cli query -q "SELECT * FROM collections.world_health_organization_covid_1
 {{% /tab %}}
 
 {{< /tabs >}}
-
-#
-
-

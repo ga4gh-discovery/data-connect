@@ -15,9 +15,7 @@ Data Connect has client libraries for R and Python, as well as a command-line in
 {{< tabs tabTotal="3" tabID="1" tabName1="Python" tabName2="R" tabName3="CLI">}}
 {{% tab tabNum="1" %}}
 ```bash
-# Installing the client library form PyPi
-pip install search-python-client
-# Installing from Github
+# Install from Github
 pip install git+https://github.com/DNAstack/search-python-client --no-cache-dir
 ```
 {{% /tab %}}
@@ -29,7 +27,7 @@ dir.create(path = Sys.getenv("R_LIBS_USER"), showWarnings = FALSE, recursive = T
 install.packages("devtools", lib = Sys.getenv("R_LIBS_USER"), repos = "https://cran.rstudio.com/")
 ```
 ``` R
-# installing the R client
+# Install the R client
 devtools::install_github("DNAstack/ga4gh-search-client-r")
 ```
 {{% /tab %}}
