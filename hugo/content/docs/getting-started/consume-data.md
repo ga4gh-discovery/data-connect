@@ -259,12 +259,12 @@ pprint.pprint(tables)
 ```
 ```python
 #Get more information about a table returned
-table_info = search_client.get_table_info("publisher_data.dbgap_scr_gecco_susceptibility.subject_phenotypes_multi")
+table_info = search_client.get_table_info("collections.public_datasets.subject_phenotypes_multi")
 pprint.pprint(table_info)
 ```
 ```python
 # Dig into the table a little further
-table_data_iterator = search_client.get_table_data("publisher_data.dbgap_scr_gecco_susceptibility.subject_phenotypes_multi")
+table_data_iterator = search_client.get_table_data("collections.public_datasets.subject_phenotypes_multi")
 ```
 ```python
 # Limit to first 10 items
@@ -306,7 +306,7 @@ ga4gh.search::ga4gh_list_tables("https://data.publisher.dnastack.com")
 ```
 ``` R
 # Select all items from the CPS-II study
-query <- "SELECT * FROM publisher_data.dbgap_scr_gecco_susceptibility.subject_phenotypes_multi WHERE study = 'CPS-II' LIMIT 5"
+query <- "SELECT * FROM collections.public_datasets.subject_phenotypes_multi WHERE study = 'CPS-II' LIMIT 5"
 ```
 ``` R
 # Executing the query
@@ -320,11 +320,11 @@ search-cli list --api-url "https://data.publisher.dnastack.com"
 ```
 Get table info
 ``` bash
-search-cli info publisher_data.dbgap_scr_gecco_susceptibility.subject_phenotypes_multi --api-url "https://data.publisher.dnastack.com"
+search-cli info collections.public_datasets.subject_phenotypes_multi --api-url "https://data.publisher.dnastack.com"
 ```
 Now run a query and pipe the results to a file called `results.txt`
 ``` bash
-search-cli query -q "SELECT * FROM publisher_data.dbgap_scr_gecco_susceptibility.subject_phenotypes_multi WHERE study = 'CPS-II' LIMIT 5" \
+search-cli query -q "SELECT * FROM collections.public_datasets.subject_phenotypes_multi WHERE study = 'CPS-II' LIMIT 5" \
   --api-url "https://data.publisher.dnastack.com" > results.txt
 ```
 {{% /tab %}}
