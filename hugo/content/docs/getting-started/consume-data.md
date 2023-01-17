@@ -86,7 +86,7 @@ This query returns all female patients from the `patient` table.
 ``` SQL
 /* you can scroll on this tab */
 SELECT *
-FROM   collections.public_datasets.public_patient
+FROM   collections.public_datasets.patient
 WHERE  Json_extract_scalar(patient, '$.gender') = 'female'
 LIMIT  5;
 ```
@@ -99,8 +99,8 @@ This query returns all conditions observed in female patients from the `patient`
 /* you can scroll on this tab */
 SELECT Json_extract_scalar(ncpi_disease, '$.code.text')           AS disease,
        Json_extract_scalar(ncpi_disease, '$.identifier[0].value') AS identifier
-FROM   collections.public_datasets.public_ncpi_disease disease
-       INNER JOIN collections.public_datasets.public_patient patient
+FROM   collections.public_datasets.ncpi_disease disease
+       INNER JOIN collections.public_datasets.patient patient
                ON patient.id = REPLACE(Json_extract_scalar(ncpi_disease,
                                        '$.subject.reference'),
                                'Patient/')
@@ -146,8 +146,8 @@ search_client = SearchClient(base_url=base_url)
 query = """
 SELECT Json_extract_scalar(ncpi_disease, '$.code.text')           AS disease,
        Json_extract_scalar(ncpi_disease, '$.identifier[0].value') AS identifier
-FROM   collections.public_datasets.public_ncpi_disease disease
-       INNER JOIN collections.public_datasets.public_patient patient
+FROM   collections.public_datasets.ncpi_disease disease
+       INNER JOIN collections.public_datasets.patient patient
                ON patient.id = REPLACE(Json_extract_scalar(ncpi_disease,
                                        '$.subject.reference'),
                                'Patient/')
@@ -185,7 +185,7 @@ devtools::install_github("DNAstack/ga4gh-search-client-r")
 ```R
 # Making the request
 library(httr)
-conditionsInFemalePatients <- ga4gh.search::ga4gh_search("https://data.publisher.dnastack.com", "select json_extract_scalar(ncpi_disease, '$.code.text') as disease, json_extract_scalar(ncpi_disease, '$.identifier[0].value') as identifier from collections.public_datasets.public_ncpi_disease disease INNER JOIN collections.public_datasets.public_patient patient ON patient.id=replace(json_extract_scalar(ncpi_disease, '$.subject.reference'), 'Patient/') WHERE json_extract_scalar(patient, '$.gender')='female' limit 5")
+conditionsInFemalePatients <- ga4gh.search::ga4gh_search("https://data.publisher.dnastack.com", "select json_extract_scalar(ncpi_disease, '$.code.text') as disease, json_extract_scalar(ncpi_disease, '$.identifier[0].value') as identifier from collections.public_datasets.ncpi_disease disease INNER JOIN collections.public_datasets.patient patient ON patient.id=replace(json_extract_scalar(ncpi_disease, '$.subject.reference'), 'Patient/') WHERE json_extract_scalar(patient, '$.gender')='female' limit 5")
 ```
 ```R
 # View the results
@@ -213,7 +213,7 @@ Output:
 {{% tab tabNum="3" %}}
 
 ``` bash
-search-cli query -q "select json_extract_scalar(ncpi_disease, '$.code.text') as disease, json_extract_scalar(ncpi_disease, '$.identifier[0].value') as identifier from collections.public_datasets.public_ncpi_disease disease INNER JOIN collections.public_datasets.public_patient patient ON patient.id=replace(json_extract_scalar(ncpi_disease, '$.subject.reference'), 'Patient/') WHERE json_extract_scalar(patient, '$.gender')='female' limit 5" --api-url https://data.publisher.dnastack.com
+search-cli query -q "select json_extract_scalar(ncpi_disease, '$.code.text') as disease, json_extract_scalar(ncpi_disease, '$.identifier[0].value') as identifier from collections.public_datasets.ncpi_disease disease INNER JOIN collections.public_datasets.patient patient ON patient.id=replace(json_extract_scalar(ncpi_disease, '$.subject.reference'), 'Patient/') WHERE json_extract_scalar(patient, '$.gender')='female' limit 5" --api-url https://data.publisher.dnastack.com
 ```
 {{% /tab %}}
 {{% tab tabNum="4" %}}
@@ -223,7 +223,7 @@ This query returns all female patients from the `patient` table.
 curl --request POST \
   --url https://data.publisher.dnastack.com/search \
   --header 'content-type: application/json' \
-  --data '{ "query": "select * from collections.public_datasets.public_patient WHERE json_extract_scalar(patient, '\''$.gender'\'')='\''female'\'' limit 5"}'
+  --data '{ "query": "select * from collections.public_datasets.patient WHERE json_extract_scalar(patient, '\''$.gender'\'')='\''female'\'' limit 5"}'
 ```
 
 This query returns all conditions observed in female patients from the `patient` table.
@@ -231,7 +231,7 @@ This query returns all conditions observed in female patients from the `patient`
 curl --request POST \
   --url https://data.publisher.dnastack.com/search \
   --header 'content-type: application/json' \
-  --data '{ "query": "select json_extract_scalar(ncpi_disease, '\''$.code.text'\'') as disease, json_extract_scalar(ncpi_disease, '\''$.identifier[0].value'\'') as identifier from collections.public_datasets.public_ncpi_disease disease INNER JOIN collections.public_datasets.public_patient patient ON patient.id=replace(json_extract_scalar(ncpi_disease, '\''$.subject.reference'\''), '\''Patient/'\'') WHERE json_extract_scalar(patient, '\''$.gender'\'')='\''female'\'' limit 5"}'
+  --data '{ "query": "select json_extract_scalar(ncpi_disease, '\''$.code.text'\'') as disease, json_extract_scalar(ncpi_disease, '\''$.identifier[0].value'\'') as identifier from collections.public_datasets.ncpi_disease disease INNER JOIN collections.public_datasets.patient patient ON patient.id=replace(json_extract_scalar(ncpi_disease, '\''$.subject.reference'\''), '\''Patient/'\'') WHERE json_extract_scalar(patient, '\''$.gender'\'')='\''female'\'' limit 5"}'
 ```
 {{% /tab %}}
 {{< /tabs >}}
@@ -367,7 +367,7 @@ pprint.pprint(tables)
 # Select rows from three regions
 query = f"""
   SELECT *
-  FROM collections.world_health_organization_covid_19_global_data_repository.public_vaccination_data
+  FROM collections.world_health_organization_covid_19_global_data_repository.vaccination_data
   WHERE iso3 IN ('ASM', 'JPN', 'THA')
   LIMIT 25
 """
@@ -396,7 +396,7 @@ ga4gh.search::ga4gh_list_tables("https://viral.ai/api/collection/world-health-or
 ```
 ``` R
 # Select all data from Genbank.
-query <- "SELECT * FROM collections.world_health_organization_covid_19_global_data_repository.public_vaccination_data WHERE iso3 IN ('ASM', 'JPN', 'THA') LIMIT 25"
+query <- "SELECT * FROM collections.world_health_organization_covid_19_global_data_repository.vaccination_data WHERE iso3 IN ('ASM', 'JPN', 'THA') LIMIT 25"
 ```
 ``` R
 # Executing the query
@@ -415,7 +415,7 @@ search-cli info covid.cloud.sequences --api-url "https://viral.ai/api/collection
 ```
 Now run a query and pipe the results to a file called `results.txt`
 ``` bash
-search-cli query -q "SELECT * FROM collections.world_health_organization_covid_19_global_data_repository.public_vaccination_data WHERE iso3 IN ('ASM', 'JPN', 'THA') LIMIT 25" \
+search-cli query -q "SELECT * FROM collections.world_health_organization_covid_19_global_data_repository.vaccination_data WHERE iso3 IN ('ASM', 'JPN', 'THA') LIMIT 25" \
   --api-url "https://viral.ai/api/collection/world-health-organization-covid-19-global-data-repository/data-connect/" > results.txt
 ```
 {{% /tab %}}
