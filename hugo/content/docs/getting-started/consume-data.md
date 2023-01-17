@@ -19,7 +19,8 @@ On the right is example code to browse [the tables-in-a-bucket](/docs/getting-st
 [Follow along in Colab](https://colab.research.google.com/drive/1NytWLzQFWwGc3pqTaL0HD81S5B3zznLj?usp=sharing)
 ``` python
 # init search client
-from search_python_client.search import DrsClient, SearchClient
+import pandas as pd
+from search_python_client.search import SearchClient
 base_url_tiab = 'https://storage.googleapis.com/ga4gh-tables-example/'
 search_client_tiab = SearchClient(base_url=base_url_tiab)
 ```
@@ -28,7 +29,7 @@ search_client_tiab = SearchClient(base_url=base_url_tiab)
 tables_iterator = search_client_tiab.get_table_list()
 tables = [next(tables_iterator, None) for i in range(10)]
 tables = list(filter(None, tables))
-print(tables)
+pd.DataFrame(tables)
 ```
 ``` python
 # get table info
@@ -42,11 +43,11 @@ table_name = tables[0]['name']
 table_data_iterator = search_client_tiab.get_table_data(table_name)
 table_data = [next(table_data_iterator, None) for i in range(10)]
 table_data = list(filter(None, table_data))
-print(table_data)
+pd.DataFrame(table_data)
 ```
 {{% /tab %}}
 {{% tab tabNum="2" %}}
-``` 
+```
 Under construction
 https://colab.research.google.com/drive/1VOP2IcPjsX4U-DfuiTs7Tr0SVlAD0IMh?usp=sharing <= doesn't work right now.
 ```
@@ -84,10 +85,10 @@ Data Connect's SQL dialect has a familiar interface inspired by current major op
 This query returns all female patients from the `patient` table.
 ``` SQL
 /* you can scroll on this tab */
-SELECT * 
-FROM   kidsfirst.ga4gh_tables.patient 
-WHERE  Json_extract_scalar(patient, '$.gender') = 'female' 
-LIMIT  5; 
+SELECT *
+FROM   collections.public_datasets.patient
+WHERE  Json_extract_scalar(patient, '$.gender') = 'female'
+LIMIT  5;
 ```
 {{% /tab %}}
 
@@ -96,16 +97,17 @@ LIMIT  5;
 This query returns all conditions observed in female patients from the `patient` table.
 ``` SQL
 /* you can scroll on this tab */
-SELECT Json_extract_scalar(ncpi_disease, '$.code.text')           AS disease, 
-       Json_extract_scalar(ncpi_disease, '$.identifier[0].value') AS identifier 
-FROM   kidsfirst.ga4gh_tables.ncpi_disease disease 
-       INNER JOIN kidsfirst.ga4gh_tables.patient patient 
-               ON patient.id = REPLACE(Json_extract_scalar(ncpi_disease, 
-                                       '$.subject.reference'), 
-                               'Patient/') 
-WHERE  Json_extract_scalar(patient, '$.gender') = 'female' 
-LIMIT  5; 
+SELECT Json_extract_scalar(ncpi_disease, '$.code.text')           AS disease,
+       Json_extract_scalar(ncpi_disease, '$.identifier[0].value') AS identifier
+FROM   collections.public_datasets.ncpi_disease disease
+       INNER JOIN collections.public_datasets.patient patient
+               ON patient.id = REPLACE(Json_extract_scalar(ncpi_disease,
+                                       '$.subject.reference'),
+                               'Patient/')
+WHERE  Json_extract_scalar(patient, '$.gender') = 'female'
+LIMIT  5;
 ```
+<!-- FIXME Permission Issue -->
 {{% /tab %}}
 {{< /tabs >}}
 {{</code/float-window>}}
@@ -138,19 +140,19 @@ pip install git+https://github.com/DNAstack/search-python-client --no-cache-dir
 ```
 ```python
 # Building the query
-from search_python_client.search import DrsClient, SearchClient
-base_url = 'https://search-presto-public.staging.dnastack.com'
+from search_python_client.search import SearchClient
+base_url = 'https://data.publisher.dnastack.com'
 search_client = SearchClient(base_url=base_url)
 query = """
-SELECT Json_extract_scalar(ncpi_disease, '$.code.text')           AS disease, 
-       Json_extract_scalar(ncpi_disease, '$.identifier[0].value') AS identifier 
-FROM   kidsfirst.ga4gh_tables.ncpi_disease disease 
-       INNER JOIN kidsfirst.ga4gh_tables.patient patient 
-               ON patient.id = REPLACE(Json_extract_scalar(ncpi_disease, 
-                                       '$.subject.reference'), 
-                               'Patient/') 
-WHERE  Json_extract_scalar(patient, '$.gender') = 'female' 
-LIMIT  5 
+SELECT Json_extract_scalar(ncpi_disease, '$.code.text')           AS disease,
+       Json_extract_scalar(ncpi_disease, '$.identifier[0].value') AS identifier
+FROM   collections.public_datasets.ncpi_disease disease
+       INNER JOIN collections.public_datasets.patient patient
+               ON patient.id = REPLACE(Json_extract_scalar(ncpi_disease,
+                                       '$.subject.reference'),
+                               'Patient/')
+WHERE  Json_extract_scalar(patient, '$.gender') = 'female'
+LIMIT  5
 """
 ```
 ```python
@@ -183,7 +185,7 @@ devtools::install_github("DNAstack/ga4gh-search-client-r")
 ```R
 # Making the request
 library(httr)
-conditionsInFemalePatients <- ga4gh.search::ga4gh_search("https://search-presto-public.staging.dnastack.com", "select json_extract_scalar(ncpi_disease, '$.code.text') as disease, json_extract_scalar(ncpi_disease, '$.identifier[0].value') as identifier from kidsfirst.ga4gh_tables.ncpi_disease disease INNER JOIN kidsfirst.ga4gh_tables.patient patient ON patient.id=replace(json_extract_scalar(ncpi_disease, '$.subject.reference'), 'Patient/') WHERE json_extract_scalar(patient, '$.gender')='female' limit 5")
+conditionsInFemalePatients <- ga4gh.search::ga4gh_search("https://data.publisher.dnastack.com", "select json_extract_scalar(ncpi_disease, '$.code.text') as disease, json_extract_scalar(ncpi_disease, '$.identifier[0].value') as identifier from collections.public_datasets.ncpi_disease disease INNER JOIN collections.public_datasets.patient patient ON patient.id=replace(json_extract_scalar(ncpi_disease, '$.subject.reference'), 'Patient/') WHERE json_extract_scalar(patient, '$.gender')='female' limit 5")
 ```
 ```R
 # View the results
@@ -211,7 +213,7 @@ Output:
 {{% tab tabNum="3" %}}
 
 ``` bash
-search-cli query -q "select json_extract_scalar(ncpi_disease, '$.code.text') as disease, json_extract_scalar(ncpi_disease, '$.identifier[0].value') as identifier from kidsfirst.ga4gh_tables.ncpi_disease disease INNER JOIN kidsfirst.ga4gh_tables.patient patient ON patient.id=replace(json_extract_scalar(ncpi_disease, '$.subject.reference'), 'Patient/') WHERE json_extract_scalar(patient, '$.gender')='female' limit 5" --api-url https://search-presto-public.staging.dnastack.com
+search-cli query -q "select json_extract_scalar(ncpi_disease, '$.code.text') as disease, json_extract_scalar(ncpi_disease, '$.identifier[0].value') as identifier from collections.public_datasets.ncpi_disease disease INNER JOIN collections.public_datasets.patient patient ON patient.id=replace(json_extract_scalar(ncpi_disease, '$.subject.reference'), 'Patient/') WHERE json_extract_scalar(patient, '$.gender')='female' limit 5" --api-url https://data.publisher.dnastack.com
 ```
 {{% /tab %}}
 {{% tab tabNum="4" %}}
@@ -219,17 +221,17 @@ These requests
 This query returns all female patients from the `patient` table.
 ``` bash
 curl --request POST \
-  --url https://search-presto-public.staging.dnastack.com/search \
+  --url https://data.publisher.dnastack.com/search \
   --header 'content-type: application/json' \
-  --data '{ "query": "select * from kidsfirst.ga4gh_tables.patient WHERE json_extract_scalar(patient, '\''$.gender'\'')='\''female'\'' limit 5"}'
+  --data '{ "query": "select * from collections.public_datasets.patient WHERE json_extract_scalar(patient, '\''$.gender'\'')='\''female'\'' limit 5"}'
 ```
 
 This query returns all conditions observed in female patients from the `patient` table.
 ``` bash
 curl --request POST \
-  --url https://search-presto-public.staging.dnastack.com/search \
+  --url https://data.publisher.dnastack.com/search \
   --header 'content-type: application/json' \
-  --data '{ "query": "select json_extract_scalar(ncpi_disease, '\''$.code.text'\'') as disease, json_extract_scalar(ncpi_disease, '\''$.identifier[0].value'\'') as identifier from kidsfirst.ga4gh_tables.ncpi_disease disease INNER JOIN kidsfirst.ga4gh_tables.patient patient ON patient.id=replace(json_extract_scalar(ncpi_disease, '\''$.subject.reference'\''), '\''Patient/'\'') WHERE json_extract_scalar(patient, '\''$.gender'\'')='\''female'\'' limit 5"}'
+  --data '{ "query": "select json_extract_scalar(ncpi_disease, '\''$.code.text'\'') as disease, json_extract_scalar(ncpi_disease, '\''$.identifier[0].value'\'') as identifier from collections.public_datasets.ncpi_disease disease INNER JOIN collections.public_datasets.patient patient ON patient.id=replace(json_extract_scalar(ncpi_disease, '\''$.subject.reference'\''), '\''Patient/'\'') WHERE json_extract_scalar(patient, '\''$.gender'\'')='\''female'\'' limit 5"}'
 ```
 {{% /tab %}}
 {{< /tabs >}}
@@ -244,8 +246,8 @@ This is a public implementation of Data Connect. Feel free to follow along with 
 [Follow along in Colab](https://colab.research.google.com/drive/1f_BZibUx3nWdaJXkgcoW5WqwxnLDgzzY?usp=sharing)
 ``` python
 # init search client
-from search_python_client.search import DrsClient, SearchClient
-base_url = 'https://search-presto-public.prod.dnastack.com/'
+from search_python_client.search import SearchClient
+base_url = 'https://data.publisher.dnastack.com/'
 search_client = SearchClient(base_url=base_url)
 ```
 ``` python
@@ -257,12 +259,12 @@ pprint.pprint(tables)
 ```
 ```python
 #Get more information about a table returned
-table_info = search_client.get_table_info("dbgap_demo.scr_gecco_susceptibility.subject_phenotypes_multi")
+table_info = search_client.get_table_info("collections.public_datasets.subject_phenotypes_multi")
 pprint.pprint(table_info)
 ```
 ```python
 # Dig into the table a little further
-table_data_iterator = search_client.get_table_data("dbgap_demo.scr_gecco_susceptibility.subject_phenotypes_multi")
+table_data_iterator = search_client.get_table_data("collections.public_datasets.subject_phenotypes_multi")
 ```
 ```python
 # Limit to first 10 items
@@ -271,12 +273,12 @@ tables = list(filter(None, tables))
 pprint.pprint(tables)
 ```
 ``` python
-# Select all items from the CPS-II study 
+# Select all items from the CPS-II study
 query = """
-SELECT * 
-FROM   dbgap_demo.scr_gecco_susceptibility.subject_phenotypes_multi
-WHERE  study = 'CPS-II' 
-LIMIT  5 
+SELECT *
+FROM   collections.public_datasets.subject_phenotypes_multi
+WHERE  study = 'CPS-II'
+LIMIT  5
 """
 ```
 ``` python
@@ -300,30 +302,30 @@ devtools::install_github("DNAstack/ga4gh-search-client-r")
 ``` R
 # Making the request
 library(httr)
-ga4gh.search::ga4gh_list_tables("https://search-presto-public.prod.dnastack.com")
+ga4gh.search::ga4gh_list_tables("https://data.publisher.dnastack.com")
 ```
 ``` R
-# Select all items from the CPS-II study 
-query <- "SELECT * FROM dbgap_demo.scr_gecco_susceptibility.subject_phenotypes_multi WHERE study = 'CPS-II' LIMIT 5"
+# Select all items from the CPS-II study
+query <- "SELECT * FROM collections.public_datasets.subject_phenotypes_multi WHERE study = 'CPS-II' LIMIT 5"
 ```
 ``` R
 # Executing the query
-ga4gh.search::ga4gh_search("https://search-presto-public.prod.dnastack.com", query)
+ga4gh.search::ga4gh_search("https://data.publisher.dnastack.com", query)
 ```
 {{% /tab %}}
 {{% tab tabNum="3" %}}
 List tables
 ``` bash
-search-cli list --api-url "https://search-presto-public.prod.dnastack.com" 
+search-cli list --api-url "https://data.publisher.dnastack.com"
 ```
 Get table info
 ``` bash
-search-cli info dbgap_demo.scr_gecco_susceptibility.subject_phenotypes_multi --api-url "https://search-presto-public.prod.dnastack.com" 
+search-cli info collections.public_datasets.subject_phenotypes_multi --api-url "https://data.publisher.dnastack.com"
 ```
 Now run a query and pipe the results to a file called `results.txt`
 ``` bash
-search-cli query -q "SELECT * FROM dbgap_demo.scr_gecco_susceptibility.subject_phenotypes_multi WHERE study = 'CPS-II' LIMIT 5" \
-  --api-url "https://search-presto-public.prod.dnastack.com" > results.txt
+search-cli query -q "SELECT * FROM collections.public_datasets.subject_phenotypes_multi WHERE study = 'CPS-II' LIMIT 5" \
+  --api-url "https://data.publisher.dnastack.com" > results.txt
 ```
 {{% /tab %}}
 
@@ -333,49 +335,47 @@ search-cli query -q "SELECT * FROM dbgap_demo.scr_gecco_susceptibility.subject_p
 
 ---
 
-##### COVID Cloud Example
-This is a public implementation of Data Connect for COVID Cloud. Find more about COVID Cloud [here](https://international.covidcloud.ca/).
+##### Viral AI Example
+This is a public implementation of Data Connect for Viral AI. Find more about Viral AI [here](https://viral.ai/).
+
 {{< tabs tabTotal="3" tabID="4" tabName1="Python" tabName2="R" tabName3="CLI">}}
 {{% tab tabNum="1" %}}
 [Follow along in Colab](https://colab.research.google.com/drive/1hnHTqquYP2HjUF0dDHn8FKiO9f7t0yGO?usp=sharing)
 ``` python
 from search_python_client.search import DrsClient, SearchClient
-base_url = 'https://ga4gh-search-adapter-presto-covid19-public.prod.dnastack.com/'
+base_url = 'https://viral.ai/api/collection/world-health-organization-covid-19-global-data-repository/data-connect/'
 search_client = SearchClient(base_url=base_url)
-```
-```python
+
 # Find available tables
 tables_iterator = search_client.get_table_list()
 tables = list(tables_iterator)
 import pprint
 pprint.pprint(tables)
-```
-```python
+
 # Get more information about a table returned
-table_info = search_client.get_table_info("covid.cloud.sequences")
+table_info = search_client.get_table_info(tables[0]['name'])
 pprint.pprint(table_info)
-```
-```python
+
 # Dig into the table a little further
-table_data_iterator = search_client.get_table_data("covid.cloud.sequences")
+table_data_iterator = search_client.get_table_data(tables[0]['name'])
 # Limit to first 10 items
 tables = [next(table_data_iterator, None) for i in range(1)]
 tables = list(filter(None, tables))
 pprint.pprint(tables)
 ```
 ```python
-# Select all sequences from GenBank
-query = """
-SELECT * 
-FROM covid.cloud.sequences
-WHERE sequence_type='GenBank'
-LIMIT 25
+# Select rows from three regions
+query = f"""
+  SELECT *
+  FROM collections.world_health_organization_covid_19_global_data_repository.vaccination_data
+  WHERE iso3 IN ('ASM', 'JPN', 'THA')
+  LIMIT 25
 """
-```
-```python
+# Executing the query
 table_data_iterator = search_client.search_table(query)
-for item in table_data_iterator:
-  print(item)
+
+import pandas
+pandas.DataFrame(table_data_iterator)
 ```
 {{% /tab %}}
 {{% tab tabNum="2" %}}
@@ -392,36 +392,32 @@ devtools::install_github("DNAstack/ga4gh-search-client-r")
 ``` R
 # Making the request
 library(httr)
-ga4gh.search::ga4gh_list_tables("https://ga4gh-search-adapter-presto-covid19-public.prod.dnastack.com")
+ga4gh.search::ga4gh_list_tables("https://viral.ai/api/collection/world-health-organization-covid-19-global-data-repository/data-connect/")
 ```
 ``` R
 # Select all data from Genbank.
-query <- "SELECT * FROM covid.cloud.sequences WHERE sequence_type='GenBank' LIMIT 25"
+query <- "SELECT * FROM collections.world_health_organization_covid_19_global_data_repository.vaccination_data WHERE iso3 IN ('ASM', 'JPN', 'THA') LIMIT 25"
 ```
 ``` R
 # Executing the query
-ga4gh.search::ga4gh_search("https://ga4gh-search-adapter-presto-covid19-public.prod.dnastack.com", query)
+ga4gh.search::ga4gh_search("https://viral.ai/api/collection/world-health-organization-covid-19-global-data-repository/data-connect/", query)
 
 ```
 {{% /tab %}}
 {{% tab tabNum="3" %}}
 List tables
 ``` bash
-search-cli list --api-url "https://ga4gh-search-adapter-presto-covid19-public.prod.dnastack.com" 
+search-cli list --api-url "https://viral.ai/api/collection/world-health-organization-covid-19-global-data-repository/data-connect/"
 ```
 Get table info
 ``` bash
-search-cli info covid.cloud.sequences --api-url "https://ga4gh-search-adapter-presto-covid19-public.prod.dnastack.com" 
+search-cli info covid.cloud.sequences --api-url "https://viral.ai/api/collection/world-health-organization-covid-19-global-data-repository/data-connect/"
 ```
 Now run a query and pipe the results to a file called `results.txt`
 ``` bash
-search-cli query -q "SELECT * FROM covid.cloud.sequences WHERE sequence_type='GenBank' LIMIT 25" \
-  --api-url "https://ga4gh-search-adapter-presto-covid19-public.prod.dnastack.com" > results.txt
+search-cli query -q "SELECT * FROM collections.world_health_organization_covid_19_global_data_repository.vaccination_data WHERE iso3 IN ('ASM', 'JPN', 'THA') LIMIT 25" \
+  --api-url "https://viral.ai/api/collection/world-health-organization-covid-19-global-data-repository/data-connect/" > results.txt
 ```
 {{% /tab %}}
 
 {{< /tabs >}}
-
-#
-
-
