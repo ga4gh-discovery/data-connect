@@ -141,7 +141,7 @@ pip install git+https://github.com/DNAstack/search-python-client --no-cache-dir
 ```python
 # Building the query
 from search_python_client.search import SearchClient
-base_url = 'https://data.publisher.dnastack.com'
+base_url = 'https://data.publisher.dnastack.com/data-connect'
 search_client = SearchClient(base_url=base_url)
 query = """
 SELECT Json_extract_scalar(ncpi_disease, '$.code.text')           AS disease,
@@ -185,7 +185,11 @@ devtools::install_github("DNAstack/ga4gh-search-client-r")
 ```R
 # Making the request
 library(httr)
-conditionsInFemalePatients <- ga4gh.search::ga4gh_search("https://data.publisher.dnastack.com", "select json_extract_scalar(ncpi_disease, '$.code.text') as disease, json_extract_scalar(ncpi_disease, '$.identifier[0].value') as identifier from collections.public_datasets.kidsfirst_ncpi_disease disease INNER JOIN collections.public_datasets.kidsfirst_patient patient ON patient.id=replace(json_extract_scalar(ncpi_disease, '$.subject.reference'), 'Patient/') WHERE json_extract_scalar(patient, '$.gender')='female' limit 5")
+<<<<<<< HEAD
+conditionsInFemalePatients <- ga4gh.search::ga4gh_search("https://data.publisher.dnastack.com/data-connect", "select json_extract_scalar(ncpi_disease, '$.code.text') as disease, json_extract_scalar(ncpi_disease, '$.identifier[0].value') as identifier from collections.public_datasets.kidsfirst_ncpi_disease disease INNER JOIN collections.public_datasets.kidsfirst_patient patient ON patient.id=replace(json_extract_scalar(ncpi_disease, '$.subject.reference'), 'Patient/') WHERE json_extract_scalar(patient, '$.gender')='female' limit 5")
+=======
+conditionsInFemalePatients <- ga4gh.search::ga4gh_search("https://data.publisher.dnastack.com/data-connect", "select json_extract_scalar(ncpi_disease, '$.code.text') as disease, json_extract_scalar(ncpi_disease, '$.identifier[0].value') as identifier from collections.public_datasets.ncpi_disease disease INNER JOIN collections.public_datasets.patient patient ON patient.id=replace(json_extract_scalar(ncpi_disease, '$.subject.reference'), 'Patient/') WHERE json_extract_scalar(patient, '$.gender')='female' limit 5")
+>>>>>>> 6f4366c (Corrected the data-connect endpoint and provided fake Trino endpoint for the demo)
 ```
 ```R
 # View the results
@@ -213,7 +217,7 @@ Output:
 {{% tab tabNum="3" %}}
 
 ``` bash
-search-cli query -q "select json_extract_scalar(ncpi_disease, '$.code.text') as disease, json_extract_scalar(ncpi_disease, '$.identifier[0].value') as identifier from collections.public_datasets.kidsfirst_ncpi_disease disease INNER JOIN collections.public_datasets.kidsfirst_patient patient ON patient.id=replace(json_extract_scalar(ncpi_disease, '$.subject.reference'), 'Patient/') WHERE json_extract_scalar(patient, '$.gender')='female' limit 5" --api-url https://data.publisher.dnastack.com
+search-cli query -q "select json_extract_scalar(ncpi_disease, '$.code.text') as disease, json_extract_scalar(ncpi_disease, '$.identifier[0].value') as identifier from collections.public_datasets.kidsfirst_ncpi_disease disease INNER JOIN collections.public_datasets.kidsfirst_patient patient ON patient.id=replace(json_extract_scalar(ncpi_disease, '$.subject.reference'), 'Patient/') WHERE json_extract_scalar(patient, '$.gender')='female' limit 5" --api-url https://data.publisher.dnastack.com/data-connect
 ```
 {{% /tab %}}
 {{% tab tabNum="4" %}}
@@ -221,7 +225,7 @@ These requests
 This query returns all female patients from the `patient` table.
 ``` bash
 curl --request POST \
-  --url https://data.publisher.dnastack.com/search \
+  --url https://data.publisher.dnastack.com/data-connect/search \
   --header 'content-type: application/json' \
   --data '{ "query": "select * from collections.public_datasets.kidsfirst_patient WHERE json_extract_scalar(patient, '\''$.gender'\'')='\''female'\'' limit 5"}'
 ```
@@ -229,7 +233,7 @@ curl --request POST \
 This query returns all conditions observed in female patients from the `patient` table.
 ``` bash
 curl --request POST \
-  --url https://data.publisher.dnastack.com/search \
+  --url https://data.publisher.dnastack.com/data-connect/search \
   --header 'content-type: application/json' \
   --data '{ "query": "select json_extract_scalar(ncpi_disease, '\''$.code.text'\'') as disease, json_extract_scalar(ncpi_disease, '\''$.identifier[0].value'\'') as identifier from collections.public_datasets.kidsfirst_ncpi_disease disease INNER JOIN collections.public_datasets.kidsfirst_patient patient ON patient.id=replace(json_extract_scalar(ncpi_disease, '\''$.subject.reference'\''), '\''Patient/'\'') WHERE json_extract_scalar(patient, '\''$.gender'\'')='\''female'\'' limit 5"}'
 ```
@@ -247,7 +251,7 @@ This is a public implementation of Data Connect. Feel free to follow along with 
 ``` python
 # init search client
 from search_python_client.search import SearchClient
-base_url = 'https://data.publisher.dnastack.com/'
+base_url = 'https://data.publisher.dnastack.com/data-connect/'
 search_client = SearchClient(base_url=base_url)
 ```
 ``` python
@@ -302,7 +306,7 @@ devtools::install_github("DNAstack/ga4gh-search-client-r")
 ``` R
 # Making the request
 library(httr)
-ga4gh.search::ga4gh_list_tables("https://data.publisher.dnastack.com")
+ga4gh.search::ga4gh_list_tables("https://data.publisher.dnastack.com/data-connect")
 ```
 ``` R
 # Select all items from the CPS-II study
@@ -310,17 +314,17 @@ query <- "SELECT * FROM collections.public_datasets.scr_gecco_susceptibility_sub
 ```
 ``` R
 # Executing the query
-ga4gh.search::ga4gh_search("https://data.publisher.dnastack.com", query)
+ga4gh.search::ga4gh_search("https://data.publisher.dnastack.com/data-connect", query)
 ```
 {{% /tab %}}
 {{% tab tabNum="3" %}}
 List tables
 ``` bash
-search-cli list --api-url "https://data.publisher.dnastack.com"
+search-cli list --api-url "https://data.publisher.dnastack.com/data-connect"
 ```
 Get table info
 ``` bash
-search-cli info collections.public_datasets.scr_gecco_susceptibility_subject_phenotypes_multi --api-url "https://data.publisher.dnastack.com"
+search-cli info collections.public_datasets.scr_gecco_susceptibility_subject_phenotypes_multi --api-url "https://data.publisher.dnastack.com/data-connect"
 ```
 Now run a query and pipe the results to a file called `results.txt`
 ``` bash

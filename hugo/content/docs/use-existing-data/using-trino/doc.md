@@ -9,7 +9,7 @@ layout: single-col
 ---
 ### The dbGaP GECCO Example
 
-In the [provision data section](/docs/getting-started/provision-data/), we've shown a quick start recipe with the [data-connect-trino](https://github.com/DNAstack/data-connect-trino) docker container connected to a Trino instance hosted at `https://trino-public.prod.dnastack.com`. This section provides more information on how this was accomplished.
+In the [provision data section](/docs/getting-started/provision-data/), we've shown a quick start recipe with the [data-connect-trino](https://github.com/DNAstack/data-connect-trino) docker container connected to a Trino instance hosted at `https://data.publisher.dnastack.com/data-connect/`. This section provides more information on how this was accomplished.
 
 {{<code/float-window>}}
 {{%content-textbox%}}
@@ -28,12 +28,12 @@ In the [provision data section](/docs/getting-started/provision-data/), we've sh
 {{%/content-textbox%}}
 {{</code/float-window>}}
 
-#### Prerequisites 
+#### Prerequisites
 The following is required before we start.
 1. Java 11+
 1. A Trino server you can access anonymously over HTTP(S).
 1. Git
-> If you don't have a Trino server to work against and you wish to try the app, try using `https://trino-public.prod.dnastack.com` as the data source.
+> If you don't have a Trino server to work against and you wish to try the app, try using `https://data.publisher.dnastack.com/data-connect/` as the data source.
 
 **1. Building the Trino Adapter App**
 
@@ -44,7 +44,7 @@ git clone https://github.com/DNAstack/data-connect-trino.git
 Build the app
 ```bash
 ./mvnw clean package
-``` 
+```
 
 
 **2. Configuration**
@@ -52,7 +52,7 @@ Build the app
 For a minimal configuration, we need a local PostgreSQL database where the app stores its bookkeeping information. By default, the app looks for a local PostgreSQL instance at localhost:5432 with username, password, and database name `dataconnecttrino`. You can spin up such a database with this docker command:
 ```bash
 docker run -d -p 5432:5432 --name data-connect-app-db -e POSTGRES_USER=dataconnecttrino -e POSTGRES_PASSWORD=dataconnecttrino postgres
-``` 
+```
 
 Now you only need to provide two parameters: `PRESTO_DATASOURCE_URL` and `SPRING_PROFILES_ACTIVE`.
 

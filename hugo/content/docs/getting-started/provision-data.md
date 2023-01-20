@@ -11,7 +11,7 @@ layout: two-col
 {row-divider}
 #### Implementation
 
-Data Connect requires [table operations](/api/#tag/tables) to be implemented to specification for basic discovery and browsing. 
+Data Connect requires [table operations](/api/#tag/tables) to be implemented to specification for basic discovery and browsing.
 
 Optional but not required, [query operations](/api/#tag/search) may be implemented to support querying with SQL.
 
@@ -60,7 +60,7 @@ You’ll need Docker set up on your system to run the Spring app and the Postgre
 docker pull postgres:latest
 docker run -d --rm --name dnastack-data-connect-db -e POSTGRES_USER=dataconnecttrino -e POSTGRES_PASSWORD=dataconnecttrino -p 15432:5432 postgres
 docker pull dnastack/data-connect-trino:latest
-docker run --rm --name dnastack-data-connect -p 8089:8089 -e TRINO_DATASOURCE_URL=https://trino-public.prod.dnastack.com -e SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:15432/dataconnecttrino -e SPRING_PROFILES_ACTIVE=no-auth dnastack/data-connect-trino
+docker run --rm --name dnastack-data-connect -p 8089:8089 -e TRINO_DATASOURCE_URL=https://trino.faux.dnastack.com -e SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:15432/dataconnecttrino -e SPRING_PROFILES_ACTIVE=no-auth dnastack/data-connect-trino
 ```
 {{% /tab %}}
 {{% tab tabNum="2" %}}
@@ -68,7 +68,7 @@ docker run --rm --name dnastack-data-connect -p 8089:8089 -e TRINO_DATASOURCE_UR
 docker pull postgres:latest
 docker run -d --rm --name dnastack-data-connect-db -e POSTGRES_USER=dataconnecttrino -e POSTGRES_PASSWORD=dataconnecttrino -p 15432:5432 postgres
 docker pull dnastack/data-connect-trino:latest
-docker run --rm --name dnastack-data-connect -p 8089:8089 -e TRINO_DATASOURCE_URL=https://trino-public.prod.dnastack.com -e SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:15432/dataconnecttrino -e SPRING_PROFILES_ACTIVE=no-auth dnastack/data-connect-trino
+docker run --rm --name dnastack-data-connect -p 8089:8089 -e TRINO_DATASOURCE_URL=https://trino.faux.dnastack.com -e SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:15432/dataconnecttrino -e SPRING_PROFILES_ACTIVE=no-auth dnastack/data-connect-trino
 ```
 {{% /tab %}}
 {{< /tabs >}}
@@ -102,13 +102,13 @@ print(tables)
 ```
 ``` python
 # get table info
-table_name = "sample_phenopackets.ga4gh_tables.gecco_phenopackets"
+table_name = "collections.public_datasets.sample_phenopackets_gecco_phenopackets"
 table_info = search_client.get_table_info(table_name)
 print(table_info)
 ```
 ``` python
 # get table data
-table_name = "sample_phenopackets.ga4gh_tables.gecco_phenopackets"
+table_name = "collections.public_datasets.sample_phenopackets_gecco_phenopackets"
 table_data_iterator = search_client.get_table_data(table_name)
 table_data = [next(table_data_iterator, None) for i in range(10)]
 table_data = list(filter(None, table_data))
@@ -124,7 +124,7 @@ print(tables)
 ```
 ``` R
 # Try a query
-search_result <- ga4gh.search::ga4gh_search("http://localhost:8089", "SELECT sample_phenopackets.ga4gh_tables.gecco_phenopackets")
+search_result <- ga4gh.search::ga4gh_search("http://localhost:8089", "SELECT * FROM collections.public_datasets.sample_phenopackets_gecco_phenopackets")
 print(tables)
 ```
 {{% /tab %}}
@@ -135,11 +135,11 @@ search-cli list --api-url http://localhost:8089
 ```
 Get table info
 ``` bash
-search-cli info dbgap_demo.scr_gecco_susceptibility.sample_multi --api-url http://localhost:8089
+search-cli info collections.public_datasets.scr_gecco_susceptibility_sample_multi --api-url http://localhost:8089
 ```
 Get table data
 ``` bash
-search-cli data dbgap_demo.scr_gecco_susceptibility.sample_multi --api-url http://localhost:8089
+search-cli data collections.public_datasets.scr_gecco_susceptibility_sample_multi --api-url http://localhost:8089
 ```
 {{% /tab %}}
 

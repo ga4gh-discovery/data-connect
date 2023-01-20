@@ -35,7 +35,7 @@ This document describes the overall structure of the Data Connect API and specif
 
 The primary container for data in the Data Connect API is the **Table**. Tables contain rows of data, where each row is a JSON object with key/value pairs. The table describes the structure of its row objects using [JSON Schema](https://json-schema.org/). Row attributes can take on any legal JSON value, e.g. numbers, strings, booleans, nulls, arrays, and nested JSON objects.
 
-The API supports browsing and discovery of data models and table metadata, listing table data, and optionally searching table data using arbitrarily complex expressions including joins and aggregations. The query language is SQL with domain-specific functions to facilitate informative typing of the result fields. 
+The API supports browsing and discovery of data models and table metadata, listing table data, and optionally searching table data using arbitrarily complex expressions including joins and aggregations. The query language is SQL with domain-specific functions to facilitate informative typing of the result fields.
 
 All discovery, browsing and search operations are specified formally in the [OpenAPI specification](https://github.com/ga4gh-discovery/ga4gh-discovery-search/blob/develop/spec/api.yaml) document.
 
@@ -292,7 +292,7 @@ Clients can use the attribute meanings to:
 This system of identifying types through reference URLs is amenable to building up cross-references. With a rich set of cross-references, a Data Connect API client can help join up data from sources that use different nomenclatures, and link concepts to external ontologies.
 
 
-### Example: Semantic Data Types on a Table 
+### Example: Semantic Data Types on a Table
 
 Assume the following JSON Schema is published at https://schemablocks.org/schemas/playground/current/BloodGroup.json:
 
@@ -335,7 +335,7 @@ Assume the following JSON Schema is published at https://schemablocks.org/schema
 
 
 
-Then data exposed through Data Connect API could refer to the concept of “ABO Blood Group” as: 
+Then data exposed through Data Connect API could refer to the concept of “ABO Blood Group” as:
 
 ```
 "$ref": "https://schemablocks.org/schemas/playground/current/BloodGroup.json"
@@ -400,7 +400,7 @@ select
             end
         )
         as row(id varchar, label varchar))
-    end, 
+    end,
     '$ref:https://schemablocks.org/schemas/playground/current/BloodGroup.json') as blood_group
 from pgpc.public.participant
 ```
@@ -456,13 +456,13 @@ The functions listed below SHOULD be supported by any implementation of Data Con
 *   **String manipulation**
     *   `substring(string, start)` → `varchar`
     *   `Concatenation (||)`
-*   **Date manipulation** 
+*   **Date manipulation**
     *   `extract(field FROM date)`
     *   `current_date`
     *   `current_time`
     *   `current_timestamp`
     *   `+`, `-` operators for dates
-*   **Aggregate functions** 
+*   **Aggregate functions**
     *   `count(*)`
     *   `max(x)`
     *   `min(x)`
@@ -475,7 +475,7 @@ An implementation of Data Connect MAY support any number of additional SQL funct
 
 Trino (formerly PrestoSQL) has proven to be a popular choice in existing Data Connect implementations, owing to the highly configurable nature of the engine.  A simplified version of Trino's SQL grammar is presented in [Appendix A](#appendix-a-sql-grammar).
 
-To assist with implementations directly on other database platforms, the [Trino Functions Support Matrix](https://docs.google.com/document/d/1y51qNuoe2ELX9kCOyQbFB4jihiKt2N8Qcd6-zzadIvk) captures differences in the implementation of common functions in granular detail. 
+To assist with implementations directly on other database platforms, the [Trino Functions Support Matrix](https://docs.google.com/document/d/1y51qNuoe2ELX9kCOyQbFB4jihiKt2N8Qcd6-zzadIvk) captures differences in the implementation of common functions in granular detail.
 
 ## Pagination and Long Running Queries
 
@@ -601,24 +601,24 @@ The algorithm provided here simply illustrates one way to comply with the rules 
     5. If there is a pagination object and it has a non-null next_page_url, fetch that URL, make that response the current page, and start back at step 2a; otherwise end.
 
 
-# Supplementary Information 
+# Supplementary Information
 
 This section provides advice to implementers. Nothing in this section is required of a conforming implementation.
 
 
-## Interop with other data storage and transmission standards 
+## Interop with other data storage and transmission standards
 
 This section demonstrates how to expose data stored in commonly used formats using Data Connect Table structures and their embedded JSON schema specifications.
 
 
-### Phenopackets 
+### Phenopackets
 
 Phenopacket is a GA4GH approved standard file format for sharing phenotypic information. A Phenopacket file contains a set of mandatory and optional fields to share information about a patient or participant’s phenotype, such as clinical diagnosis, age of onset, results from lab tests, and disease severity.
 
 
-#### Concrete Example 
+#### Concrete Example
 
-Here is a detailed example of a directory full of Phenopacket files exposed as a single table via the Data Connect API. Each row corresponds to one Phenopacket. The table has two columns: 
+Here is a detailed example of a directory full of Phenopacket files exposed as a single table via the Data Connect API. Each row corresponds to one Phenopacket. The table has two columns:
 
 *   **id**, the ID of that row’s Phenopacket
 *   **phenopacket**, the entire contents of the Phenopacket as a JSON object
@@ -725,26 +725,26 @@ REQUEST:
 ---------------------------------------------------------------------------------------
 WITH pp_genes AS (
   SELECT
-    pp.id AS packet_id, 
+    pp.id AS packet_id,
     json_extract_scalar(g.gene, '$.id') AS gene_id,
     json_extract_scalar(g.gene, '$.symbol') AS gene_symbol
   FROM
-    sample_phenopackets.ga4gh_tables.hpo_phenopackets pp,
-    UNNEST(CAST(json_extract(pp.phenopacket, '$.genes') as ARRAY(json))) 
+    collections.public_datasets.sample_phenopackets_hpo_phenopackets pp,
+    UNNEST(CAST(json_extract(pp.phenopacket, '$.genes') as ARRAY(json)))
       as g (gene)
 )
 SELECT pp_genes.*
-FROM pp_genes 
+FROM pp_genes
 WHERE gene_symbol LIKE 'ANTXR%'
 LIMIT 100;
 RESPONSE:
 ------------------------------------------------------------+-----------------+--------
- PMID:30050362-Schussler-2018-ANTXR2-II-3_                  | NCBIGene:118429 | ANTXR2      
+ PMID:30050362-Schussler-2018-ANTXR2-II-3_                  | NCBIGene:118429 | ANTXR2
  PMID:27587992-Salas-Alanís-2016-ANTXR1-14_year_old_brother | NCBIGene:84168  | ANTXR1
 
 ```
 
-#### Organizing Into Tables 
+#### Organizing Into Tables
 
 Here we demonstrate two possibilities for organizing a collection of Phenopacket JSON files into tables. Other layouts are also possible.
 
@@ -773,7 +773,7 @@ The difference between the two formats is the way in which the Phenopacket JSON 
 *   If certain scopes should only see aggregated data (for privacy reasons), use separate aggregated tables (or views). The connector should only pull data from these pre-summarized views.
 
 
-## Implementing a Federation of SQL Query Nodes 
+## Implementing a Federation of SQL Query Nodes
 
 *   Two approaches: “foreign data wrappers” and “fan-out/hub-and-spoke”
 *   Foreign data wrappers:
