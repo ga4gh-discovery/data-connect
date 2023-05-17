@@ -9,7 +9,7 @@ layout: single-col
 ---
 ### The dbGaP GECCO Example
 
-In the [provision data section](/docs/getting-started/provision-data/), we've shown a quick start recipe with the [data-connect-trino](https://github.com/DNAstack/data-connect-trino) docker container connected to a Trino instance hosted at `https://data.publisher.dnastack.com/data-connect/`. This section provides more information on how this was accomplished.
+In the [provision data section](/docs/getting-started/provision-data/), we've shown a quick start recipe with the [data-connect-trino](https://github.com/DNAstack/data-connect-trino) docker container connected to a Trino instance hosted at `https://publisher-data.publisher.dnastack.com/data-connect/`. This section provides more information on how this was accomplished.
 
 {{<code/float-window>}}
 {{%content-textbox%}}
@@ -33,7 +33,7 @@ The following is required before we start.
 1. Java 11+
 1. A Trino server you can access anonymously over HTTP(S).
 1. Git
-> If you don't have a Trino server to work against and you wish to try the app, try using `https://data.publisher.dnastack.com/data-connect/` as the data source.
+> If you don't have a Trino server to work against and you wish to try the app, try using `https://publisher-data.publisher.dnastack.com/data-connect/` as the data source.
 
 **1. Building the Trino Adapter App**
 
