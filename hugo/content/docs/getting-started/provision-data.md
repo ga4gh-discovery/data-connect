@@ -135,11 +135,11 @@ search-cli list --api-url http://localhost:8089
 ```
 Get table info
 ``` bash
-search-cli info collections.public_datasets.scr_gecco_susceptibility_sample_multi --api-url http://localhost:8089
+search-cli info collections.public_datasets.dbgap_scr_gecco_susceptibility_sample_multi --api-url http://localhost:8089
 ```
 Get table data
 ``` bash
-search-cli data collections.public_datasets.scr_gecco_susceptibility_sample_multi --api-url http://localhost:8089
+search-cli data collections.public_datasets.dbgap_scr_gecco_susceptibility_sample_multi --api-url http://localhost:8089
 ```
 {{% /tab %}}
 
